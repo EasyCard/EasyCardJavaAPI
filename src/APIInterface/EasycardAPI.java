@@ -27,7 +27,12 @@ public class EasycardAPI {
 		//apiInit();
 		//logger.info("********** App Start **********");	
 		
-	    cmasSignOn(); 
+	    /*
+	     * 1. signon ready*/
+	    // cmasSignOn();
+	     
+	     
+	     signQuery();
 	    //logger.info("End");
 	}
 
@@ -68,11 +73,12 @@ public class EasycardAPI {
 	}
 	
 
-	public static void readCardNumber(){	
+	public static void signQuery(){	
 		try{
 		
 			logger.info("Start");		
-			//Process process = new Process(rs);
+			Process process = new Process();
+			process.doSignOnQuery();
 			logger.info("End");
 		
 	

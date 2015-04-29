@@ -25,15 +25,8 @@ public class PPR_SignOn extends APDU {
 	private byte[] mRequest = new byte[scReqLength];
 	private byte[] mRespond = null;
 	
-	/*
-	public static PPR_SignOn sGetInstance() {
-		if (sThis == null) {
-			sThis = new PPR_SignOn();
-		}
-		return sThis;
-	}
-	*/
-	//private PPR_SignOn() {
+	
+	
 	public PPR_SignOn() {
 		Req_NAD = 0;
 		Req_PCB = 0; 

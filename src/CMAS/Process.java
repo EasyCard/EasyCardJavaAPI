@@ -22,6 +22,7 @@ import Reader.EZReader;
 import Reader.PPR_Reset;
 import Reader.ApduRecvSender;
 import Reader.PPR_SignOn;
+import Reader.PPR_SignOnQuery;
 
 
 
@@ -254,6 +255,20 @@ public class Process {
 		
 		logger.info("End");
 		return ApiRespCode.SUCCESS;
+	}
+	
+	public IRespCode doSignOnQuery(){
+		
+		IRespCode result = null;
+		
+		PPR_SignOnQuery pprSignonQuery = new PPR_SignOnQuery();
+		
+		result = reader.exeCommand(pprSignonQuery);
+		if(result != ReaderRespCode._9000)
+			logger.error("errID:"+result.getId()+", msg:"+result.getMsg());
+		//byte request[] = pprSignonQuery.GetRequest();
+		
+		return result;
 	}
 
 }

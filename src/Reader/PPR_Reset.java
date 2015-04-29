@@ -853,12 +853,13 @@ public class PPR_Reset extends APDU {
 		YRHostYCReader		// 讀回Host且Reader要驗證
 	};
 	
+	/*
 	public enum SAMSignOnControlFlag {
 		NoSignOnForBoth,	// 兩張SAM卡都不須SignOn(離線)
 		SignOnForNewOnly,	// 只SignOn新SAM卡(淘汰Mifare時)
 		SignOnForOldOnly,	// 只SignOn舊SAM卡
 		SignOnForBoth		// 兩張SAM卡都要SignOn
-	};
+	};*/
 	/* PPR_SignOn參數設定, 適用於有SignOn之設備, CPD Read Flag: Bit 0~1, 二代CPD讀取及驗證設定 */
 	//public CPDReadFlag GetResp_CPDReadFlag() {
 	public byte GetResp_CPDReadFlag() {
@@ -972,19 +973,7 @@ public class PPR_Reset extends APDU {
 			return false; // 不限制使用
 		}*/
 	}
-	/*
-	//add by bruce
-	public byte bGetResp_MerchantLimitUseForMicroPayment() {
-		if (mRespond == null) {
-			return 0x00;
-		}
-		byte b = (byte) (mRespond[scRespData_SignOnParams1] & 0x80);
-		if (b == 0) {
-			return 0x00; // 限制使用
-		} else { 
-			return 0x01; // 不限制使用
-		}
-	}*/
+	
 	/* 
 	 * PPR_SignOn參數設定, 1 byte, Reader (適用於有SignOn之設備)
 	 * One Day Quota Flag For Micro Payment: Bit 0~1, 小額消費日限額旗標

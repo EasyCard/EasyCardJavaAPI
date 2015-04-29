@@ -50,6 +50,9 @@ public class EZReader{
     			logger.error("command: "+command.getClass().getName()+",setRespond fail");
     			return ApiRespCode.ERROR;
     		}
+    		//for debug
+    		command.debugResponseData();
+    		
     		
     		if((statusCode = command.GetRespCode()) != 0x9000)
     		{
@@ -60,8 +63,7 @@ public class EZReader{
     		else
     			result = ReaderRespCode._9000;
     		
-    		//for debug
-    		command.debugResponseData();
+    		
     		
     	}
     	catch(Exception e)

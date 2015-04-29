@@ -99,7 +99,7 @@ public abstract class APDU {
 	}
 	
 
-	
+	/*
 	public String GetRespDescription() {
 		int status = GetRespCode();
 		
@@ -280,6 +280,6 @@ public abstract class APDU {
 		
 		return "¥¼ª¾ªº¿ù»~";
 	}
-	
+	*/
 	
 }
