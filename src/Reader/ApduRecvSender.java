@@ -78,6 +78,8 @@ private boolean openPort(String portName) {
 				logger.error("openport fail");
 				return false;
 			}
+			
+			
 			if (!mPort.setParams(SerialPort.BAUDRATE_115200, 
 			        		SerialPort.DATABITS_8,
 			        		SerialPort.STOPBITS_1,
@@ -200,7 +202,7 @@ private boolean openPort(String portName) {
     			return null;
     		}
 	
-    		recvLen = read(3,2000);//2sec to read data len
+    		recvLen = read(3,60000);//60sec to read data len
     		
     		logger.debug("read finish:"+Util.hex2StringLog(recvLen));
     		if(recvLen==null) {
@@ -212,7 +214,7 @@ private boolean openPort(String portName) {
     		logger.info("read body len:"+totalRecvLen);
     		
     		//expectedRecvLen = DataFormat.byteArrayToInt(recvLen);
-    		recvDataBody = read(totalRecvLen+1, 5000);//5sec to read dataBody and LRC
+    		recvDataBody = read(totalRecvLen+1, 60000);//60sec to read dataBody and LRC
     		
     		recvBuffer = ArrayUtils.addAll(recvLen, recvDataBody);
     		

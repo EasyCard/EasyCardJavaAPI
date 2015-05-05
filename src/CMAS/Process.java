@@ -23,6 +23,7 @@ import Reader.PPR_Reset;
 import Reader.ApduRecvSender;
 import Reader.PPR_SignOn;
 import Reader.PPR_SignOnQuery;
+import Reader.PPR_TxnReqOffline;
 
 
 
@@ -264,6 +265,40 @@ public class Process {
 		PPR_SignOnQuery pprSignonQuery = new PPR_SignOnQuery();
 		
 		result = reader.exeCommand(pprSignonQuery);
+		if(result != ReaderRespCode._9000)
+			logger.error("errID:"+result.getId()+", msg:"+result.getMsg());
+		//byte request[] = pprSignonQuery.GetRequest();
+		
+		return result;
+	}
+	
+	public IRespCode doDeduct(){
+		
+		IRespCode result = null;
+		//Properties easyCardApip = cfgList.get(ConfigManager.ConfigOrder.EASYCARD_API.ordinal());
+		Properties txnInfo = cfgList.get(ConfigManager.ConfigOrder.TXN_INFO.ordinal());
+		Properties uderDef = cfgList.get(ConfigManager.ConfigOrder.USER_DEF.ordinal());
+		Properties hostInfo = cfgList.get(ConfigManager.ConfigOrder.HOST_INFO.ordinal());
+		PPR_TxnReqOffline pprTxnReqOffline = new PPR_TxnReqOffline();
+		
+		
+		pprTxnReqOffline.setReqMsgType((byte)0x01);
+		
+		
+		pprTxnReqOffline.setReqTMLocationID(uderDef.getProperty("TM_Location_ID"));		
+		pprTxnReqOffline.setReqTMID(uderDef.getProperty("TM_ID"));		
+		int unixTimeStamp = (int) (System.currentTimeMillis() / 1000L);
+		pprTxnReqOffline.setReqTMTXNDateTime(unixTimeStamp);
+		
+		pprTxnReqOffline.setReqTMSerialNumber(Integer.valueOf(txnInfo.getProperty("TM_Serial_Number")));
+		pprTxnReqOffline.setReqTMAgentNumber(uderDef.getProperty("TM_Agent_Number"));
+		pprTxnReqOffline.setReqTXNDateTime(unixTimeStamp, this.getmTimeZone());
+		pprTxnReqOffline.setReqTxnAmt(50);
+		
+		//byte request[] = pprTxnReqOffline.GetRequest();
+		
+		
+		result = reader.exeCommand(pprTxnReqOffline);
 		if(result != ReaderRespCode._9000)
 			logger.error("errID:"+result.getId()+", msg:"+result.getMsg());
 		//byte request[] = pprSignonQuery.GetRequest();

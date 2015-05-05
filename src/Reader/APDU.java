@@ -1,8 +1,14 @@
 package Reader;
 
+import java.util.Arrays;
+
+import org.apache.log4j.Logger;
+
 //so Smart...
 public abstract class APDU {
 	
+	
+	static Logger logger = Logger.getLogger(APDU.class);
 	protected boolean mReqDirty = true;
 	
 	
@@ -97,6 +103,36 @@ public abstract class APDU {
 	public int GetRespCode() {
 		return ((Resp_SW1 << 8) + Resp_SW2) & 0x0000FFFF;
 	}
+
+	protected boolean checkResponseFormat(byte[] respData, int expectedRespLen) {
+		int length = respData.length;
+		if (expectedRespLen != length) {
+			// invalid respond format... 
+			logger.error("resp Data len Wrong!, expectedLen:"+expectedRespLen+", respData array len:"+length);
+			return false;
+		}
+		
+		if (respData[2] != (byte) (expectedRespLen + 2)) { // Data + SW1 + SW2
+			// invalid data format...
+			logger.error("resp Data len Wrong!, expectedLen:"+expectedRespLen+", respData header len:"+respData[2]);
+			return false;
+		}
+		
+		byte sum = getEDC(respData, length);
+		if (sum != respData[expectedRespLen - 1]) {
+			// check sum error...
+			logger.error("resp Data check Sum error");
+			return false;
+		}
+				
+		
+		int dataLength = respData[2] & 0x000000FF;
+		Resp_SW1 = respData[scRespDataOffset + dataLength - 2];
+		Resp_SW2 = respData[scRespDataOffset + dataLength + 1 - 2];
+		
+		return true;
+	}
+	
 	
 
 	/*

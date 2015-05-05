@@ -648,29 +648,11 @@ public class PPR_SignOn extends APDU {
 	@Override
 	public boolean SetRespond(byte[] bytes) {
 		
-		int length = bytes.length;
-		if (scRespLength != length) {
-			// invalid respond format... 
+		
+		if(this.checkResponseFormat(bytes, scRespDataLength) == false)
 			return false;
-		}
-		
-		if (bytes[2] != (byte) (scRespDataLength + 2)) { // Data + SW1 + SW2
-			// invalid data format...
-			return false;
-		}
-		
-		byte sum = getEDC(bytes, length);
-		if (sum != bytes[scRespLength - 1]) {
-			// check sum error...
-			return false;
-		}
-		
-		mRespond = Arrays.copyOf(bytes, length);
-		
-		int dataLength = mRespond[2] & 0x000000FF;
-		Resp_SW1 = mRespond[scRespDataOffset + dataLength - 2];
-		Resp_SW2 = mRespond[scRespDataOffset + dataLength + 1 - 2];
-		
+			
+		mRespond = Arrays.copyOf(bytes, bytes.length);
 		return true;
 	}
 

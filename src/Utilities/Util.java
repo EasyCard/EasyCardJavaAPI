@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -415,6 +416,47 @@ public class Util {
 			sb.append(bcd2Ascii(bcd[i]));
 		}
 		return sb.toString();
+	}
+
+	public static byte[] paddingChar(String s, boolean toRight, byte c, int totalDigits){
+		byte []b = s.getBytes();
+		return paddingChar(b, toRight, c, totalDigits);		
+	}
+	
+	public static byte[] paddingChar(byte[] data, boolean toRight, byte c, int totalDigits){
+				
+		int dataLen = data.length;
+		byte result[] = new byte[totalDigits];
+		Arrays.fill(result, c);
+		
+		//123xxx
+		if(toRight) System.arraycopy(data, 0, result, 0, (totalDigits-dataLen)>0?dataLen:totalDigits);	 
+		else System.arraycopy(data, 0, result, (totalDigits-dataLen)>0?(totalDigits-dataLen):0, (totalDigits-dataLen)>0?dataLen:totalDigits);
+		
+		return result;
+		
+	}
+	
+	public static byte[] int2ByteArray(int i){
+		
+		byte[] bytes = BigInteger.valueOf(i).toByteArray();
+				
+		return bytes;
+	}
+	
+	public static void arrayReverse(byte[] data){
+
+		try{
+			int maxIndex = data.length-1;		
+			byte temp = 0x00;
+			for(int i=0; i<(data.length/2); i++){
+				temp = data[i];
+				data[i] = data[maxIndex-i];
+				data[maxIndex-i] = temp;			
+			}		
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

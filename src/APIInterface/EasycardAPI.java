@@ -26,13 +26,33 @@ public class EasycardAPI {
 	public static void main(String args[]) {	
 		//apiInit();
 		//logger.info("********** App Start **********");	
+		String cmd = args[0];
 		
+		switch(cmd){
+		
+		case "signon":
+			cmasSignOn();
+			break;
+			
+		case "signonQuery":
+			signQuery();
+			break;
+			
+		case "deduct":
+			deduct();
+			break;
+			
+		default:
+			System.out.println("Unknoewn command:"+cmd);
+			break;
+			
+		}
 	    /*
 	     * 1. signon ready*/
-	    // cmasSignOn();
+	     //
 	     
 	     
-	     signQuery();
+	     
 	    //logger.info("End");
 	}
 
@@ -79,6 +99,20 @@ public class EasycardAPI {
 			logger.info("Start");		
 			Process process = new Process();
 			process.doSignOnQuery();
+			logger.info("End");
+		
+	
+		}catch(Exception e){
+			logger.error(e.getMessage());
+		}
+	}
+	
+	public static void deduct(){	
+		try{
+		
+			logger.info("Start");		
+			Process process = new Process();
+			process.doDeduct();
 			logger.info("End");
 		
 	

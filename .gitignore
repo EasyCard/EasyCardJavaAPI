@@ -2,3 +2,4 @@ bin/*
 .svn
 RecvFile*
 *.Dat
+ezLog/*

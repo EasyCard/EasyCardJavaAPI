@@ -9,7 +9,7 @@ import Utilities.Util;
 public class PPR_SignOnQuery extends APDU{
 
 	static Logger logger = Logger.getLogger(PPR_SignOnQuery.class);
-	public static final String scDescription = "將0810端末開機訊息透過Reader傳入SAM卡中做認證";
+	public static final String scDescription = "查詢端末開機是否已認證成功";
 	
 	//private static PPR_SignOn sThis = null;
 	
@@ -19,7 +19,7 @@ public class PPR_SignOnQuery extends APDU{
 	private static final int scRespDataLength = 40;
 	private static final int scRespLength = scRespDataLength + scRespMinLength;
 	
-	private boolean mReqDirty = true;
+	
 	
 	private byte[] mRequest = new byte[scReqLength];
 	private byte[] mRespond = null;
@@ -326,7 +326,7 @@ public class PPR_SignOnQuery extends APDU{
 		// TODO Auto-generated method stub
 		
 		mRequest[scReqLength - 1] = Req_EDC = getEDC(mRequest, scReqLength);
-		logger.debug("pprSignonQuery request:" + Util.hex2StringLog(mRequest));
+		logger.debug(PPR_SignOnQuery.class.getName()+" request:" + Util.hex2StringLog(mRequest));
 		
 		
 		return mRequest;
@@ -348,7 +348,7 @@ public class PPR_SignOnQuery extends APDU{
 	public void debugResponseData() {
 		// TODO Auto-generated method stub
 		if(mRespond != null)
-			logger.debug("pprSignon recv:" + Util.hex2StringLog(mRespond));
+			logger.debug(PPR_SignOnQuery.class.getName()+" recv:" + Util.hex2StringLog(mRespond));
 	}
 
 	@Override
