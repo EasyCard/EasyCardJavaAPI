@@ -104,31 +104,34 @@ public abstract class APDU {
 		return ((Resp_SW1 << 8) + Resp_SW2) & 0x0000FFFF;
 	}
 
-	protected boolean checkResponseFormat(byte[] respData, int expectedRespLen) {
+	protected boolean checkResponseFormat(byte[] respData, int expectedRespDataLen) {
 		int length = respData.length;
-		if (expectedRespLen != length) {
+		int totalRespLen = expectedRespDataLen+scRespMinLength;
+		int headLen = respData[2] & 0x000000FF;
+		if (totalRespLen != length) {
 			// invalid respond format... 
-			logger.error("resp Data len Wrong!, expectedLen:"+expectedRespLen+", respData array len:"+length);
+			logger.error("check total len Wrong!, totalLen should be:"+totalRespLen+", responseed Data array len:"+length);
 			return false;
 		}
 		
-		if (respData[2] != (byte) (expectedRespLen + 2)) { // Data + SW1 + SW2
+		if (respData[2] != (byte) (expectedRespDataLen + 2)) { // Data + SW1 + SW2
 			// invalid data format...
-			logger.error("resp Data len Wrong!, expectedLen:"+expectedRespLen+", respData header len:"+respData[2]);
+			logger.error("check Head len Wrong!, Head len:"+(int)(expectedRespDataLen+2)+", responseed head len:"+headLen);
 			return false;
 		}
 		
 		byte sum = getEDC(respData, length);
-		if (sum != respData[expectedRespLen - 1]) {
+		if (sum != respData[totalRespLen - 1]) {
 			// check sum error...
 			logger.error("resp Data check Sum error");
 			return false;
 		}
 				
 		
-		int dataLength = respData[2] & 0x000000FF;
-		Resp_SW1 = respData[scRespDataOffset + dataLength - 2];
-		Resp_SW2 = respData[scRespDataOffset + dataLength + 1 - 2];
+		
+		Resp_SW1 = respData[length - 3];
+		Resp_SW2 = respData[length - 2];
+		logger.debug("statusCode:"+String.format("%02x%02x", Resp_SW1,Resp_SW2));
 		
 		return true;
 	}

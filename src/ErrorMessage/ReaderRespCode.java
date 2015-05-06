@@ -92,8 +92,7 @@ public enum ReaderRespCode implements IRespCode{
 	_6509("6509","讀卡機故障Key Selection Error",1),
 	_65FF("65FF","線路遭到攻擊破壞",1),
 	_6608("6608","讀卡機故障請報修!!",1),
-	_6602("6602","讀卡機故障請報修!!",1),
-	EXCEPTION_ERROR("FFFF","錯誤發生",1),
+	_6602("6602","讀卡機故障請報修!!",1),	
 	UNKNOWN_ERROR_CODE("XXXX","Unknowen ErrCode", 1);
 
 	

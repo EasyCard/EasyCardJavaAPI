@@ -7,9 +7,9 @@ import org.apache.log4j.Logger;
 
 import Utilities.Util;
 
-public class PPR_TxnReqOffline extends APDU{
+public class PPR_AuthTxnReqOffline extends APDU{
 
-	static Logger logger = Logger.getLogger(PPR_TxnReqOffline.class);
+	static Logger logger = Logger.getLogger(PPR_AuthTxnReqOffline.class);
 	public static final String scDescription = "讀取驗證授權交易相關欄位";
 	
 	//private static PPR_SignOn sThis = null;
@@ -28,7 +28,7 @@ public class PPR_TxnReqOffline extends APDU{
 
 	
 	
-	public PPR_TxnReqOffline(){
+	public PPR_AuthTxnReqOffline(){
 		
 		Req_NAD = 0;
 		Req_PCB = 0; 
@@ -861,7 +861,7 @@ public class PPR_TxnReqOffline extends APDU{
 		// TODO Auto-generated method stub
 		
 		mRequest[scReqLength - 1] = Req_EDC = getEDC(mRequest, scReqLength);
-		logger.debug(PPR_TxnReqOffline.class.getName()+" request:" + Util.hex2StringLog(mRequest));
+		logger.debug(PPR_AuthTxnReqOffline.class.getName()+" request:" + Util.hex2StringLog(mRequest));
 		
 		
 		return mRequest;
@@ -887,7 +887,7 @@ public class PPR_TxnReqOffline extends APDU{
 	public void debugResponseData() {
 		// TODO Auto-generated method stub
 		if(mRespond != null){
-			logger.debug(PPR_TxnReqOffline.class.getName()+" recv:" + Util.hex2StringLog(mRespond));
+			logger.debug(PPR_AuthTxnReqOffline.class.getName()+" recv:" + Util.hex2StringLog(mRespond));
 	
 			logger.debug("Purse Version No.:"+String.format("(%02X)", this.getRespPurseVersionNumber()));
 			logger.debug("Purse Usgage Control:"+String.format("(%02X)", this.getRespPurseUsageControl()));
