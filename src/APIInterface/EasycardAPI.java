@@ -39,7 +39,7 @@ public class EasycardAPI {
 			break;
 			
 		case "deduct":
-			deduct();
+			deduct(Integer.valueOf(args[1]));
 			break;
 			
 		default:
@@ -107,12 +107,14 @@ public class EasycardAPI {
 		}
 	}
 	
-	public static void deduct(){	
+	public static void deduct(int amt){	
 		try{
 		
 			logger.info("Start");		
 			Process process = new Process();
-			process.doDeduct();
+			IRespCode result = process.doDeduct(amt);
+			logger.info("Txn Result:"+result.getId()+"_"+result.getMsg());
+			
 			logger.info("End");
 		
 	

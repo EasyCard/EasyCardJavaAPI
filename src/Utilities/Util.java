@@ -9,6 +9,7 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -457,6 +458,27 @@ public class Util {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static String getMACAddress(){
+		InetAddress ip = null;
+		NetworkInterface network = null;
+		byte[] mac = null;
+		String sMAC = null;
+		try {
+			ip = InetAddress.getLocalHost();			
+			network = NetworkInterface.getByInetAddress(ip);
+			mac = network.getHardwareAddress();
+			sMAC = bcd2Ascii(mac);
+			
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}  catch (SocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 		
+		return sMAC;		
 	}
 	
 }

@@ -69,7 +69,7 @@ public class EZReader{
     	catch(Exception e)
     	{
     		logger.error("Exception: "+ e.getMessage());
-    		return ReaderRespCode.EXCEPTION_ERROR;
+    		return ReaderRespCode.UNKNOWN_ERROR_CODE;
     	}
     	
 		return result;

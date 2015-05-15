@@ -1,9 +1,11 @@
 package Reader;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
+
 
 import Utilities.Util;
 
@@ -18,6 +20,8 @@ public class PPR_TxnReqOffline extends APDU{
 	private static final int scReqLength = scReqDataLength + scReqMinLength;
 	private static final int scReqInfoLength = scReqDataLength + scReqInfoMinLength;
 	private static final int scRespDataLength = 0xFA;
+	private static final int scError1RespDataLength = 0x78;//0x640E(餘額異常)、0x610F(二代餘額異常)、0x6148(通路限制)
+	private static final int scError2RespDataLength = 0x28;//0x6103(CPD異常)
 	private static final int scRespLength = scRespDataLength + scRespMinLength;
 	
 	
@@ -170,7 +174,7 @@ public class PPR_TxnReqOffline extends APDU{
 		logger.info("setter:"+sn);
 		String s = String.format("%06d", sn);
 		
-		logger.info("setter:"+s);
+		
 		for (int i = 0; i < s.length(); i ++) {
 			mRequest[pcReqTMSerialNumber + i] = (byte) s.charAt(i);
 		}
@@ -345,517 +349,1013 @@ public class PPR_TxnReqOffline extends APDU{
 	
 	//-------------------- Request --------------------
 	
+	
+	
+	
 	//++++++++++++++++++++ Response ++++++++++++++++++++
-	private static final int pRespPurseVersionNumber = scRespDataOffset + 0;
-	private static final int lRespPurseVersionNumber = 1;
+	private ResponseField respFld = null;
+	private class ResponseField extends BaseResponseAutoParser{
+		private int dataBodyLen;
+		
+		public byte purseVersionNumber;
+		public byte purseUsageControl;
+		public byte[] singleAutoLoadTxnAmt=null;
+		public byte[] PID=null;
+		public byte cpuAdminKeyKVN;
+		
+		public byte creditKeyKVN;
+		public byte signatureKeyKVN;
+		public byte cpuIssuerKeyKVN;
+		public byte[] CTC=null;
+		public byte TxnMode;
+		
+		public byte TxnQualifier;
+		public byte[] subAreaCode=null;
+		public byte[] purseExpDate=null;
+		public byte[] purseBalanceBeforeTxn=null;
+		public byte[] TxnSNBeforeTxn=null;
+		
+		public byte cardType;
+		public byte personalProfile;
+		public byte[] profileExpDate=null;
+		public byte areaCode;
+		public byte[] cardPhysicalID=null;
+		
+		public byte cardPhysicalIDLength;
+		public byte[] TxnAmt=null;
+		public byte specVersionNumber;
+		public byte[] readerFWVersion=null;
+		public byte[] deviceID=null;
+		
+		public byte[] newDeviceID=null;
+		public byte serviceProviderID;
+		public byte[] newServiceProviderID=null;
+		public byte locationID;
+		public byte[] newLocationID=null;
+		
+		public byte[] deposit=null;
+		public byte issuerCode;
+		public byte bankCode;
+		public byte CPDReadFlag;
+		public byte[] CPDSAMID=null;
+		
+		public byte[] CPDRAN_SAMCRN=null;
+		public byte CPDKVN_SAMKVN;
+		public byte[] SIDSTAC=null;
+		public byte[] TMSerialNumber=null;
+		public byte[] LastCreditTxnLog=null;
+		
+		public byte[] SVCrypto=null;
+		public byte msgType;
+		public byte subType;
+		public byte[] cardOneDayQuota=null;
+		public byte[] cardOneDayQuotaDate=null;
+		
+		public byte[] TSQN=null;
+		public byte[] purseBalance=null;
+		public byte[] confirmCode=null;
+		public byte[] SIGN=null;
+		public byte[] SID=null;
+		
+		public byte[] MAC=null;
+		public byte[] txnDateTime=null;
+		
+		//120bytes additional fields
+		public byte[] loyaltyCounter = null;
+		public byte[] anotherEV = null;
+		public byte mifareSettingParameter;
+		public byte CPUSettingParameter;
+		
+		//constructor
+		public ResponseField(int len){
+			dataBodyLen = len;
+		}
+		
+		public int getDataBodyLen() {
+			return dataBodyLen;
+		}
+		public byte getPurseVersionNumber() {
+			return purseVersionNumber;
+		}
+		public byte getPurseUsageControl() {
+			return purseUsageControl;
+		}
+		public byte[] getSingleAutoLoadTxnAmt() {
+			return singleAutoLoadTxnAmt;
+		}
+		public byte[] getPID() {
+			return PID;
+		}
+		public byte getCpuAdminKeyKVN() {
+			return cpuAdminKeyKVN;
+		}
+		public byte getCreditKeyKVN() {
+			return creditKeyKVN;
+		}
+		public byte getSignKeyKVN() {
+			return signatureKeyKVN;
+		}
+		public byte getCPUIssuerKeyKVN() {
+			return cpuIssuerKeyKVN;
+		}
+		public byte[] getCTC() {
+			return CTC;
+		}
+		public byte getTxnMode() {
+			return TxnMode;
+		}
+		public byte getTxnQualifier() {
+			return TxnQualifier;
+		}
+		public byte[] getSubAreaCode() {
+			return subAreaCode;
+		}
+		public byte[] getPurseExpDate() {
+			return purseExpDate;
+		}
+		public byte[] getPurseBalanceBeforeTxn() {
+			return purseBalanceBeforeTxn;
+		}
+		public byte[] getTxnSNBeforeTxn() {
+			return TxnSNBeforeTxn;
+		}
+		public byte getCardType() {
+			return cardType;
+		}
+		public byte getPersonalProfile() {
+			return personalProfile;
+		}
+		public byte[] getProfileExpDate() {
+			return profileExpDate;
+		}
+		public byte getAreaCode() {
+			return areaCode;
+		}
+		public byte[] getCardPhysicalID() {
+			return cardPhysicalID;
+		}
+		public byte getCardPhysicalIDLength() {
+			return cardPhysicalIDLength;
+		}
+		public byte[] getTxnAmt() {
+			return TxnAmt;
+		}
+		public byte getSpecVersionNumber() {
+			return specVersionNumber;
+		}
+		public byte[] getReaderFWVersion() {
+			return readerFWVersion;
+		}
+		public byte[] getDeviceID() {
+			return deviceID;
+		}
+		public byte[] getNewDeviceID() {
+			return newDeviceID;
+		}
+		public byte getServiceProviderID() {
+			return serviceProviderID;
+		}
+		public byte[] getNewServiceProviderID() {
+			return newServiceProviderID;
+		}
+		public byte getLocationID() {
+			return locationID;
+		}
+		public byte[] getNewLocationID() {
+			return newLocationID;
+		}
+		public byte[] getDeposit() {
+			return deposit;
+		}
+		public byte getIssuerCode() {
+			return issuerCode;
+		}
+		public byte getBankCode() {
+			return bankCode;
+		}
+		public byte getCPDReadFlag() {
+			return CPDReadFlag;
+		}
+		public byte[] getCPDSAMID() {
+			return CPDSAMID;
+		}
+		public byte[] getCPDRAN_SAMCRN() {
+			return CPDRAN_SAMCRN;
+		}
+		public byte getCPDKVN_SAMKVN() {
+			return CPDKVN_SAMKVN;
+		}
+		public byte[] getSIDSTAC() {
+			return SIDSTAC;
+		}
+		public byte[] getTMSerialNumber() {
+			return TMSerialNumber;
+		}
+		public byte[] getLastCreditTxnLog() {
+			return LastCreditTxnLog;
+		}
+		public byte[] getSVCrypto() {
+			return SVCrypto;
+		}
+		public byte getMsgType() {
+			return msgType;
+		}
+		public byte getSubType() {
+			return subType;
+		}
+		public byte[] getCardOneDayQuota() {
+			return cardOneDayQuota;
+		}
+		public byte[] getCardOneDayQuotaDate() {
+			return cardOneDayQuotaDate;
+		}
+		public byte[] getTSQN() {
+			return TSQN;
+		}
+		public byte[] getPurseBalance() {
+			return purseBalance;
+		}
+		public byte[] getConfirmCode() {
+			return confirmCode;
+		}
+		public byte[] getSIGN() {
+			return SIGN;
+		}
+		public byte[] getSID() {
+			return SID;
+		}
+		public byte[] getMAC() {
+			return MAC;
+		}
+		public byte[] getTxnDateTime() {
+			return txnDateTime;
+		}
+		
+		//120bytes additional fields
+		public byte[] getLoyaltyCounter(){
+			return loyaltyCounter;
+		}
+		
+		public byte[] getAnotherEV(){
+			return anotherEV;
+		}
+		
+		public byte getMifareSettingParameter(){
+			return mifareSettingParameter;
+		}
+		
+		public byte getCPUSettingParameter(){
+			return CPUSettingParameter;
+		}
+		
+		@Override
+		protected LinkedHashMap<String, Integer> getFields() {
+			// TODO Auto-generated method stub
+			LinkedHashMap<String, Integer> maps = new LinkedHashMap<String, Integer>();
+			
+			if(dataBodyLen == 250){//250
+				maps.put("purseVersionNumber",1);
+				maps.put("purseUsageControl",1);
+				maps.put("singleAutoLoadTxnAmt",3);
+				maps.put("PID",8);
+				maps.put("cpuAdminKeyKVN",1);
+				
+				maps.put("creditKeyKVN",1);
+				maps.put("signatureKeyKVN",1);
+				maps.put("cpuIssuerKeyKVN",1);
+				maps.put("CTC",3);
+				maps.put("TxnMode",1);
+				
+				maps.put("TxnQualifier",1);
+				maps.put("subAreaCode",2);
+				maps.put("purseExpDate",4);
+				maps.put("purseBalanceBeforeTxn",3);
+				maps.put("TxnSNBeforeTxn",3);
+				
+				maps.put("cardType",1);
+				maps.put("personalProfile",1);
+				maps.put("profileExpDate",4);
+				maps.put("areaCode",1);
+				maps.put("cardPhysicalID",7);
+				
+				maps.put("cardPhysicalIDLength",1);
+				maps.put("TxnAmt",3);
+				maps.put("specVersionNumber",1);
+				maps.put("readerFWVersion",6);
+				maps.put("deviceID",4);
+				
+				maps.put("newDeviceID",6);
+				maps.put("serviceProviderID",1);
+				maps.put("newServiceProviderID",3);
+				maps.put("locationID",1);
+				maps.put("newLocationID",2);
+				
+				maps.put("deposit",3);
+				maps.put("issuerCode",1);
+				maps.put("bankCode",1);
+				maps.put("CPDReadFlag",1);
+				maps.put("CPDSAMID",16);
+				
+				maps.put("CPDRAN_SAMCRN",8);
+				maps.put("CPDKVN_SAMKVN",1);
+				maps.put("SIDSTAC",8);
+				maps.put("TMSerialNumber",6);
+				maps.put("LastCreditTxnLog",33);
+				
+				maps.put("SVCrypto",16);
+				maps.put("msgType",1);
+				maps.put("subType",1);
+				maps.put("cardOneDayQuota",3);
+				maps.put("cardOneDayQuotaDate",2);
+				
+				maps.put("TSQN",3);
+				maps.put("purseBalance",3);
+				maps.put("confirmCode",2);
+				maps.put("SIGN",16);
+				maps.put("SID",8);
+				
+				maps.put("MAC",18);
+				maps.put("txnDateTime",4);
+				
+			} else if(dataBodyLen == 120) {
+				
+				maps.put("purseVersionNumber",1);
+				maps.put("purseUsageControl",1);
+				maps.put("singleAutoLoadTxnAmt",3);
+				maps.put("PID",8);
+				maps.put("cpuAdminKeyKVN",1);
+				
+				
+				maps.put("subAreaCode",2);
+				maps.put("purseExpDate",4);
+				maps.put("purseBalanceBeforeTxn",3);
+				maps.put("TxnSNBeforeTxn",3);				
+				maps.put("cardType",1);
+				
+				maps.put("personalProfile",1);
+				maps.put("profileExpDate",4);
+				maps.put("areaCode",1);
+				maps.put("cardPhysicalID",7);
+				maps.put("cardPhysicalIDLength",1);
+				
+				
+				maps.put("deviceID",4);
+				maps.put("newDeviceID",6);
+				maps.put("serviceProviderID",1);
+				maps.put("newServiceProviderID",3);
+				maps.put("locationID",1);
+				
+				maps.put("newLocationID",2);				
+				maps.put("deposit",3);
+				maps.put("issuerCode",1);
+				maps.put("bankCode",1);
+				maps.put("loyaltyCounter",2);
+				
+				
+				maps.put("LastCreditTxnLog",33);
+				maps.put("msgType",1);
+				maps.put("subType",1);
+				maps.put("anotherEV",3);				
+				maps.put("mifareSettingParameter",1);
+				
+				maps.put("CPUSettingParameter",1);
+				
+				
+			} else if(dataBodyLen == 40) {
+				
+				maps.put("purseVersionNumber",1);				
+				maps.put("PID",8);				
+				maps.put("CTC",3);				
+				maps.put("cardType",1);
+				maps.put("personalProfile",1);
+				
+				
+				maps.put("cardPhysicalID",7);				
+				maps.put("cardPhysicalIDLength",1);
+				maps.put("deviceID",4);				
+				maps.put("newDeviceID",6);
+				maps.put("serviceProviderID",1);
+				
+				maps.put("newServiceProviderID",3);
+				maps.put("locationID",1);
+				maps.put("newLocationID",2);
+				maps.put("issuerCode",1);
+				
+			} else {
+				logger.error("Unknowen dataBody Len:"+dataBodyLen);
+				return null;
+			}
+		
+			return maps;
+		}
+	
+	}
+	
+	//++++++++++++++++++++ Response ++++++++++++++++++++
 	public byte getRespPurseVersionNumber(){
-		if (mRespond == null) {
-			return 0x00;
-		}		
-		return mRespond[pRespPurseVersionNumber];			
+		if (respFld==null) return 0x00;		
+			
+		logger.info("getter:"+String.format("%02X", respFld.getPurseVersionNumber()));
+		return respFld.getPurseVersionNumber();	
 	}
-	
-	private static final int pRespPurseUsageControl = pRespPurseVersionNumber + lRespPurseVersionNumber;
-	private static final int lRespPurseUsageControl = 1;
+		
+		
 	public byte getRespPurseUsageControl(){
-		if (mRespond == null) {
-			return 0x00;
-		}
-		return mRespond[pRespPurseUsageControl];			
+			if (respFld == null) return 0x00;	
+		logger.info("getter:"+String.format("%02X", respFld.getPurseUsageControl()));	
+		return respFld.getPurseUsageControl();
 	}
-	
-	private static final int pRespSingleAutoLoadTxnAmt = pRespPurseUsageControl + lRespPurseUsageControl;
-	private static final int lRespSingleAutoLoadTxnAmt = 3;
+		
+		
 	public byte[] getRespSingleAutoLoadTxnAmt(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getSingleAutoLoadTxnAmt() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespSingleAutoLoadTxnAmt, 
-				pRespSingleAutoLoadTxnAmt + lRespSingleAutoLoadTxnAmt);		
+		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getSingleAutoLoadTxnAmt()));
+		return Arrays.copyOfRange(respFld.getSingleAutoLoadTxnAmt(), 0, 
+				respFld.getSingleAutoLoadTxnAmt().length);				
 	}
+		
 	
-	private static final int pRespPID = pRespSingleAutoLoadTxnAmt + lRespSingleAutoLoadTxnAmt;
-	private static final int lRespPID = 8;
+		
 	public byte[] getRespPID(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getPID() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespPID, 
-				pRespPID + lRespPID);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getPID()));
+		return Arrays.copyOfRange(respFld.getPID(), 0, 
+				respFld.getPID().length);			
 	}
-	
-	private static final int pRespCPUAdminKeyKVN = pRespPID + lRespPID;
-	private static final int lRespCPUAdminKeyKVN = 1;
+		
+		
 	public byte getRespCPUAdminKeyKVN(){
-		if (mRespond == null) {
+		if (respFld == null) {
+			logger.error("respFld was null");
 			return 0x00;
 		}
-		return mRespond[pRespCPUAdminKeyKVN];			
+			
+		logger.info("getter:"+String.format("%02X", respFld.getCpuAdminKeyKVN()));
+		return respFld.getCpuAdminKeyKVN();
 	}
-	
-	private static final int pRespCreditKeyKVN = pRespCPUAdminKeyKVN + lRespCPUAdminKeyKVN;
-	private static final int lRespCreditKeyKVN = 1;
+		
+		
 	public byte getRespCreditKeyKVN(){
-		if (mRespond == null) {
+		if (respFld == null) {
+			logger.error("respFld was null");
 			return 0x00;
 		}
-		return mRespond[pRespCreditKeyKVN];			
+			
+		logger.info("getter:"+String.format("%02X", respFld.getCreditKeyKVN()));
+		return respFld.getCreditKeyKVN();	
 	}
-	
-	private static final int pRespSignKeyKVN = pRespCreditKeyKVN + lRespCreditKeyKVN;
-	private static final int lRespSignKeyKVN = 1;
+		
+		
 	public byte getRespSignKeyKVN(){
-		if (mRespond == null) {
+		if (respFld == null) {
+			logger.error("respFld was null");
 			return 0x00;
 		}
-		return mRespond[pRespSignKeyKVN];			
+		logger.info("getter:"+String.format("%02X", respFld.getSignKeyKVN()));
+		return respFld.getSignKeyKVN();			
+		
 	}
-	
-	private static final int pRespCPUIssuerKVN = pRespSignKeyKVN + lRespSignKeyKVN;
-	private static final int lRespCPUIssuerKVN = 1;
-	public byte getRespCPUIssuerKVN(){
-		if (mRespond == null) {
+		
+	public byte getRespCPUIssuerKeyKVN(){
+		if (respFld == null) {
+			logger.error("respFld was null");
 			return 0x00;
 		}
-		return mRespond[pRespCPUIssuerKVN];			
+		logger.info("getter:"+String.format("%02X", respFld.getCPUIssuerKeyKVN()));
+		return respFld.getCPUIssuerKeyKVN();
 	}
-	
-	private static final int pRespCTC = pRespCPUIssuerKVN + lRespCPUIssuerKVN;
-	private static final int lRespCTC = 3;
+		
+		
 	public byte[] getRespCTC(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getPID() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespCTC, 
-				pRespCTC + lRespCTC);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getCTC()));
+		return Arrays.copyOfRange(respFld.getCTC(), 0, 
+				respFld.getCTC().length);		
 	}
-	
-	private static final int pRespTM = pRespCTC + lRespCTC;
-	private static final int lRespTM = 1;
-	public byte getRespTM(){
-		if (mRespond == null) {
+		
+
+
+	public byte getRespTxnMode(){
+		if (respFld == null) {
+			logger.error("respFld was null");
 			return 0x00;
 		}
-		return mRespond[pRespTM];		
+		logger.info("getter:"+String.format("%02X", respFld.getTxnMode()));
+		return respFld.getTxnMode();
 	}
-	
-	private static final int pRespTQ = pRespTM + lRespTM;
-	private static final int lRespTQ = 1;
-	public byte getRespTQ(){
-		if (mRespond == null) {
+
+
+	public byte getRespTxnQualifier(){
+		if (respFld == null) {
+			logger.error("respFld was null");
 			return 0x00;
 		}
-		return mRespond[pRespTQ];		
+		logger.info("getter:"+String.format("%02X", respFld.getTxnQualifier()));
+		return respFld.getTxnQualifier();
 	}
-	
-	private static final int pRespSubAreaCode = pRespTQ + lRespTQ;
-	private static final int lRespSubAreaCode= 2;
+		
+		
 	public byte[] getRespSubAreaCode(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getSubAreaCode() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespSubAreaCode, 
-				pRespSubAreaCode + lRespSubAreaCode);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getSubAreaCode()));
+		return Arrays.copyOfRange(respFld.getSubAreaCode(), 0, 
+				respFld.getSubAreaCode().length);
 	}
-	
-	private static final int pRespPurseExpDate = pRespSubAreaCode + lRespSubAreaCode;
-	private static final int lRespPurseExpDate= 4;
+		
+		
 	public byte[] getRespPurseExpDate(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getPurseExpDate() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespPurseExpDate, 
-				pRespPurseExpDate + lRespPurseExpDate);		
-	}
+		logger.info("getter:"+Util.hex2StringLog(respFld.getPurseExpDate()));
+		return Arrays.copyOfRange(respFld.getPurseExpDate(), 0, 
+				respFld.getPurseExpDate().length);
 	
-	private static final int pRespPurseBalanceBeforeTxn = pRespPurseExpDate + lRespPurseExpDate;
-	private static final int lRespPurseBalanceBeforeTxn= 3;
+	}
+			
+
+		
 	public byte[] getRespPurseBalanceBeforeTxn(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getPurseBalanceBeforeTxn() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespPurseBalanceBeforeTxn, 
-				pRespPurseBalanceBeforeTxn + lRespPurseBalanceBeforeTxn);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getPurseBalanceBeforeTxn()));
+		return Arrays.copyOfRange(respFld.getPurseBalanceBeforeTxn(), 0, 
+				respFld.getPurseBalanceBeforeTxn().length);
 	}
-	
-	private static final int pRespTxnSNBeforeTxn = pRespPurseBalanceBeforeTxn + lRespPurseBalanceBeforeTxn;
-	private static final int lRespTxnSNBeforeTxn = 3;
+		
+		
 	public byte[] getRespTxnSNBeforeTxn(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getTxnSNBeforeTxn() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespTxnSNBeforeTxn, 
-				pRespTxnSNBeforeTxn + lRespTxnSNBeforeTxn);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getTxnSNBeforeTxn()));
+		return Arrays.copyOfRange(respFld.getTxnSNBeforeTxn(), 0, 
+				respFld.getTxnSNBeforeTxn().length);	
 	}
-	
-	private static final int pRespCardType = pRespTxnSNBeforeTxn + lRespTxnSNBeforeTxn;
-	private static final int lRespCardType= 1;
+		
+		
 	public byte getRespCardType(){
-		if (mRespond == null) {
+		if (respFld == null) {
+			logger.error("respFld was null");
 			return 0x00;
 		}
-		return mRespond[pRespCardType];		
+		logger.info("getter:"+String.format("%02X", respFld.getCardType()));
+		return respFld.getCardType();	
 	}
-	
-	private static final int pRespPersonalProfile = pRespCardType + lRespCardType;
-	private static final int lRespPersonalProfile = 1;
+		
+
+
 	public byte getRespPersonalProfile(){
-		if (mRespond == null) {
+		if (respFld == null) {
+			logger.error("respFld was null");
 			return 0x00;
 		}
-		return mRespond[pRespPersonalProfile];			
+		logger.info("getter:"+String.format("%02X", respFld.getPersonalProfile()));
+		return respFld.getPersonalProfile();
 	}
-	
-	private static final int pRespProfileExpDate = pRespPersonalProfile + lRespPersonalProfile;
-	private static final int lRespProfileExpDate = 4;
+		
+		
 	public byte[] getRespProfileExpDate(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getProfileExpDate() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespProfileExpDate, 
-				pRespProfileExpDate + lRespProfileExpDate);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getProfileExpDate()));
+		return Arrays.copyOfRange(respFld.getProfileExpDate(), 0, 
+				respFld.getProfileExpDate().length);
 	}
-	
-	private static final int pRespAreaCode = pRespProfileExpDate + lRespProfileExpDate;
-	private static final int lRespAreaCode = 1;
+		
+		
 	public byte getRespAreaCode(){
-		if (mRespond == null) {
+		if (respFld == null) {
+			logger.error("respFld was null");
 			return 0x00;
 		}
-		return mRespond[pRespAreaCode];			
+		logger.info("getter:"+String.format("%02X", respFld.getAreaCode()));
+		return respFld.getAreaCode();
 	}
-	
-	private static final int pRespCardPhysicalID = pRespAreaCode + lRespAreaCode;
-	private static final int lRespCardPhysicalID = 7;
+		
+		
 	public byte[] getRespCardPhysicalID(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getCardPhysicalID() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespCardPhysicalID, 
-				pRespCardPhysicalID + lRespCardPhysicalID);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getCardPhysicalID()));
+		return Arrays.copyOfRange(respFld.getCardPhysicalID(), 0, 
+				respFld.getCardPhysicalID().length);	
 	}
-	
-	private static final int pRespCardPhysicalIDLen = pRespCardPhysicalID + lRespCardPhysicalID;
-	private static final int lRespCardPhysicalIDLen = 1;
-	public byte getRespCardPhysicalIDLen(){
-		if (mRespond == null) {
+		
+		
+	public byte getRespCardPhysicalIDLength(){
+		if (respFld == null) {
+			logger.error("respFld was null");
 			return 0x00;
 		}
-		return mRespond[pRespCardPhysicalIDLen];			
+		logger.info("getter:"+String.format("%02X", respFld.getCardPhysicalIDLength()));
+		return respFld.getCardPhysicalIDLength();
 	}
-	
-	private static final int pRespTxnAmt = pRespCardPhysicalIDLen + lRespCardPhysicalIDLen;
-	private static final int lRespTxnAmt = 3;
+		
+		
 	public byte[] getRespTxnAmt(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getTxnAmt() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespTxnAmt, 
-				pRespTxnAmt + lRespTxnAmt);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getTxnAmt()));
+		return Arrays.copyOfRange(respFld.getTxnAmt(), 0, 
+				respFld.getTxnAmt().length);	
 	}
-	
-	private static final int pRespSpecVersionNumber = pRespTxnAmt + lRespTxnAmt;
-	private static final int lRespSpecVersionNumber = 1;
+		
 	public byte getRespSpecVersionNumber(){
-		if (mRespond == null) {
+		if (respFld == null) {
+			logger.error("respFld was null");
 			return 0x00;
 		}
-		return mRespond[pRespSpecVersionNumber];			
+		logger.info("getter:"+String.format("%02X", respFld.getSpecVersionNumber()));
+		return respFld.getSpecVersionNumber();		
 	}
-	
-	private static final int pRespReaderFWVersion = pRespSpecVersionNumber + lRespSpecVersionNumber;
-	private static final int lRespReaderFWVersion = 6;
+
+		
 	public byte[] getRespReaderFWVersion(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getReaderFWVersion() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespReaderFWVersion, 
-				pRespReaderFWVersion + lRespReaderFWVersion);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getReaderFWVersion()));
+		return Arrays.copyOfRange(respFld.getReaderFWVersion(), 0, 
+				respFld.getReaderFWVersion().length);
 	}
-	
-	private static final int pRespDeviceID = pRespReaderFWVersion + lRespReaderFWVersion;
-	private static final int lRespDeviceID = 4;
+		
+		
 	public byte[] getRespDeviceID(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getDeviceID() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespDeviceID, 
-				pRespDeviceID + lRespDeviceID);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getDeviceID()));
+		return Arrays.copyOfRange(respFld.getDeviceID(), 0, 
+				respFld.getDeviceID().length);
 	}
-	
-	private static final int pRespNewDeviceID = pRespDeviceID + lRespDeviceID;
-	private static final int lRespNewDeviceID = 6;
+
+
 	public byte[] getRespNewDeviceID(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getNewDeviceID() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespNewDeviceID, 
-				pRespNewDeviceID + lRespNewDeviceID);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getNewDeviceID()));
+		return Arrays.copyOfRange(respFld.getNewDeviceID(), 0, 
+				respFld.getNewDeviceID().length);	
 	}
-	
-	private static final int pRespServiceProviderID = pRespNewDeviceID + lRespNewDeviceID;
-	private static final int lRespServiceProviderID = 1;
+
 	public byte getRespServiceProviderID(){
-		if (mRespond == null) {
+		if (respFld == null) {
+			logger.error("respFld was null");
 			return 0x00;
 		}
-		return mRespond[pRespServiceProviderID];		
+		logger.info("getter:"+String.format("%02X", respFld.getServiceProviderID()));
+		return respFld.getServiceProviderID();
 	}
-	
-	private static final int pRespNewServiceProviderID = pRespServiceProviderID + lRespServiceProviderID;
-	private static final int lRespNewServiceProviderID = 3;
+		
+		
 	public byte[] getRespNewServiceProviderID(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getNewServiceProviderID() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespNewServiceProviderID, 
-				pRespNewServiceProviderID + lRespNewServiceProviderID);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getNewServiceProviderID()));
+		return Arrays.copyOfRange(respFld.getNewServiceProviderID(), 0, 
+				respFld.getNewServiceProviderID().length);
 	}
-	
-	private static final int pRespLocationID = pRespNewServiceProviderID + lRespNewServiceProviderID;
-	private static final int lRespLocationID = 1;
+		
+		
 	public byte getRespLocationID(){
-		if (mRespond == null) {
+		if (respFld == null) {
+			logger.error("respFld was null");
 			return 0x00;
 		}
-		return mRespond[pRespLocationID];		
+		logger.info("getter:"+String.format("%02X", respFld.getLocationID()));
+		return respFld.getLocationID();
 	}
-	
-	private static final int pRespNewLocationID = pRespLocationID + lRespLocationID;
-	private static final int lRespNewLocationID = 2;
+
+
 	public byte[] getRespNewLocationID(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getNewLocationID() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespNewLocationID, 
-				pRespNewLocationID + lRespNewLocationID);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getNewLocationID()));
+		return Arrays.copyOfRange(respFld.getNewLocationID(), 0, 
+				respFld.getNewLocationID().length);
 	}
-	
-	private static final int pRespDeposit = pRespNewLocationID + lRespNewLocationID;
-	private static final int lRespDeposit = 3;
+		
+		
 	public byte[] getRespDeposit(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getDeposit() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespDeposit, 
-				pRespDeposit + lRespDeposit);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getDeposit()));
+		return Arrays.copyOfRange(respFld.getDeposit(), 0, 
+				respFld.getDeposit().length);
 	}
-	
-	private static final int pRespIssuerCode = pRespDeposit + lRespDeposit;
-	private static final int lRespIssuerCode = 1;
+
+
 	public byte getRespIssuerCode(){
-		if (mRespond == null) {
+		if (respFld == null) {
+			logger.error("respFld was null");
 			return 0x00;
 		}
-		return mRespond[pRespIssuerCode];		
+		logger.info("getter:"+String.format("%02X", respFld.getIssuerCode()));
+		return respFld.getIssuerCode();
 	}
-	
-	private static final int pRespBankCode = pRespIssuerCode + lRespIssuerCode;
-	private static final int lRespBankCode = 1;
+		
+
+
 	public byte getRespBankCode(){
-		if (mRespond == null) {
+		if (respFld == null) {
+			logger.error("respFld was null");
 			return 0x00;
 		}
-		return mRespond[pRespBankCode];		
+		logger.info("getter:"+String.format("%02X", respFld.getBankCode()));
+		return respFld.getBankCode();
 	}
-	//
-	private static final int pRespCPDReadFlag = pRespBankCode + lRespBankCode;
-	private static final int lRespCPDReadFlag = 1;
+		//
+		
 	public byte getRespCPDReadFlag(){
-		if (mRespond == null) {
+		if (respFld == null) {
+			logger.error("respFld was null");
 			return 0x00;
 		}
-		return mRespond[pRespCPDReadFlag];		
+		logger.info("getter:"+String.format("%02X", respFld.getCPDReadFlag()));
+		return respFld.getCPDReadFlag();
 	}
-	
-	private static final int pRespSPDSAMID = pRespCPDReadFlag + lRespCPDReadFlag;
-	private static final int lRespSPDSAMID = 16;
+
+
 	public byte[] getRespCPDSAMID(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getCPDSAMID() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespSPDSAMID, 
-				pRespSPDSAMID + lRespSPDSAMID);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getCPDSAMID()));
+		return Arrays.copyOfRange(respFld.getCPDSAMID(), 0, 
+				respFld.getCPDSAMID().length);
 	}
-	
-	
-	private static final int pRespCPDRAN = (byte) (pRespSPDSAMID + lRespSPDSAMID);
-	private static final int lRespCPDRAN = 8;
-	public byte[] getRespCPDRAN(){
-		if (mRespond == null) {
+
+
+	public byte[] getRespCPDRAN_SAMCRN(){
+		if (respFld == null || respFld.getCPDRAN_SAMCRN() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespCPDRAN, 
-				pRespCPDRAN + lRespCPDRAN);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getCPDRAN_SAMCRN()));
+		return Arrays.copyOfRange(respFld.getCPDRAN_SAMCRN(), 0, 
+				respFld.getCPDRAN_SAMCRN().length);
+		
 	}
-	
-	
-	private static final int pRespCPDKVN = pRespCPDRAN + lRespCPDRAN;
-	private static final int lRespCPDKVN = 1;
-	public byte getRespCPDKVN(){
-		if (mRespond == null) {
+
+
+	public byte getRespCPDKVN_SAMKVN(){
+		if (respFld == null) {
+			logger.error("respFld was null");
 			return 0x00;
 		}
-		return mRespond[pRespCPDKVN];		
+		logger.info("getter:"+String.format("%02X", respFld.getCPDKVN_SAMKVN()));
+		return respFld.getCPDKVN_SAMKVN();
 	}
-	
-	private static final int pRespSIDSTAC = pRespCPDKVN + lRespCPDKVN;
-	private static final int lRespSIDSTAC = 8;
+		
+
+
 	public byte[] getRespSIDSTAC(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getSIDSTAC() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespSIDSTAC, 
-				pRespSIDSTAC + lRespSIDSTAC);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getSIDSTAC()));
+		return Arrays.copyOfRange(respFld.getSIDSTAC(), 0, 
+				respFld.getSIDSTAC().length);
 	}
-	///
-	private static final int pRespTMSerialNumber = pRespSIDSTAC + lRespSIDSTAC;
-	private static final int lRespTMSerialNumber = 6;
+		///
+		
+		
 	public byte[] getRespTMSerialNumber(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getTMSerialNumber() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespTMSerialNumber, 
-				pRespTMSerialNumber + lRespTMSerialNumber);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getTMSerialNumber()));
+		return Arrays.copyOfRange(respFld.getTMSerialNumber(), 0, 
+				respFld.getTMSerialNumber().length);
+	
 	}
-	private static final int pRespLastCreditTxnLog = pRespTMSerialNumber + lRespTMSerialNumber;
-	private static final int lRespLastCreditTxnLog = 33;
+	
+	
 	public byte[] getRespLastCreditTxnLog(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getLastCreditTxnLog() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespLastCreditTxnLog, 
-				pRespLastCreditTxnLog + lRespLastCreditTxnLog);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getLastCreditTxnLog()));
+		return Arrays.copyOfRange(respFld.getLastCreditTxnLog(), 0, 
+				respFld.getLastCreditTxnLog().length);
 	}
-	private static final int pRespSVCrypto = pRespLastCreditTxnLog + lRespLastCreditTxnLog;
-	private static final int lRespSVCrypto = 16;
+	
+
+
 	public byte[] getRespSVCrypto(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getSVCrypto() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespSVCrypto, 
-				pRespSVCrypto + lRespSVCrypto);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getSVCrypto()));
+		return Arrays.copyOfRange(respFld.getSVCrypto(), 0, 
+				respFld.getSVCrypto().length);
 	}
-	private static final int pRespMsgType = pRespSVCrypto + lRespSVCrypto;
-	private static final int lRespMsgType = 1;
+
+	
+	
 	public byte getRespMsgType(){
-		if (mRespond == null) {
+		if (respFld == null) {
+			logger.error("respFld was null");
 			return 0x00;
 		}
-		return mRespond[pRespMsgType];		
+		logger.info("getter:"+String.format("%02X", respFld.getMsgType()));
+		return respFld.getMsgType();
 	}
-	private static final int pRespSubType = pRespMsgType + lRespMsgType;
-	private static final int lRespSubType = 1;
+
+
 	public byte getRespSubType(){
-		if (mRespond == null) {
+		if (respFld == null) {
+			logger.error("respFld was null");
 			return 0x00;
 		}
-		return mRespond[pRespSubType];		
+		logger.info("getter:"+String.format("%02X", respFld.getSubType()));
+		return respFld.getSubType();
 	}
-	
-	///
-	private static final int pRespCardOneDayQuota = pRespSubType + lRespSubType;
-	private static final int lRespCardOneDayQuota = 3;
+		
+
+
 	public byte[] getRespCardOneDayQuota(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getCardOneDayQuota() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespCardOneDayQuota, 
-				pRespCardOneDayQuota + lRespCardOneDayQuota);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getCardOneDayQuota()));
+		return Arrays.copyOfRange(respFld.getCardOneDayQuota(), 0, 
+				respFld.getCardOneDayQuota().length);
 	}
-	
-	private static final int pRespCardOneDayQuotaDate = pRespCardOneDayQuota + lRespCardOneDayQuota;
-	private static final int lRespCardOneDayQuotaDate = 2;
+		
+		
 	public byte[] getRespCardOneDayQuotaDate(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getCardOneDayQuotaDate() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespCardOneDayQuotaDate, 
-				pRespCardOneDayQuotaDate + lRespCardOneDayQuotaDate);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getCardOneDayQuotaDate()));
+		return Arrays.copyOfRange(respFld.getCardOneDayQuotaDate(), 0, 
+				respFld.getCardOneDayQuotaDate().length);
 	}
-	
-	private static final int pRespTSQN = pRespCardOneDayQuotaDate + lRespCardOneDayQuotaDate;
-	private static final int lRespTSQN = 3;
+		
+		
 	public byte[] getRespTSQN(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getTSQN() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespTSQN, 
-				pRespTSQN + lRespTSQN);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getTSQN()));
+		return Arrays.copyOfRange(respFld.getTSQN(), 0, 
+				respFld.getTSQN().length);
 	}
-	
-	private static final int pRespPurseBalance = pRespTSQN + lRespTSQN;
-	private static final int lRespPurseBalance = 3;
+		
+		
+		
 	public byte[] getRespPurseBalance(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getPurseBalance() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespPurseBalance, 
-				pRespPurseBalance + lRespPurseBalance);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getPurseBalance()));
+		return Arrays.copyOfRange(respFld.getPurseBalance(), 0, 
+				respFld.getPurseBalance().length);
 	}
-	
-	private static final int pRespConfirmCode = pRespPurseBalance + lRespPurseBalance;
-	private static final int lRespConfirmCode = 2;
+		
+		
+		
 	public byte[] getRespConfirmCode(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getConfirmCode() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespConfirmCode, 
-				pRespConfirmCode + lRespConfirmCode);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getConfirmCode()));
+		return Arrays.copyOfRange(respFld.getConfirmCode(), 0, 
+				respFld.getConfirmCode().length);
 	}
-	
-	///
-	private static final int pRespSIGN = pRespConfirmCode + lRespConfirmCode;
-	private static final int lRespSIGN = 16;
+		
+
+
 	public byte[] getRespSIGN(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getSIGN() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespSIGN, 
-				pRespSIGN + lRespSIGN);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getSIGN()));
+		return Arrays.copyOfRange(respFld.getSIGN(), 0, 
+				respFld.getSIGN().length);
 	}
-	
-	private static final int pRespSID = pRespSIGN + lRespSIGN;
-	private static final int lRespSID = 8;
+		
+
+
 	public byte[] getRespSID(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getSID() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespSID, 
-				pRespSID + lRespSID);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getSID()));
+		return Arrays.copyOfRange(respFld.getSID(), 0, 
+				respFld.getSID().length);
 	}
-	
-	private static final int pRespMAC = pRespSID + lRespSID;
-	private static final int lRespMAC = 18;
+		
+		
 	public byte[] getRespMAC(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getMAC() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespMAC, 
-				pRespMAC + lRespMAC);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getMAC()));
+		return Arrays.copyOfRange(respFld.getMAC(), 0, 
+				respFld.getMAC().length);
 	}
-	
-	private static final int pRespTxnDateTime = pRespMAC + lRespMAC;
-	private static final int lRespTxnDateTime = 4;
+		
+		
 	public byte[] getRespTxnDateTime(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getTxnDateTime() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespTxnDateTime, 
-				pRespTxnDateTime + lRespTxnDateTime);		
-	}
+		logger.info("getter:"+Util.hex2StringLog(respFld.getTxnDateTime()));
+		return Arrays.copyOfRange(respFld.getTxnDateTime(), 0, 
+				respFld.getTxnDateTime().length);
+	}	
 	
-	private static final int pRFU = pRespTxnDateTime + lRespTxnDateTime;
-	private static final int lRFU = 19;
-	public byte[] getRespRFU(){
-		if (mRespond == null) {
+	//120 bytes, additional fields
+	public byte[] getRespLoyaltyCounter(){
+		if (respFld == null || respFld.getLoyaltyCounter() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRFU, 
-				pRFU + lRFU);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getLoyaltyCounter()));
+		return Arrays.copyOfRange(respFld.getLoyaltyCounter(), 0, 
+				respFld.getLoyaltyCounter().length);
+	}	
+	
+	public byte[] getRespAnotherEV(){
+		if (respFld == null || respFld.getAnotherEV() == null){ 
+			logger.error("respFld or getter was null");
+			return null;
+		}
+		logger.info("getter:"+Util.hex2StringLog(respFld.getAnotherEV()));
+		return Arrays.copyOfRange(respFld.getAnotherEV(), 0, 
+				respFld.getAnotherEV().length);
+	}	
+	
+	public byte getRespMifareSettingParameter(){
+		if (respFld == null) {
+			logger.error("respFld was null");
+			return 0x00;
+		}
+		logger.info("getter:"+String.format("%02X", respFld.getMifareSettingParameter()));
+		return respFld.getMifareSettingParameter();
 	}
 	
+	public byte getRespCPUSettingParameter(){
+		if (respFld == null) {
+			logger.error("respFld was null");
+			return 0x00;
+		}
+		logger.info("getter:"+String.format("%02X", respFld.getCPUSettingParameter()));
+		return respFld.getCPUSettingParameter();
+	}
 	//-------------------- Response --------------------
+	
+	
 	@Override
 	public byte[] GetRequest() {
 		// TODO Auto-generated method stub
@@ -897,11 +1397,11 @@ public class PPR_TxnReqOffline extends APDU{
 			
 			logger.debug("Credit Key KVN:"+String.format("(%02X)", this.getRespCreditKeyKVN()));
 			logger.debug("Sign.key KVN:"+String.format("(%02X)", this.getRespSignKeyKVN()));
-			logger.debug("CPU Issuer key KVN:"+String.format("(%02X)", this.getRespCPUIssuerKVN()));
+			logger.debug("CPU Issuer key KVN:"+String.format("(%02X)", this.getRespCPUIssuerKeyKVN()));
 			logger.debug("CTC:"+Util.hex2StringLog(this.getRespCTC()));
-			logger.debug("TM:"+String.format("(%02X)", this.getRespTM()));
+			logger.debug("TM:"+String.format("(%02X)", this.getRespTxnMode()));
 			
-			logger.debug("TQ:"+String.format("(%02X)", this.getRespTQ()));
+			logger.debug("TQ:"+String.format("(%02X)", this.getRespTxnQualifier()));
 			logger.debug("Sub Area Code:"+Util.hex2StringLog(this.getRespSubAreaCode()));
 			logger.debug("Purse Exp. Date:"+Util.hex2StringLog(this.getRespPurseExpDate()));
 			logger.debug("Purse Balance Before Txn:"+Util.hex2StringLog(this.getRespPurseBalanceBeforeTxn()));
@@ -913,7 +1413,7 @@ public class PPR_TxnReqOffline extends APDU{
 			logger.debug("Area Code:"+String.format("(%02X)", this.getRespAreaCode()));
 			logger.debug("Card Physical ID:"+Util.hex2StringLog(this.getRespCardPhysicalID()));
 			
-			logger.debug("Card Physical ID Len:"+String.format("(%02X)", this.getRespCardPhysicalIDLen()));
+			logger.debug("Card Physical ID Len:"+String.format("(%02X)", this.getRespCardPhysicalIDLength()));
 			logger.debug("Txn Amt:"+Util.hex2StringLog(this.getRespTxnAmt()));
 			logger.debug("Spec. Version Number:"+String.format("(%02X)", this.getRespSpecVersionNumber()));
 			logger.debug("Reader FW Version:"+Util.hex2StringLog(this.getRespReaderFWVersion()));
@@ -931,8 +1431,8 @@ public class PPR_TxnReqOffline extends APDU{
 			logger.debug("CPD Read Flag:"+String.format("(%02X)", this.getRespCPDReadFlag()));
 			logger.debug("CPD SAM ID:"+Util.hex2StringLog(this.getRespCPDSAMID()));
 			
-			logger.debug("CPD RAN:"+Util.hex2StringLog(this.getRespCPDRAN()));
-			logger.debug("CPD KVN:"+String.format("(%02X)", this.getRespCPDKVN()));
+			logger.debug("CPD RAN:"+Util.hex2StringLog(this.getRespCPDRAN_SAMCRN()));
+			logger.debug("CPD KVN:"+String.format("(%02X)", this.getRespCPDKVN_SAMKVN()));
 			logger.debug("SID S-TAC:"+Util.hex2StringLog(this.getRespSIDSTAC()));
 			logger.debug("TM Serial Number:"+Util.hex2StringLog(this.getRespTMSerialNumber()));
 			logger.debug("Last Credit Txn Log:"+Util.hex2StringLog(this.getRespLastCreditTxnLog()));
@@ -950,8 +1450,7 @@ public class PPR_TxnReqOffline extends APDU{
 			logger.debug("SID:"+Util.hex2StringLog(this.getRespSID()));
 			
 			logger.debug("MAC:"+Util.hex2StringLog(this.getRespMAC()));
-			logger.debug("Txn Date Time:"+Util.hex2StringLog(this.getRespTxnDateTime()));
-			logger.debug("RFU:"+Util.hex2StringLog(this.getRespRFU()));
+			logger.debug("Txn Date Time:"+Util.hex2StringLog(this.getRespTxnDateTime()));			
 		}
 		else
 			logger.error("responseBuffer NULL");
@@ -967,15 +1466,39 @@ public class PPR_TxnReqOffline extends APDU{
 	@Override
 	public boolean SetRespond(byte[] bytes) {
 		// TODO Auto-generated method stub
+				
 		logger.info("Start");
+		if(bytes==null || bytes.length <=scRespDataOffset){
+			logger.error("setRespond buffer was Null or len<=3");
+		}
 		
-		if(this.checkResponseFormat(bytes, scRespDataLength) != true)
+		//check total Length
+		int dataLength = (bytes[2] & 0x000000FF) + (bytes[1] << 8 & 0x0000FF00) + (bytes[0] << 16 & 0x00FF0000);
+		logger.debug("dataBody Len:"+dataLength);
+		if(bytes.length != dataLength+scRespDataOffset+1){//+1 was checkSum
+			logger.error("responsee totalLen was UnComplete");
 			return false;
+		}
+		Resp_SW1 = bytes[scRespDataOffset + dataLength - 2];
+		Resp_SW2 = bytes[scRespDataOffset + dataLength - 2 +1];
 		
+		
+		
+		//check checkSum
+		byte sum = getEDC(bytes, bytes.length);
+		if (sum != bytes[scRespLength - 1]) {
+			// check sum error...
+			logger.error("CheckSum error");
+			return false;
+		}
+		
+		//copy buffer to mResponse
 		mRespond = Arrays.copyOf(bytes, bytes.length);
-		
-		
-		logger.info("end");
+		byte[] b = Arrays.copyOfRange(bytes, scRespDataOffset, scRespDataOffset+scRespDataLength);
+		respFld = new ResponseField(dataLength-2);// -2 was statusCode
+		respFld.parse(b);
+
+		logger.info("end");			
 		return true;
 	}
 

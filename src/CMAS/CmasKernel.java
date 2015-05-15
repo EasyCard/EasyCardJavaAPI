@@ -190,6 +190,7 @@ public class CmasKernel {
 		}
 		
 	}
+
 	
 	
 	public int cmasSpec2ReaderField(CmasDataSpec spec, PPR_SignOn pprSignon, ArrayList<Properties> cfgList)

@@ -1,8 +1,11 @@
 package Reader;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 
 import org.apache.log4j.Logger;
+
+
 
 import Utilities.Util;
 
@@ -15,7 +18,6 @@ public class PPR_SignOnQuery extends APDU{
 	
 	private static final int scReqDataLength = 0;
 	private static final int scReqLength = scReqDataLength + scReqMinLength -1;
-	private static final int scReqInfoLength = scReqDataLength + scReqInfoMinLength;
 	private static final int scRespDataLength = 40;
 	private static final int scRespLength = scRespDataLength + scRespMinLength;
 	
@@ -25,8 +27,109 @@ public class PPR_SignOnQuery extends APDU{
 	private byte[] mRespond = null;
 	
 
+	//=========== Response ================
+	private ResponseField respFld = null;
+	private class ResponseField extends BaseResponseAutoParser{
+		public byte[] authCreditLimit = null;
+		public byte[] authCreditBalance = null;
+		public byte[] authCreditCumulative = null;
+		public byte[] authCancelCreditCumulative = null;
+		public byte param1;
+		public byte param2;
+		public byte[] oneDayQuotaForMicroPayment = null;
+		public byte[] onceQuotaForMicroPayment = null;
+		public byte[] checkDevitValue = null;
+		public byte addQuotaFlag;
+		public byte[] addQuota = null;
+		public byte[] lastTxnDateTime = null;
+		public byte serviceProviderID;
+		public byte[] newServiceProviderID = null;
+		public byte[] RFU = null;
+		
+		public byte[] theRemaindeOfAddQuota = null;
+		public byte[] CancelCreditQuota = null;
+		
+		
+		public byte[] getAuthCreditLimit() {
+			return authCreditLimit;
+		}
+		public byte[] getAuthCreditBalance() {
+			return authCreditBalance;
+		}
+		public byte[] getAuthCreditCumulative() {
+			return authCreditCumulative;
+		}
+		public byte[] getAuthCancelCreditCumulative() {
+			return authCancelCreditCumulative;
+		}
+		public byte getParam1() {
+			return param1;
+		}
+		public byte getParam2() {
+			return param2;
+		}
+		public byte[] getOneDayQuotaForMicroPayment() {
+			return oneDayQuotaForMicroPayment;
+		}
+		public byte[] getOnceQuotaForMicroPayment() {
+			return onceQuotaForMicroPayment;
+		}
+		public byte[] getCheckDevitValue() {
+			return checkDevitValue;
+		}
+		public byte getAddQuotaFlag() {
+			return addQuotaFlag;
+		}
+		public byte[] getAddQuota() {
+			return addQuota;
+		}
+		public byte[] getLastTxnDateTime() {
+			return lastTxnDateTime;
+		}
+		public byte getServiceProviderID() {
+			return serviceProviderID;
+		}
+		public byte[] getNewServiceProviderID() {
+			return newServiceProviderID;
+		}
+
+		public byte[] getTheRemaindeOfAddQuota() {
+			return theRemaindeOfAddQuota;
+		}
+		public byte[] getCancelCreditQuota() {
+			return CancelCreditQuota;
+		}
+		
+		@Override
+		protected LinkedHashMap<String, Integer> getFields() {
+			// TODO Auto-generated method stub
+			LinkedHashMap<String, Integer> map = new LinkedHashMap<String, Integer>();
+			
+			map.put("authCreditLimit", 3);			
+			map.put("authCreditBalance", 3);
+			map.put("authCreditCumulative", 3);
+			map.put("authCancelCreditCumulative", 3);
+			map.put("param1", 1);
+			map.put("param2", 1);
+			map.put("oneDayQuotaForMicroPayment", 2);
+			map.put("onceQuotaForMicroPayment", 2);
+			map.put("checkDevitValue", 2);					
+			map.put("addQuotaFlag", 1);
+			map.put("addQuota", 3);
+			map.put("lastTxnDateTime", 4);
+			map.put("serviceProviderID", 1);
+			map.put("newServiceProviderID", 3);
+			map.put("RFU", 2);
+			
+			map.put("theRemaindeOfAddQuota", 3);
+			map.put("CancelCreditQuota", 3);
+			
+			
+			return map;
+		}
+	}
 	
-	
+
 	public PPR_SignOnQuery(){
 		
 		Req_NAD = 0;
@@ -50,44 +153,37 @@ public class PPR_SignOnQuery extends APDU{
 		mRequest[6] = Req_P2;
 		mRequest[7] = Req_Le;	
 	}
-	private static final byte pRespAuthCreditLimit = scRespDataOffset + 0;
-	private static final byte lRespAuthCreditLimit = 3;
+	
 	public byte[] getRespAuthCreditLimit(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getAuthCreditLimit() == null) {
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespAuthCreditLimit, 
-				pRespAuthCreditLimit + lRespAuthCreditLimit);		
+		return Arrays.copyOfRange(respFld.getAuthCreditLimit(), 0, 
+				respFld.getAuthCreditLimit().length);		
 	}
 	
-	private static final byte pRespAuthCreditBalance = pRespAuthCreditLimit + lRespAuthCreditLimit;
-	private static final byte lRespAuthCreditBalance = 3;
 	public byte[] getRespAuthCreditBalance(){
-		if (mRespond == null) {
+		if(respFld == null || respFld.getAuthCreditBalance() == null) {
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespAuthCreditBalance, 
-				pRespAuthCreditBalance + lRespAuthCreditBalance);		
+		return Arrays.copyOfRange(respFld.getAuthCreditBalance(), 0, 
+				respFld.getAuthCreditBalance().length);		
 	}
 	
-	private static final byte pRespAuthCreditCumulative = pRespAuthCreditBalance + lRespAuthCreditBalance;
-	private static final byte lRespAuthCreditCumulative = 3;
 	public byte[] getRespAuthCreditCumulative(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getAuthCreditCumulative() == null) {
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespAuthCreditCumulative, 
-				pRespAuthCreditCumulative + lRespAuthCreditCumulative);		
+		return Arrays.copyOfRange(respFld.getAuthCreditCumulative(), 0, 
+				respFld.getAuthCreditCumulative().length);		
 	}
 	
-	private static final byte pRespAuthCancelCreditCumulative = pRespAuthCreditCumulative + lRespAuthCreditCumulative;
-	private static final byte lRespAuthCancelCreditCumulative = 3;
-	public byte[] getlRespAuthCreditCumulative(){
-		if (mRespond == null) {
+	public byte[] getRespAuthCancelCreditCumulative(){
+		if (respFld == null || respFld.getAuthCancelCreditCumulative() == null) {
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespAuthCancelCreditCumulative, 
-				pRespAuthCancelCreditCumulative + lRespAuthCancelCreditCumulative);		
+		return Arrays.copyOfRange(respFld.getAuthCancelCreditCumulative(), 0, 
+				respFld.getAuthCancelCreditCumulative().length);		
 	}
 	
 
@@ -99,16 +195,12 @@ public class PPR_SignOnQuery extends APDU{
 	 * Check EV Flag For Mifare Only: Bit 6, 檢查餘額旗標
 	 * Merchant Limit Use For Micro Payment: Bit 7, 小額消費通路限制使用旗標 
 	 */
-	private static final byte pRespSignOnParams1 = pRespAuthCancelCreditCumulative + lRespAuthCancelCreditCumulative;
-	private static final byte lRespSignOnParams1 = 1;	
+	
 	/* CPD Read Flag: Bit 0~1, 二代CPD讀取及驗證設定, T4824 */
 	public byte getRespCPDReadFlag() {
-		if (mRespond == null) {
-			//return CPDReadFlag.NRHostNCReader;
-			return 0x00;
-		}
+		if(respFld == null) return 0x00;
 		
-		byte b = (byte) (mRespond[pRespSignOnParams1] & 0x03);
+		byte b = (byte) (respFld.getParam1() & 0x03);
 
 		logger.info("getter:"+b);
 		return b;
@@ -117,10 +209,9 @@ public class PPR_SignOnQuery extends APDU{
 	/* PPR_SignOn參數設定, 適用於有SignOn之設備, One Day Quota Write For Micro Payment: Bit 2~3, 小額消費日限額寫入 */
 	//public OneDayQuotaWriteForMicroPayment GetResp_OneDayQuotaWriteForMicroPayment() {
 	public byte getRespOneDayQuotaWriteForMicroPayment() {
-		if (mRespond == null) {
-			return 0x00;
-		}  
-		byte b = (byte) ((mRespond[pRespSignOnParams1] & 0x0C) >> 2);
+		if(respFld == null) return 0x00;
+		
+		byte b = (byte) ((respFld.getParam1() & 0x0C) >> 2);
 		logger.info("getter:"+b);
 		return b;
 		
@@ -129,10 +220,8 @@ public class PPR_SignOnQuery extends APDU{
 	/* PPR_SignOn參數設定, 適用於有SignOn之設備, SAM SignOnControl Flag: Bit 4~5, SAM卡SignOn控制旗標 */
 	//public SAMSignOnControlFlag GetResp_SAMSignOnControlFlag() {
 	public byte getRespSAMSignOnControlFlag() {
-		if (mRespond == null) {
-			return 0x00;//SAMSignOnControlFlag.NoSignOnForBoth;
-		}
-		byte b = (byte) ((mRespond[pRespSignOnParams1] & 0x30) >> 4);
+		if(respFld == null) return 0x00;
+		byte b = (byte) ((respFld.getParam1() & 0x30) >> 4);
 		logger.info("getter:"+b);
 		return b;
 		
@@ -140,73 +229,55 @@ public class PPR_SignOnQuery extends APDU{
 	
 	/* PPR_SignOn參數設定, 適用於有SignOn之設備, Check EV Flag For Mifare Only: Bit 6, 檢查餘額旗標 */
 	public byte getRespCheckEVFlagForMifareOnly() {
-		if (mRespond == null) {
-			return 0x00;
-		}
-		byte b = (byte) ((mRespond[pRespSignOnParams1] & 0x40) >> 6);
-		
-		return b;
-		
+		if(respFld == null) return 0x00;
+		byte b = (byte) ((respFld.getParam1() & 0x40) >> 6);		
+		return b;		
 	}
 	
 	/* PPR_SignOn參數設定, 適用於有SignOn之設備, Merchant Limit Use For Micro Payment: Bit 7, 小額消費通路限制使用旗標 */
 	public byte getRespMerchantLimitUseForMicroPayment() {
-		if (mRespond == null) {
-			return 0x00;
-		}
-		byte b = (byte) ((mRespond[pRespSignOnParams1] & 0x80) >> 7);
+		if(respFld == null) return 0x00;
+		byte b = (byte) ((respFld.getParam1() & 0x80) >> 7);
 		return b;
 	}
 	
-	private static final byte pRespSignOnParams2 = pRespSignOnParams1 + lRespSignOnParams1;
-	private static final byte lRespSignOnParams2 = 1;
+	
 	/* PPR_SignOn參數設定, 適用於有SignOn之設備, One Day Quota Flag For Micro Payment: Bit 0~1, 小額消費日限額旗標 */
 	//public OneDayQuotaFlagForMicroPayment GetResp_OneDayQuotaFlagForMicroPayment() {
 	public byte getRespOneDayQuotaFlagForMicroPayment() {
-		if (mRespond == null) {
-			return 0x00;//OneDayQuotaFlagForMicroPayment.NCNA;
-		}  
-		byte b = (byte) (mRespond[pRespSignOnParams2] & 0x03);
+		if(respFld == null) return 0x00;
+		byte b = (byte) (respFld.getParam2() & 0x03);
 		logger.info("getter:"+b);
 		return b;
 	}
 	
 	/* PPR_SignOn參數設定, 適用於有SignOn之設備, Once Quota Flag For Micro Payment: Bit 2, 小額消費次限額旗標 */
 	public byte getRespOnceQuotaFlagForMicroPayment() {
-		if (mRespond == null) {
-			return 0x00;
-		}  
-				
-		byte b = (byte) ((mRespond[pRespSignOnParams2] & 0x04) >> 2);
+		if(respFld == null) return 0x00;
+		byte b = (byte) ((respFld.getParam2() & 0x04) >> 2);
 		
-		logger.debug("getter:orig:"+String.format("%02X", mRespond[pRespSignOnParams2])+",bit:"+String.format("%02X", b));
+		//logger.debug("getter:orig:"+String.format("%02X", mRespond[pRespSignOnParams2])+",bit:"+String.format("%02X", b));
 		return b;
 	}
 	
 	/* PPR_SignOn參數設定, 適用於有SignOn之設備, Check Debit Flag: Bit 3, 扣值交易合法驗證旗標 */
 	public byte getRespCheckDebitFlag() {
-		if (mRespond == null) {
-			return 0x00;
-		}  
-		byte b = (byte) ((mRespond[pRespSignOnParams2] & 0x08) >> 3);
+		if(respFld == null) return 0x00;
+		byte b = (byte) ((respFld.getParam2() & 0x08) >> 3);
 		return b;
 	}
 	
 	/* PPR_SignOn參數設定, 適用於有SignOn之設備, Mifare Check Enable Flag: Bit 4, 二代卡Level 1 */
 	public byte getRespMifareCheckEnableFlag() {
-		if (mRespond == null) {
-			return 0x00;
-		}  
-		byte b = (byte) ((mRespond[pRespSignOnParams2] & 0x10) >> 4);
+		if(respFld == null) return 0x00;
+		byte b = (byte) ((respFld.getParam2() & 0x10) >> 4);
 		return b;
 	}
 	
 	/* PPR_SignOn參數設定, 適用於有SignOn之設備, Pay On Behalf Flag: Bit 5, 是否允許代墊 */
 	public boolean getRespPayOnBehalfFlag() {
-		if (mRespond == null) {
-			return false;
-		}  
-		byte b = (byte) (mRespond[pRespSignOnParams2] & 0x20);
+		if(respFld == null) return false;  
+		byte b = (byte) (respFld.getParam2() & 0x20);
 		if (b == 0) {
 			return false; // 不允許代墊
 		} else {
@@ -216,109 +287,85 @@ public class PPR_SignOnQuery extends APDU{
 	
 	
 	/* One Day Quota For Micro Payment, 2 bytes, Reader (適用於有SignOn之設備), 小額消費日限額額度, Unsigned and LSB First */
-	private static final byte pRespOneDayQuotaForMicroPayment = pRespSignOnParams2 + lRespSignOnParams2;
-	private static final byte lRespOneDayQuotaForMicroPayment = 2;
 	public byte[] getRespOneDayQuotaForMicroPayment() {
-		if (mRespond == null) {
+		if (respFld == null || respFld.getOneDayQuotaForMicroPayment() == null) {
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespOneDayQuotaForMicroPayment, 
-				pRespOneDayQuotaForMicroPayment + lRespOneDayQuotaForMicroPayment);
+		return Arrays.copyOfRange(respFld.getOneDayQuotaForMicroPayment(), 0, 
+				respFld.getOneDayQuotaForMicroPayment().length);
 	}
 	
 	/* Once Quota For Micro Payment, 2 bytes, Reader (適用於有SignOn之設備), 小額消費次限額額度, Unsigned and LSB First */
-	private static final byte pRespDataOnceQuotaForMicroPayment = pRespOneDayQuotaForMicroPayment + lRespOneDayQuotaForMicroPayment;
-	private static final byte lRespDataOnceQuotaForMicroPayment = 2;
 	public byte[] getRespOnceQuotaForMicroPayment() {
-		if (mRespond == null) {
+		if (respFld == null || respFld.getOnceQuotaForMicroPayment()== null) {
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespDataOnceQuotaForMicroPayment, 
-				pRespDataOnceQuotaForMicroPayment + lRespDataOnceQuotaForMicroPayment);
+		return Arrays.copyOfRange(respFld.getOnceQuotaForMicroPayment(), 0, 
+				respFld.getOnceQuotaForMicroPayment().length);
 	}
 	
 	/* Check Debit Value, 2 bytes, Reader (適用於有SignOn之設備), 扣值交易合法驗證金額, Unsigned and LSB First */
-	private static final byte pRespDataCheckDebitValue = pRespDataOnceQuotaForMicroPayment + lRespDataOnceQuotaForMicroPayment;
-	private static final byte lRespDataCheckDebitValue = 2;
 	public byte[] getRespCheckDebitValue() {
-		if (mRespond == null) {
+		if (respFld == null || respFld.getCheckDevitValue() == null) {
+			
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespDataCheckDebitValue, 
-				pRespDataCheckDebitValue + lRespDataCheckDebitValue);
+		return Arrays.copyOfRange(respFld.getCheckDevitValue(), 0, 
+				respFld.getCheckDevitValue().length);
 	}
 	
 	/* Add Quota Flag, 1 byte, Reader (適用於舊的額度控管), 加值額度控管旗標 */
-	private static final byte pRespAddQuotaFlag = pRespDataCheckDebitValue + lRespDataCheckDebitValue;
-	private static final byte lRespAddQuotaFlag = 1;
 	public byte getRespAddQuotaFlag() {
-		if (mRespond == null) {
-			return 0x00;
-		}
-		return mRespond[pRespAddQuotaFlag];
+		if(respFld == null) return 0x00;
+		return respFld.getAddQuotaFlag();
 	}
 	
 	/* Add Quota, 3 bytes, Reader (適用於舊的額度控管), 加值額度, Unsigned and LSB First */
-	private static final byte pRespAddQuota = pRespAddQuotaFlag + lRespAddQuotaFlag;
-	private static final byte lRespAddQuota = 3;
 	public byte[] getRespAddQuota() {
-		if (mRespond == null) {
+		if (respFld == null || respFld.getAddQuota() == null) {
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespAddQuota, 
-				pRespAddQuota + lRespAddQuota);
+		return Arrays.copyOfRange(respFld.getAddQuota(), 0, 
+				respFld.getAddQuota().length);
 	}
 	
-	private static final byte pRespLastTXNDateTime = pRespAddQuotaFlag + lRespAddQuotaFlag;
-	private static final byte lRespLastTXNDateTime = 4;
 	public byte[] getRespLastTXNDateTime() {
-		if (mRespond == null) {
+		if (respFld == null || respFld.getLastTxnDateTime() == null) {
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespLastTXNDateTime, 
-				pRespLastTXNDateTime + lRespLastTXNDateTime);
+		return Arrays.copyOfRange(respFld.getLastTxnDateTime(), 0, 
+				respFld.getLastTxnDateTime().length);
 	}
 	
-	private static final byte pRespServiceProviderID = pRespLastTXNDateTime + lRespLastTXNDateTime;
-	private static final byte lRespServiceProviderID = 1;
 	public byte getRespServiceProviderID() {
-		if (mRespond == null) {
-			return 0x00;
-		}
-		return mRespond[pRespAddQuotaFlag];
+		if(respFld == null) return 0x00;
+		return respFld.getServiceProviderID();
 	}
 	
-	private static final byte pRespNewServiceProviderID = pRespServiceProviderID + lRespServiceProviderID;
-	private static final byte lRespNewServiceProviderID = 3;
 	public byte[] getRespNewServiceProviderID() {
-		if (mRespond == null) {
+		if (respFld == null || respFld.getNewServiceProviderID() == null) {
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespNewServiceProviderID, 
-				pRespNewServiceProviderID + lRespNewServiceProviderID);
+		return Arrays.copyOfRange(respFld.getNewServiceProviderID(), 0, 
+				respFld.getNewServiceProviderID().length);
 	}
 	
-	private static final byte pRespRFU = pRespNewServiceProviderID + lRespNewServiceProviderID;
-	private static final byte lRespRFU = 2;
-	
-	private static final byte pRespTheRemainderOfAddQuota = pRespRFU + lRespRFU;
-	private static final byte lRespTheRemainderOfAddQuota = 3;
+
 	public byte[] getRespTheRemainderOfAddQuota() {
-		if (mRespond == null) {
+		if (respFld == null || respFld.getTheRemaindeOfAddQuota() == null) {
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespTheRemainderOfAddQuota, 
-				pRespTheRemainderOfAddQuota + lRespTheRemainderOfAddQuota);
+		return Arrays.copyOfRange(respFld.getTheRemaindeOfAddQuota(), 0, 
+				respFld.getTheRemaindeOfAddQuota().length);
 	}
 	
-	private static final byte pRespCancelCreditQuota = pRespTheRemainderOfAddQuota + lRespTheRemainderOfAddQuota;
-	private static final byte lRespCancelCreditQuota = 3;
+	
 	public byte[] getRespCancelCreditQuota() {
-		if (mRespond == null) {
+		if (respFld == null || respFld.getCancelCreditQuota() == null) {
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespCancelCreditQuota, 
-				pRespCancelCreditQuota + lRespCancelCreditQuota);
+		return Arrays.copyOfRange(respFld.getCancelCreditQuota(), 0, 
+				respFld.getCancelCreditQuota().length);
 	}
 	
 	@Override
@@ -347,8 +394,30 @@ public class PPR_SignOnQuery extends APDU{
 	@Override
 	public void debugResponseData() {
 		// TODO Auto-generated method stub
-		if(mRespond != null)
+		if(respFld != null){
 			logger.debug(PPR_SignOnQuery.class.getName()+" recv:" + Util.hex2StringLog(mRespond));
+			
+			logger.debug("Auth.Credit Limit:"+Util.hex2StringLog(getRespAuthCreditLimit()));
+			logger.debug("Auth.Credit Balance:"+Util.hex2StringLog(getRespAuthCreditBalance()));
+			logger.debug("Auth.Credit Cumulative:"+Util.hex2StringLog(getRespAuthCreditCumulative()));
+			logger.debug("Auth.Credit Cancel Cumulative:"+Util.hex2StringLog(getRespAuthCancelCreditCumulative()));
+			
+			logger.debug("Param1:"+String.format("%02X", respFld.getParam1()));
+			logger.debug("Param2:"+String.format("%02X", respFld.getParam2()));
+			
+			logger.debug("One Day Quota For Micropayment:"+Util.hex2StringLog(getRespOneDayQuotaForMicroPayment()));
+			logger.debug("Once Quota For MicroPayment:"+Util.hex2StringLog(getRespOnceQuotaForMicroPayment()));
+			logger.debug("Check Debit value:"+Util.hex2StringLog(getRespCheckDebitValue()));
+			logger.debug("Add Quota Flag"+String.format("%02X", getRespAddQuotaFlag()));
+			logger.debug("Add Quota:"+Util.hex2StringLog(getRespAddQuota()));
+			
+			logger.debug("Last Txn DateTime:"+Util.hex2StringLog(getRespLastTXNDateTime()));
+			logger.debug("Service Provider ID:"+String.format("%02X", getRespServiceProviderID()));
+			logger.debug("New Service Provider ID:"+Util.hex2StringLog(getRespNewServiceProviderID()));
+
+			logger.debug("The Remainder of Add Quota:"+Util.hex2StringLog(getRespTheRemainderOfAddQuota()));
+			logger.debug("Cancel Credit Quota:"+Util.hex2StringLog(getRespCancelCreditQuota()));
+		}
 	}
 
 	@Override
@@ -361,6 +430,8 @@ public class PPR_SignOnQuery extends APDU{
 	public boolean SetRespond(byte[] bytes) {
 		// TODO Auto-generated method stub
 		logger.info("Start");
+		
+		//check total length
 		int length = bytes.length;
 		if (scRespLength != length) {
 			// invalid respond format... 
@@ -368,24 +439,30 @@ public class PPR_SignOnQuery extends APDU{
 			return false;
 		}
 		
+		//check dataBody Length
 		if (bytes[2] != (byte) (scRespDataLength + 2)) { // Data + SW1 + SW2
 			// invalid data format...
 			logger.error("RespLen wrong:"+scRespLength);
 			return false;
 		}
-		
+
+		//check checkSum
 		byte sum = getEDC(bytes, length);
 		if (sum != bytes[scRespLength - 1]) {
 			// check sum error...
 			logger.error("CheckSum error");
 			return false;
 		}
+		int dataLength = bytes[2] & 0x000000FF;
+		Resp_SW1 = bytes[scRespDataOffset + dataLength - 2];
+		Resp_SW2 = bytes[scRespDataOffset + dataLength + 1 - 2];
 		
+		
+		byte[] b = Arrays.copyOfRange(bytes, scRespDataOffset, scRespDataOffset+scRespDataLength);
 		mRespond = Arrays.copyOf(bytes, length);
+		respFld = new ResponseField();
+		respFld.parse(b);
 		
-		int dataLength = mRespond[2] & 0x000000FF;
-		Resp_SW1 = mRespond[scRespDataOffset + dataLength - 2];
-		Resp_SW2 = mRespond[scRespDataOffset + dataLength + 1 - 2];
 		
 		logger.info("end");
 		return true;

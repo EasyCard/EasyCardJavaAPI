@@ -1,217 +1,1098 @@
-[16:49:16][APIInterface.EasycardAPI.signQuery(EasycardAPI.java:99)] INFO - Start
-[16:49:16][CMAS.Process.initConfig(Process.java:66)] INFO - =============== API Start ===============
-[16:49:16][CMAS.ConfigManager.<init>(ConfigManager.java:39)] INFO - Start
-[16:49:16][CMAS.ConfigManager.<init>(ConfigManager.java:41)] INFO - End
-[16:49:16][CMAS.ConfigManager.prepareConfig(ConfigManager.java:46)] INFO - Start
-[16:49:16][CMAS.ConfigManager.prepareConfig(ConfigManager.java:78)] INFO - Test Environment
-[16:49:16][CMAS.ConfigManager.prepareConfig(ConfigManager.java:131)] INFO - End
-[16:49:16][CMAS.Process.initConfig(Process.java:71)] INFO - End
-[16:49:16][Reader.ApduRecvSender.setPortName(ApduRecvSender.java:35)] INFO - setter:COM6
-[16:49:16][Reader.EZReader.<init>(EZReader.java:22)] INFO - Start
-[16:49:16][Reader.EZReader.<init>(EZReader.java:25)] INFO - End
-[16:49:16][CMAS.Process.<init>(Process.java:48)] INFO - End
-[16:49:16][Reader.EZReader.exeCommand(EZReader.java:30)] INFO - Start
-[16:49:16][Reader.PPR_SignOnQuery.GetRequest(PPR_SignOnQuery.java:329)] DEBUG - pprSignonQuery request:(00)(00)(05)(80)(03)(00)(00)(28)(ae)
-[16:49:16][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:170)] INFO - Start
-[16:49:16][Reader.ApduRecvSender.openPort(ApduRecvSender.java:43)] INFO - Start, comportname:COM6COM6
-[16:49:16][Reader.ApduRecvSender.openPort(ApduRecvSender.java:96)] INFO - End
-[16:49:16][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:196)] DEBUG - pack APDU command:(00)(00)(05)(80)(03)(00)(00)(28)(ae)
-[16:49:16][Reader.ApduRecvSender.write(ApduRecvSender.java:122)] INFO - Start
-[16:49:16][Reader.ApduRecvSender.read(ApduRecvSender.java:142)] INFO - Start
-[16:49:16][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:205)] DEBUG - read finish:(00)(00)(2a)
-[16:49:16][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:212)] INFO - read body len:42
-[16:49:16][Reader.ApduRecvSender.read(ApduRecvSender.java:142)] INFO - Start
-[16:49:16][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:220)] DEBUG - recv from Comport total Byte: 46
-[16:49:16][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:231)] INFO - End
-[16:49:16][Reader.PPR_SignOnQuery.SetRespond(PPR_SignOnQuery.java:363)] INFO - Start
-[16:49:16][Reader.PPR_SignOnQuery.SetRespond(PPR_SignOnQuery.java:390)] INFO - end
-[16:49:16][Reader.PPR_SignOnQuery.debugResponseData(PPR_SignOnQuery.java:351)] DEBUG - pprSignon recv:(00)(00)(2a)(00)(71)(02)(f0)(49)(09)(00)(00)(00)(00)(00)(00)(3c)(0f)(b8)(0b)(e8)(03)(f4)(01)(01)(a0)(86)(01)(1d)(f3)(48)(55)(fe)(11)(27)(00)(00)(00)(a0)(86)(01)(00)(00)(00)(90)(00)(dd)
-[16:49:16][APIInterface.EasycardAPI.signQuery(EasycardAPI.java:102)] INFO - End
-[16:51:21][APIInterface.EasycardAPI.signQuery(EasycardAPI.java:99)] INFO - Start
-[16:51:21][CMAS.Process.initConfig(Process.java:66)] INFO - =============== API Start ===============
-[16:51:21][CMAS.ConfigManager.<init>(ConfigManager.java:39)] INFO - Start
-[16:51:21][CMAS.ConfigManager.<init>(ConfigManager.java:41)] INFO - End
-[16:51:21][CMAS.ConfigManager.prepareConfig(ConfigManager.java:46)] INFO - Start
-[16:51:21][CMAS.ConfigManager.prepareConfig(ConfigManager.java:78)] INFO - Test Environment
-[16:51:21][CMAS.ConfigManager.prepareConfig(ConfigManager.java:131)] INFO - End
-[16:51:21][CMAS.Process.initConfig(Process.java:71)] INFO - End
-[16:51:21][Reader.ApduRecvSender.setPortName(ApduRecvSender.java:35)] INFO - setter:COM6
-[16:51:21][Reader.EZReader.<init>(EZReader.java:22)] INFO - Start
-[16:51:21][Reader.EZReader.<init>(EZReader.java:25)] INFO - End
-[16:51:21][CMAS.Process.<init>(Process.java:48)] INFO - End
-[16:51:21][Reader.EZReader.exeCommand(EZReader.java:30)] INFO - Start
-[16:51:21][Reader.PPR_SignOnQuery.GetRequest(PPR_SignOnQuery.java:329)] DEBUG - Reader.PPR_SignOnQuery request:(00)(00)(05)(80)(03)(00)(00)(28)(ae)
-[16:51:21][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:170)] INFO - Start
-[16:51:21][Reader.ApduRecvSender.openPort(ApduRecvSender.java:43)] INFO - Start, comportname:COM6COM6
-[16:51:21][Reader.ApduRecvSender.openPort(ApduRecvSender.java:96)] INFO - End
-[16:51:21][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:196)] DEBUG - pack APDU command:(00)(00)(05)(80)(03)(00)(00)(28)(ae)
-[16:51:21][Reader.ApduRecvSender.write(ApduRecvSender.java:122)] INFO - Start
-[16:51:21][Reader.ApduRecvSender.read(ApduRecvSender.java:142)] INFO - Start
-[16:51:21][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:205)] DEBUG - read finish:(00)(00)(2a)
-[16:51:21][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:212)] INFO - read body len:42
-[16:51:21][Reader.ApduRecvSender.read(ApduRecvSender.java:142)] INFO - Start
-[16:51:21][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:220)] DEBUG - recv from Comport total Byte: 46
-[16:51:21][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:231)] INFO - End
-[16:51:21][Reader.PPR_SignOnQuery.SetRespond(PPR_SignOnQuery.java:363)] INFO - Start
-[16:51:21][Reader.PPR_SignOnQuery.SetRespond(PPR_SignOnQuery.java:390)] INFO - end
-[16:51:21][Reader.PPR_SignOnQuery.debugResponseData(PPR_SignOnQuery.java:351)] DEBUG - Reader.PPR_SignOnQuery recv:(00)(00)(2a)(00)(71)(02)(f0)(49)(09)(00)(00)(00)(00)(00)(00)(3c)(0f)(b8)(0b)(e8)(03)(f4)(01)(01)(a0)(86)(01)(1d)(f3)(48)(55)(fe)(11)(27)(00)(00)(00)(a0)(86)(01)(00)(00)(00)(90)(00)(dd)
-[16:51:21][APIInterface.EasycardAPI.signQuery(EasycardAPI.java:102)] INFO - End
-[17:01:50][APIInterface.EasycardAPI.deduct(EasycardAPI.java:113)] INFO - Start
-[17:01:50][CMAS.Process.initConfig(Process.java:66)] INFO - =============== API Start ===============
-[17:01:50][CMAS.ConfigManager.<init>(ConfigManager.java:39)] INFO - Start
-[17:01:50][CMAS.ConfigManager.<init>(ConfigManager.java:41)] INFO - End
-[17:01:50][CMAS.ConfigManager.prepareConfig(ConfigManager.java:46)] INFO - Start
-[17:01:50][CMAS.ConfigManager.prepareConfig(ConfigManager.java:78)] INFO - Test Environment
-[17:01:50][CMAS.ConfigManager.prepareConfig(ConfigManager.java:131)] INFO - End
-[17:01:50][CMAS.Process.initConfig(Process.java:71)] INFO - End
-[17:01:50][Reader.ApduRecvSender.setPortName(ApduRecvSender.java:35)] INFO - setter:COM6
-[17:01:50][Reader.EZReader.<init>(EZReader.java:22)] INFO - Start
-[17:01:50][Reader.EZReader.<init>(EZReader.java:25)] INFO - End
-[17:01:50][CMAS.Process.<init>(Process.java:48)] INFO - End
-[17:01:50][Reader.PPR_TxnReqOffline.setReqMsgType(PPR_TxnReqOffline.java:62)] INFO - setter:1
-[17:01:50][Reader.PPR_TxnReqOffline.setReqTMLocationID(PPR_TxnReqOffline.java:96)] INFO - setter:100011
-[17:01:50][Reader.PPR_TxnReqOffline.setReqTMID(PPR_TxnReqOffline.java:122)] INFO - setter:00
-[17:01:50][Reader.PPR_TxnReqOffline.setReqTMTXNDateTime(PPR_TxnReqOffline.java:148)] INFO - setter:1430816510
-[17:01:50][Reader.PPR_TxnReqOffline.setReqTMSerialNumber(PPR_TxnReqOffline.java:170)] INFO - setter:165670
-[17:01:50][Reader.PPR_TxnReqOffline.setReqTMSerialNumber(PPR_TxnReqOffline.java:173)] INFO - setter:165670
-[17:01:50][Reader.PPR_TxnReqOffline.setReqTMAgentNumber(PPR_TxnReqOffline.java:193)] INFO - setter:1234
-[17:01:50][CMAS.Process.getmTimeZone(Process.java:78)] INFO - getter:Asia/Taipei
-[17:01:50][Reader.PPR_TxnReqOffline.setReqTXNDateTime(PPR_TxnReqOffline.java:223)] INFO - setter: intUnixTime(1430816510),timeZone:Asia/Taipei
-[17:01:50][Reader.PPR_TxnReqOffline.setReqTxnAmt(PPR_TxnReqOffline.java:240)] INFO - setter:50
-[17:01:50][Reader.PPR_TxnReqOffline.GetRequest(PPR_TxnReqOffline.java:353)] DEBUG - Reader.PPR_TxnReqOffline request:(00)(00)(46)(80)(32)(01)(00)(00)(01)(00)(30)(30)(30)(30)(31)(30)(30)(30)(31)(31)(30)(30)(32)(30)(31)(35)(30)(35)(30)(35)(31)(37)(30)(31)(35)(30)(31)(36)(35)(36)(37)(30)(31)(32)(33)(34)(7e)(f7)(48)(55)(32)(30)(30)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(fa)(aa)
-[17:01:50][APIInterface.EasycardAPI.deduct(EasycardAPI.java:116)] INFO - End
-[17:06:00][APIInterface.EasycardAPI.deduct(EasycardAPI.java:113)] INFO - Start
-[17:06:00][CMAS.Process.initConfig(Process.java:66)] INFO - =============== API Start ===============
-[17:06:00][CMAS.ConfigManager.<init>(ConfigManager.java:39)] INFO - Start
-[17:06:00][CMAS.ConfigManager.<init>(ConfigManager.java:41)] INFO - End
-[17:06:00][CMAS.ConfigManager.prepareConfig(ConfigManager.java:46)] INFO - Start
-[17:06:00][CMAS.ConfigManager.prepareConfig(ConfigManager.java:78)] INFO - Test Environment
-[17:06:00][CMAS.ConfigManager.prepareConfig(ConfigManager.java:131)] INFO - End
-[17:06:00][CMAS.Process.initConfig(Process.java:71)] INFO - End
-[17:06:00][Reader.ApduRecvSender.setPortName(ApduRecvSender.java:35)] INFO - setter:COM6
-[17:06:00][Reader.EZReader.<init>(EZReader.java:22)] INFO - Start
-[17:06:00][Reader.EZReader.<init>(EZReader.java:25)] INFO - End
-[17:06:00][CMAS.Process.<init>(Process.java:48)] INFO - End
-[17:06:00][Reader.PPR_TxnReqOffline.setReqMsgType(PPR_TxnReqOffline.java:62)] INFO - setter:1
-[17:06:00][Reader.PPR_TxnReqOffline.setReqTMLocationID(PPR_TxnReqOffline.java:96)] INFO - setter:100011
-[17:06:00][Reader.PPR_TxnReqOffline.setReqTMID(PPR_TxnReqOffline.java:122)] INFO - setter:00
-[17:06:00][Reader.PPR_TxnReqOffline.setReqTMTXNDateTime(PPR_TxnReqOffline.java:148)] INFO - setter:1430816760
-[17:06:00][Reader.PPR_TxnReqOffline.setReqTMSerialNumber(PPR_TxnReqOffline.java:170)] INFO - setter:165670
-[17:06:00][Reader.PPR_TxnReqOffline.setReqTMSerialNumber(PPR_TxnReqOffline.java:173)] INFO - setter:165670
-[17:06:00][Reader.PPR_TxnReqOffline.setReqTMAgentNumber(PPR_TxnReqOffline.java:193)] INFO - setter:1234
-[17:06:00][CMAS.Process.getmTimeZone(Process.java:78)] INFO - getter:Asia/Taipei
-[17:06:00][Reader.PPR_TxnReqOffline.setReqTXNDateTime(PPR_TxnReqOffline.java:223)] INFO - setter: intUnixTime(1430816760),timeZone:Asia/Taipei
-[17:06:00][Reader.PPR_TxnReqOffline.setReqTxnAmt(PPR_TxnReqOffline.java:240)] INFO - setter:50
-[17:06:00][Reader.PPR_TxnReqOffline.GetRequest(PPR_TxnReqOffline.java:353)] DEBUG - Reader.PPR_TxnReqOffline request:(00)(00)(46)(80)(32)(01)(00)(40)(01)(00)(30)(30)(30)(30)(31)(30)(30)(30)(31)(31)(30)(30)(32)(30)(31)(35)(30)(35)(30)(35)(31)(37)(30)(36)(30)(30)(31)(36)(35)(36)(37)(30)(31)(32)(33)(34)(78)(f8)(48)(55)(32)(30)(30)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(fa)(e1)
-[17:06:00][APIInterface.EasycardAPI.deduct(EasycardAPI.java:116)] INFO - End
-[17:19:29][APIInterface.EasycardAPI.deduct(EasycardAPI.java:113)] INFO - Start
-[17:19:29][CMAS.Process.initConfig(Process.java:66)] INFO - =============== API Start ===============
-[17:19:29][CMAS.ConfigManager.<init>(ConfigManager.java:39)] INFO - Start
-[17:19:29][CMAS.ConfigManager.<init>(ConfigManager.java:41)] INFO - End
-[17:19:29][CMAS.ConfigManager.prepareConfig(ConfigManager.java:46)] INFO - Start
-[17:19:29][CMAS.ConfigManager.prepareConfig(ConfigManager.java:78)] INFO - Test Environment
-[17:19:29][CMAS.ConfigManager.prepareConfig(ConfigManager.java:131)] INFO - End
-[17:19:29][CMAS.Process.initConfig(Process.java:71)] INFO - End
-[17:19:29][Reader.ApduRecvSender.setPortName(ApduRecvSender.java:35)] INFO - setter:COM6
-[17:19:29][Reader.EZReader.<init>(EZReader.java:22)] INFO - Start
-[17:19:29][Reader.EZReader.<init>(EZReader.java:25)] INFO - End
-[17:19:29][CMAS.Process.<init>(Process.java:48)] INFO - End
-[17:19:29][Reader.PPR_TxnReqOffline.setReqMsgType(PPR_TxnReqOffline.java:62)] INFO - setter:1
-[17:19:29][Reader.PPR_TxnReqOffline.setReqTMLocationID(PPR_TxnReqOffline.java:96)] INFO - setter:100011
-[17:19:29][Reader.PPR_TxnReqOffline.setReqTMID(PPR_TxnReqOffline.java:122)] INFO - setter:00
-[17:19:29][Reader.PPR_TxnReqOffline.setReqTMTXNDateTime(PPR_TxnReqOffline.java:148)] INFO - setter:1430817569
-[17:19:29][Reader.PPR_TxnReqOffline.setReqTMSerialNumber(PPR_TxnReqOffline.java:170)] INFO - setter:165670
-[17:19:29][Reader.PPR_TxnReqOffline.setReqTMSerialNumber(PPR_TxnReqOffline.java:173)] INFO - setter:165670
-[17:19:29][Reader.PPR_TxnReqOffline.setReqTMAgentNumber(PPR_TxnReqOffline.java:193)] INFO - setter:1234
-[17:19:29][CMAS.Process.getmTimeZone(Process.java:78)] INFO - getter:Asia/Taipei
-[17:19:29][Reader.PPR_TxnReqOffline.setReqTXNDateTime(PPR_TxnReqOffline.java:223)] INFO - setter: intUnixTime(1430817569),timeZone:Asia/Taipei
-[17:19:29][Reader.PPR_TxnReqOffline.setReqTxnAmt(PPR_TxnReqOffline.java:240)] INFO - setter:50
-[17:19:29][Reader.EZReader.exeCommand(EZReader.java:30)] INFO - Start
-[17:19:29][Reader.PPR_TxnReqOffline.GetRequest(PPR_TxnReqOffline.java:353)] DEBUG - Reader.PPR_TxnReqOffline request:(00)(00)(46)(80)(32)(01)(00)(40)(01)(00)(30)(30)(30)(30)(31)(30)(30)(30)(31)(31)(30)(30)(32)(30)(31)(35)(30)(35)(30)(35)(31)(37)(31)(39)(32)(39)(31)(36)(35)(36)(37)(30)(31)(32)(33)(34)(a1)(fb)(48)(55)(32)(30)(30)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(fa)(3e)
-[17:19:29][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:170)] INFO - Start
-[17:19:29][Reader.ApduRecvSender.openPort(ApduRecvSender.java:43)] INFO - Start, comportname:COM6COM6
-[17:19:29][Reader.ApduRecvSender.openPort(ApduRecvSender.java:96)] INFO - End
-[17:19:29][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:196)] DEBUG - pack APDU command:(00)(00)(46)(80)(32)(01)(00)(40)(01)(00)(30)(30)(30)(30)(31)(30)(30)(30)(31)(31)(30)(30)(32)(30)(31)(35)(30)(35)(30)(35)(31)(37)(31)(39)(32)(39)(31)(36)(35)(36)(37)(30)(31)(32)(33)(34)(a1)(fb)(48)(55)(32)(30)(30)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(fa)(3e)
-[17:19:29][Reader.ApduRecvSender.write(ApduRecvSender.java:122)] INFO - Start
-[17:19:29][Reader.ApduRecvSender.read(ApduRecvSender.java:142)] INFO - Start
-[17:19:31][Reader.ApduRecvSender.read(ApduRecvSender.java:156)] ERROR - read SerialPortTimeoutException:Port name - COM6; Method name - readBytes(); Serial port operation timeout (2000 ms).
-[17:19:31][Reader.ApduRecvSender.read(ApduRecvSender.java:161)] INFO - End
-[17:19:31][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:227)] ERROR - 
-[17:19:31][Reader.EZReader.exeCommand(EZReader.java:44)] ERROR - recvBuffer is NULL
-[17:19:31][CMAS.Process.doDeduct(Process.java:303)] ERROR - errID:-6, msg:Reader no response
-[17:19:31][APIInterface.EasycardAPI.deduct(EasycardAPI.java:116)] INFO - End
-[17:21:38][APIInterface.EasycardAPI.deduct(EasycardAPI.java:113)] INFO - Start
-[17:21:38][CMAS.Process.initConfig(Process.java:66)] INFO - =============== API Start ===============
-[17:21:38][CMAS.ConfigManager.<init>(ConfigManager.java:39)] INFO - Start
-[17:21:38][CMAS.ConfigManager.<init>(ConfigManager.java:41)] INFO - End
-[17:21:38][CMAS.ConfigManager.prepareConfig(ConfigManager.java:46)] INFO - Start
-[17:21:38][CMAS.ConfigManager.prepareConfig(ConfigManager.java:78)] INFO - Test Environment
-[17:21:38][CMAS.ConfigManager.prepareConfig(ConfigManager.java:131)] INFO - End
-[17:21:38][CMAS.Process.initConfig(Process.java:71)] INFO - End
-[17:21:38][Reader.ApduRecvSender.setPortName(ApduRecvSender.java:35)] INFO - setter:COM6
-[17:21:38][Reader.EZReader.<init>(EZReader.java:22)] INFO - Start
-[17:21:38][Reader.EZReader.<init>(EZReader.java:25)] INFO - End
-[17:21:38][CMAS.Process.<init>(Process.java:48)] INFO - End
-[17:21:38][Reader.PPR_TxnReqOffline.setReqMsgType(PPR_TxnReqOffline.java:62)] INFO - setter:1
-[17:21:38][Reader.PPR_TxnReqOffline.setReqTMLocationID(PPR_TxnReqOffline.java:96)] INFO - setter:100011
-[17:21:38][Reader.PPR_TxnReqOffline.setReqTMID(PPR_TxnReqOffline.java:122)] INFO - setter:00
-[17:21:38][Reader.PPR_TxnReqOffline.setReqTMTXNDateTime(PPR_TxnReqOffline.java:148)] INFO - setter:1430817698
-[17:21:38][Reader.PPR_TxnReqOffline.setReqTMSerialNumber(PPR_TxnReqOffline.java:170)] INFO - setter:165670
-[17:21:38][Reader.PPR_TxnReqOffline.setReqTMSerialNumber(PPR_TxnReqOffline.java:173)] INFO - setter:165670
-[17:21:38][Reader.PPR_TxnReqOffline.setReqTMAgentNumber(PPR_TxnReqOffline.java:193)] INFO - setter:1234
-[17:21:38][CMAS.Process.getmTimeZone(Process.java:78)] INFO - getter:Asia/Taipei
-[17:21:38][Reader.PPR_TxnReqOffline.setReqTXNDateTime(PPR_TxnReqOffline.java:223)] INFO - setter: intUnixTime(1430817698),timeZone:Asia/Taipei
-[17:21:38][Reader.PPR_TxnReqOffline.setReqTxnAmt(PPR_TxnReqOffline.java:240)] INFO - setter:50
-[17:21:38][Reader.EZReader.exeCommand(EZReader.java:30)] INFO - Start
-[17:21:38][Reader.PPR_TxnReqOffline.GetRequest(PPR_TxnReqOffline.java:353)] DEBUG - Reader.PPR_TxnReqOffline request:(00)(00)(46)(80)(32)(01)(00)(40)(01)(00)(30)(30)(30)(30)(31)(30)(30)(30)(31)(31)(30)(30)(32)(30)(31)(35)(30)(35)(30)(35)(31)(37)(32)(31)(33)(38)(31)(36)(35)(36)(37)(30)(31)(32)(33)(34)(22)(fc)(48)(55)(32)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(fa)(b1)
-[17:21:38][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:170)] INFO - Start
-[17:21:38][Reader.ApduRecvSender.openPort(ApduRecvSender.java:43)] INFO - Start, comportname:COM6COM6
-[17:21:38][Reader.ApduRecvSender.openPort(ApduRecvSender.java:96)] INFO - End
-[17:21:38][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:196)] DEBUG - pack APDU command:(00)(00)(46)(80)(32)(01)(00)(40)(01)(00)(30)(30)(30)(30)(31)(30)(30)(30)(31)(31)(30)(30)(32)(30)(31)(35)(30)(35)(30)(35)(31)(37)(32)(31)(33)(38)(31)(36)(35)(36)(37)(30)(31)(32)(33)(34)(22)(fc)(48)(55)(32)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(fa)(b1)
-[17:21:38][Reader.ApduRecvSender.write(ApduRecvSender.java:122)] INFO - Start
-[17:21:38][Reader.ApduRecvSender.read(ApduRecvSender.java:142)] INFO - Start
-[17:21:40][Reader.ApduRecvSender.read(ApduRecvSender.java:156)] ERROR - read SerialPortTimeoutException:Port name - COM6; Method name - readBytes(); Serial port operation timeout (2000 ms).
-[17:21:40][Reader.ApduRecvSender.read(ApduRecvSender.java:161)] INFO - End
-[17:21:40][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:227)] ERROR - 
-[17:21:40][Reader.EZReader.exeCommand(EZReader.java:44)] ERROR - recvBuffer is NULL
-[17:21:40][CMAS.Process.doDeduct(Process.java:303)] ERROR - errID:-6, msg:Reader no response
-[17:21:40][APIInterface.EasycardAPI.deduct(EasycardAPI.java:116)] INFO - End
-[17:38:19][APIInterface.EasycardAPI.deduct(EasycardAPI.java:113)] INFO - Start
-[17:38:19][CMAS.Process.initConfig(Process.java:66)] INFO - =============== API Start ===============
-[17:38:19][CMAS.ConfigManager.<init>(ConfigManager.java:39)] INFO - Start
-[17:38:19][CMAS.ConfigManager.<init>(ConfigManager.java:41)] INFO - End
-[17:38:19][CMAS.ConfigManager.prepareConfig(ConfigManager.java:46)] INFO - Start
-[17:38:19][CMAS.ConfigManager.prepareConfig(ConfigManager.java:78)] INFO - Test Environment
-[17:38:19][CMAS.ConfigManager.prepareConfig(ConfigManager.java:131)] INFO - End
-[17:38:19][CMAS.Process.initConfig(Process.java:71)] INFO - End
-[17:38:19][Reader.ApduRecvSender.setPortName(ApduRecvSender.java:35)] INFO - setter:COM6
-[17:38:19][Reader.EZReader.<init>(EZReader.java:22)] INFO - Start
-[17:38:19][Reader.EZReader.<init>(EZReader.java:25)] INFO - End
-[17:38:19][CMAS.Process.<init>(Process.java:48)] INFO - End
-[17:38:19][Reader.PPR_TxnReqOffline.setReqMsgType(PPR_TxnReqOffline.java:62)] INFO - setter:1
-[17:38:19][Reader.PPR_TxnReqOffline.setReqTMLocationID(PPR_TxnReqOffline.java:96)] INFO - setter:100011
-[17:38:19][Reader.PPR_TxnReqOffline.setReqTMID(PPR_TxnReqOffline.java:122)] INFO - setter:00
-[17:38:19][Reader.PPR_TxnReqOffline.setReqTMTXNDateTime(PPR_TxnReqOffline.java:148)] INFO - setter:1430818699
-[17:38:19][Reader.PPR_TxnReqOffline.setReqTMSerialNumber(PPR_TxnReqOffline.java:170)] INFO - setter:165670
-[17:38:19][Reader.PPR_TxnReqOffline.setReqTMSerialNumber(PPR_TxnReqOffline.java:173)] INFO - setter:165670
-[17:38:19][Reader.PPR_TxnReqOffline.setReqTMAgentNumber(PPR_TxnReqOffline.java:193)] INFO - setter:1234
-[17:38:19][CMAS.Process.getmTimeZone(Process.java:78)] INFO - getter:Asia/Taipei
-[17:38:19][Reader.PPR_TxnReqOffline.setReqTXNDateTime(PPR_TxnReqOffline.java:223)] INFO - setter: intUnixTime(1430818699),timeZone:Asia/Taipei
-[17:38:19][Reader.PPR_TxnReqOffline.setReqTxnAmt(PPR_TxnReqOffline.java:240)] INFO - setter:50
-[17:38:19][Reader.EZReader.exeCommand(EZReader.java:30)] INFO - Start
-[17:38:19][Reader.PPR_TxnReqOffline.GetRequest(PPR_TxnReqOffline.java:353)] DEBUG - Reader.PPR_TxnReqOffline request:(00)(00)(46)(80)(32)(01)(00)(40)(01)(00)(30)(30)(30)(30)(31)(30)(30)(30)(31)(31)(30)(30)(32)(30)(31)(35)(30)(35)(30)(35)(31)(37)(33)(38)(31)(39)(31)(36)(35)(36)(37)(30)(31)(32)(33)(34)(0b)(00)(49)(55)(32)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(fa)(6e)
-[17:38:19][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:172)] INFO - Start
-[17:38:19][Reader.ApduRecvSender.openPort(ApduRecvSender.java:43)] INFO - Start, comportname:COM6COM6
-[17:38:19][Reader.ApduRecvSender.openPort(ApduRecvSender.java:98)] INFO - End
-[17:38:19][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:198)] DEBUG - pack APDU command:(00)(00)(46)(80)(32)(01)(00)(40)(01)(00)(30)(30)(30)(30)(31)(30)(30)(30)(31)(31)(30)(30)(32)(30)(31)(35)(30)(35)(30)(35)(31)(37)(33)(38)(31)(39)(31)(36)(35)(36)(37)(30)(31)(32)(33)(34)(0b)(00)(49)(55)(32)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(fa)(6e)
-[17:38:19][Reader.ApduRecvSender.write(ApduRecvSender.java:124)] INFO - Start
-[17:38:19][Reader.ApduRecvSender.read(ApduRecvSender.java:144)] INFO - Start
-[17:38:24][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:207)] DEBUG - read finish:(00)(00)(fc)
-[17:38:24][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:214)] INFO - read body len:252
-[17:38:24][Reader.ApduRecvSender.read(ApduRecvSender.java:144)] INFO - Start
-[17:38:24][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:222)] DEBUG - recv from Comport total Byte: 256
-[17:38:24][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:233)] INFO - End
-[17:38:24][Reader.PPR_TxnReqOffline.SetRespond(PPR_TxnReqOffline.java:387)] INFO - Start
-[17:38:24][Reader.PPR_TxnReqOffline.SetRespond(PPR_TxnReqOffline.java:414)] INFO - end
-[17:38:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:375)] DEBUG - Reader.PPR_TxnReqOffline recv:(00)(00)(fc)(01)(19)(f4)(01)(00)(90)(22)(01)(06)(00)(00)(02)(14)(20)(20)(20)(22)(00)(25)(7e)(00)(0b)(04)(05)(00)(e1)(97)(68)(4c)(08)(00)(38)(15)(00)(08)(00)(00)(e1)(97)(68)(01)(bd)(c9)(78)(46)(00)(00)(00)(04)(32)(00)(00)(01)(26)(1d)(03)(23)(d0)(00)(4e)(d4)(fe)(00)(0a)(10)(0d)(11)(27)(00)(fe)(11)(27)(00)(01)(01)(00)(00)(00)(00)(02)(25)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(50)(39)(30)(30)(30)(37)(32)(34)(31)(36)(35)(36)(37)(30)(01)(36)(00)(00)(93)(13)(42)(55)(30)(c8)(00)(00)(f9)(08)(00)(fe)(00)(00)(01)(00)(4e)(d4)(fe)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(01)(00)(ad)(00)(00)(a4)(46)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(90)(00)(1a)
-[17:38:24][APIInterface.EasycardAPI.deduct(EasycardAPI.java:116)] INFO - End
+[16:50:36][CMAS.Process.initConfig(Process.java:68)] INFO - =============== API Start ===============
+[16:50:36][CMAS.ConfigManager.<init>(ConfigManager.java:39)] INFO - Start
+[16:50:36][CMAS.ConfigManager.<init>(ConfigManager.java:41)] INFO - End
+[16:50:36][CMAS.ConfigManager.prepareConfig(ConfigManager.java:46)] INFO - Start
+[16:50:36][CMAS.ConfigManager.prepareConfig(ConfigManager.java:78)] INFO - Test Environment
+[16:50:36][CMAS.ConfigManager.prepareConfig(ConfigManager.java:131)] INFO - End
+[16:50:36][CMAS.Process.initConfig(Process.java:73)] INFO - End
+[16:50:36][Reader.ApduRecvSender.setPortName(ApduRecvSender.java:35)] INFO - setter:COM6
+[16:50:36][Reader.EZReader.<init>(EZReader.java:22)] INFO - Start
+[16:50:36][Reader.EZReader.<init>(EZReader.java:25)] INFO - End
+[16:50:36][CMAS.Process.<init>(Process.java:50)] INFO - End
+[16:50:36][CMAS.Process.doSignon(Process.java:96)] INFO - Start
+[16:50:37][Reader.PPR_Reset.<init>(PPR_Reset.java:43)] INFO - Start
+[16:50:37][Reader.PPR_Reset.<init>(PPR_Reset.java:68)] INFO - End
+[16:50:37][Reader.PPR_Reset.SetOffline(PPR_Reset.java:74)] INFO - setter:false
+[16:50:37][Reader.PPR_Reset.SetReq_TMLocationID(PPR_Reset.java:88)] INFO - setter:100011
+[16:50:37][Reader.PPR_Reset.SetReq_TMID(PPR_Reset.java:121)] INFO - setter:00
+[16:50:37][Comm.Socket.SSL.run(SSL.java:217)] DEBUG - SSL Thread Start
+[16:50:37][Reader.PPR_Reset.SetReq_TMTXNDateTime(PPR_Reset.java:155)] INFO - Start
+[16:50:37][Comm.Socket.SSL.run(SSL.java:222)] DEBUG - cnt:0, retry:2
+[16:50:37][Comm.Socket.SSL.connect(SSL.java:114)] INFO - Start
+[16:50:37][Reader.PPR_Reset.SetReq_TMTXNDateTime(PPR_Reset.java:158)] INFO - setter: int(1431679837), format:20150515165037
+[16:50:37][Reader.PPR_Reset.SetReq_TMTXNDateTime(PPR_Reset.java:164)] INFO - End
+[16:50:37][Reader.PPR_Reset.SetReq_TMSerialNumber(PPR_Reset.java:199)] INFO - setter:165677
+[16:50:37][Reader.PPR_Reset.SetReq_TMSerialNumber(PPR_Reset.java:202)] INFO - setter:165677
+[16:50:37][Reader.PPR_Reset.SetReq_TMAgentNumber(PPR_Reset.java:226)] INFO - setter:1234
+[16:50:37][CMAS.Process.getmTimeZone(Process.java:80)] INFO - getter:Asia/Taipei
+[16:50:37][Reader.PPR_Reset.SetReq_TXNDateTime(PPR_Reset.java:264)] INFO - setter: intUnixTime(1431679837),timeZone:Asia/Taipei
+[16:50:37][Reader.PPR_Reset.SetReq_SAMSlotControlFlag(PPR_Reset.java:508)] INFO - Start
+[16:50:37][Reader.PPR_Reset.SetReq_SAMSlotControlFlag(PPR_Reset.java:526)] INFO - End
+[16:50:37][CMAS.Process.doSignon(Process.java:150)] DEBUG - ready to call reader
+[16:50:37][Reader.EZReader.exeCommand(EZReader.java:30)] INFO - Start
+[16:50:37][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:172)] INFO - Start
+[16:50:37][Reader.ApduRecvSender.openPort(ApduRecvSender.java:43)] INFO - Start, comportname:COM6COM6
+[16:50:37][Reader.ApduRecvSender.openPort(ApduRecvSender.java:98)] INFO - End
+[16:50:37][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:198)] DEBUG - pack APDU command:(00)(00)(46)(80)(01)(00)(00)(40)(30)(30)(30)(30)(31)(30)(30)(30)(31)(31)(30)(30)(32)(30)(31)(35)(30)(35)(31)(35)(31)(36)(35)(30)(33)(37)(31)(36)(35)(36)(37)(37)(31)(32)(33)(34)(dd)(23)(56)(55)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(01)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(fa)(81)
+[16:50:37][Reader.ApduRecvSender.write(ApduRecvSender.java:124)] INFO - Start
+[16:50:37][Reader.ApduRecvSender.read(ApduRecvSender.java:144)] INFO - Start
+[16:50:40][Comm.Socket.SSL.connect(SSL.java:155)] INFO - sslSocket OK
+[16:50:40][Comm.Socket.SSL.connect(SSL.java:156)] INFO - end
+[16:51:37][Reader.ApduRecvSender.read(ApduRecvSender.java:158)] ERROR - read SerialPortTimeoutException:Port name - COM6; Method name - readBytes(); Serial port operation timeout (60000 ms).
+[16:51:37][Reader.ApduRecvSender.read(ApduRecvSender.java:163)] INFO - End
+[16:51:37][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:229)] ERROR - 
+[16:51:37][Reader.EZReader.exeCommand(EZReader.java:44)] ERROR - recvBuffer is NULL
+[16:51:37][CMAS.Process.doSignon(Process.java:154)] ERROR - exe PPR_Reset error:-6
+[16:51:37][CMAS.Process.doSignon(Process.java:250)] DEBUG - finally
+[16:51:37][Comm.Socket.SSL.disconnect(SSL.java:71)] INFO - Start
+[16:51:37][Comm.Socket.SSL.disconnect(SSL.java:78)] INFO - SSL Close
+[16:51:37][CMAS.Process.doSignon(Process.java:255)] ERROR - 
+[16:51:37][APIInterface.EasycardAPI.cmasSignOn(EasycardAPI.java:86)] INFO - Do_Signon() result:-6:Reader no response
+[16:51:37][APIInterface.EasycardAPI.cmasSignOn(EasycardAPI.java:88)] INFO - End
+[16:54:04][CMAS.Process.initConfig(Process.java:68)] INFO - =============== API Start ===============
+[16:54:04][CMAS.ConfigManager.<init>(ConfigManager.java:39)] INFO - Start
+[16:54:04][CMAS.ConfigManager.<init>(ConfigManager.java:41)] INFO - End
+[16:54:04][CMAS.ConfigManager.prepareConfig(ConfigManager.java:46)] INFO - Start
+[16:54:04][CMAS.ConfigManager.prepareConfig(ConfigManager.java:78)] INFO - Test Environment
+[16:54:04][CMAS.ConfigManager.prepareConfig(ConfigManager.java:131)] INFO - End
+[16:54:04][CMAS.Process.initConfig(Process.java:73)] INFO - End
+[16:54:04][Reader.ApduRecvSender.setPortName(ApduRecvSender.java:35)] INFO - setter:COM6
+[16:54:04][Reader.EZReader.<init>(EZReader.java:22)] INFO - Start
+[16:54:04][Reader.EZReader.<init>(EZReader.java:25)] INFO - End
+[16:54:04][CMAS.Process.<init>(Process.java:50)] INFO - End
+[16:54:04][CMAS.Process.doSignon(Process.java:96)] INFO - Start
+[16:54:04][Comm.Socket.SSL.run(SSL.java:217)] DEBUG - SSL Thread Start
+[16:54:04][Comm.Socket.SSL.run(SSL.java:222)] DEBUG - cnt:0, retry:2
+[16:54:04][Comm.Socket.SSL.connect(SSL.java:114)] INFO - Start
+[16:54:04][Reader.PPR_Reset.<init>(PPR_Reset.java:43)] INFO - Start
+[16:54:04][Reader.PPR_Reset.<init>(PPR_Reset.java:68)] INFO - End
+[16:54:04][Reader.PPR_Reset.SetOffline(PPR_Reset.java:74)] INFO - setter:false
+[16:54:04][Reader.PPR_Reset.SetReq_TMLocationID(PPR_Reset.java:88)] INFO - setter:100011
+[16:54:04][Reader.PPR_Reset.SetReq_TMID(PPR_Reset.java:121)] INFO - setter:00
+[16:54:04][Reader.PPR_Reset.SetReq_TMTXNDateTime(PPR_Reset.java:155)] INFO - Start
+[16:54:04][Reader.PPR_Reset.SetReq_TMTXNDateTime(PPR_Reset.java:158)] INFO - setter: int(1431680044), format:20150515165404
+[16:54:04][Reader.PPR_Reset.SetReq_TMTXNDateTime(PPR_Reset.java:164)] INFO - End
+[16:54:04][Reader.PPR_Reset.SetReq_TMSerialNumber(PPR_Reset.java:199)] INFO - setter:165677
+[16:54:04][Reader.PPR_Reset.SetReq_TMSerialNumber(PPR_Reset.java:202)] INFO - setter:165677
+[16:54:04][Reader.PPR_Reset.SetReq_TMAgentNumber(PPR_Reset.java:226)] INFO - setter:1234
+[16:54:04][CMAS.Process.getmTimeZone(Process.java:80)] INFO - getter:Asia/Taipei
+[16:54:04][Reader.PPR_Reset.SetReq_TXNDateTime(PPR_Reset.java:264)] INFO - setter: intUnixTime(1431680044),timeZone:Asia/Taipei
+[16:54:04][Reader.PPR_Reset.SetReq_SAMSlotControlFlag(PPR_Reset.java:508)] INFO - Start
+[16:54:04][Reader.PPR_Reset.SetReq_SAMSlotControlFlag(PPR_Reset.java:526)] INFO - End
+[16:54:04][CMAS.Process.doSignon(Process.java:150)] DEBUG - ready to call reader
+[16:54:04][Reader.EZReader.exeCommand(EZReader.java:30)] INFO - Start
+[16:54:04][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:172)] INFO - Start
+[16:54:04][Reader.ApduRecvSender.openPort(ApduRecvSender.java:43)] INFO - Start, comportname:COM6COM6
+[16:54:04][Reader.ApduRecvSender.openPort(ApduRecvSender.java:56)] ERROR - portName(COM6) not exist
+[16:54:04][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:193)] ERROR - openPort:(COM6) fail
+[16:54:04][Reader.EZReader.exeCommand(EZReader.java:44)] ERROR - recvBuffer is NULL
+[16:54:04][CMAS.Process.doSignon(Process.java:154)] ERROR - exe PPR_Reset error:-6
+[16:54:04][CMAS.Process.doSignon(Process.java:250)] DEBUG - finally
+[16:54:04][Comm.Socket.SSL.disconnect(SSL.java:71)] INFO - Start
+[16:54:04][Comm.Socket.SSL.disconnect(SSL.java:73)] ERROR - sslSocket Obj 'NULL'
+[16:54:04][CMAS.Process.doSignon(Process.java:255)] ERROR - 
+[16:54:04][APIInterface.EasycardAPI.cmasSignOn(EasycardAPI.java:86)] INFO - Do_Signon() result:-6:Reader no response
+[16:54:04][APIInterface.EasycardAPI.cmasSignOn(EasycardAPI.java:88)] INFO - End
+[16:54:05][Comm.Socket.SSL.connect(SSL.java:155)] INFO - sslSocket OK
+[16:54:05][Comm.Socket.SSL.connect(SSL.java:156)] INFO - end
+[16:54:20][CMAS.Process.initConfig(Process.java:68)] INFO - =============== API Start ===============
+[16:54:20][CMAS.ConfigManager.<init>(ConfigManager.java:39)] INFO - Start
+[16:54:20][CMAS.ConfigManager.<init>(ConfigManager.java:41)] INFO - End
+[16:54:20][CMAS.ConfigManager.prepareConfig(ConfigManager.java:46)] INFO - Start
+[16:54:20][CMAS.ConfigManager.prepareConfig(ConfigManager.java:78)] INFO - Test Environment
+[16:54:20][CMAS.ConfigManager.prepareConfig(ConfigManager.java:131)] INFO - End
+[16:54:20][CMAS.Process.initConfig(Process.java:73)] INFO - End
+[16:54:20][Reader.ApduRecvSender.setPortName(ApduRecvSender.java:35)] INFO - setter:COM6
+[16:54:20][Reader.EZReader.<init>(EZReader.java:22)] INFO - Start
+[16:54:20][Reader.EZReader.<init>(EZReader.java:25)] INFO - End
+[16:54:20][CMAS.Process.<init>(Process.java:50)] INFO - End
+[16:54:20][CMAS.Process.doSignon(Process.java:96)] INFO - Start
+[16:54:20][Comm.Socket.SSL.run(SSL.java:217)] DEBUG - SSL Thread Start
+[16:54:20][Comm.Socket.SSL.run(SSL.java:222)] DEBUG - cnt:0, retry:2
+[16:54:20][Comm.Socket.SSL.connect(SSL.java:114)] INFO - Start
+[16:54:20][Reader.PPR_Reset.<init>(PPR_Reset.java:43)] INFO - Start
+[16:54:20][Reader.PPR_Reset.<init>(PPR_Reset.java:68)] INFO - End
+[16:54:20][Reader.PPR_Reset.SetOffline(PPR_Reset.java:74)] INFO - setter:false
+[16:54:20][Reader.PPR_Reset.SetReq_TMLocationID(PPR_Reset.java:88)] INFO - setter:100011
+[16:54:20][Reader.PPR_Reset.SetReq_TMID(PPR_Reset.java:121)] INFO - setter:00
+[16:54:20][Reader.PPR_Reset.SetReq_TMTXNDateTime(PPR_Reset.java:155)] INFO - Start
+[16:54:20][Reader.PPR_Reset.SetReq_TMTXNDateTime(PPR_Reset.java:158)] INFO - setter: int(1431680060), format:20150515165420
+[16:54:20][Reader.PPR_Reset.SetReq_TMTXNDateTime(PPR_Reset.java:164)] INFO - End
+[16:54:20][Reader.PPR_Reset.SetReq_TMSerialNumber(PPR_Reset.java:199)] INFO - setter:165677
+[16:54:20][Reader.PPR_Reset.SetReq_TMSerialNumber(PPR_Reset.java:202)] INFO - setter:165677
+[16:54:20][Reader.PPR_Reset.SetReq_TMAgentNumber(PPR_Reset.java:226)] INFO - setter:1234
+[16:54:20][CMAS.Process.getmTimeZone(Process.java:80)] INFO - getter:Asia/Taipei
+[16:54:20][Reader.PPR_Reset.SetReq_TXNDateTime(PPR_Reset.java:264)] INFO - setter: intUnixTime(1431680060),timeZone:Asia/Taipei
+[16:54:20][Reader.PPR_Reset.SetReq_SAMSlotControlFlag(PPR_Reset.java:508)] INFO - Start
+[16:54:20][Reader.PPR_Reset.SetReq_SAMSlotControlFlag(PPR_Reset.java:526)] INFO - End
+[16:54:20][CMAS.Process.doSignon(Process.java:150)] DEBUG - ready to call reader
+[16:54:20][Reader.EZReader.exeCommand(EZReader.java:30)] INFO - Start
+[16:54:20][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:172)] INFO - Start
+[16:54:20][Reader.ApduRecvSender.openPort(ApduRecvSender.java:43)] INFO - Start, comportname:COM6COM6
+[16:54:20][Reader.ApduRecvSender.openPort(ApduRecvSender.java:56)] ERROR - portName(COM6) not exist
+[16:54:20][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:193)] ERROR - openPort:(COM6) fail
+[16:54:20][Reader.EZReader.exeCommand(EZReader.java:44)] ERROR - recvBuffer is NULL
+[16:54:20][CMAS.Process.doSignon(Process.java:154)] ERROR - exe PPR_Reset error:-6
+[16:54:20][CMAS.Process.doSignon(Process.java:250)] DEBUG - finally
+[16:54:20][Comm.Socket.SSL.disconnect(SSL.java:71)] INFO - Start
+[16:54:20][Comm.Socket.SSL.disconnect(SSL.java:73)] ERROR - sslSocket Obj 'NULL'
+[16:54:20][CMAS.Process.doSignon(Process.java:255)] ERROR - 
+[16:54:20][APIInterface.EasycardAPI.cmasSignOn(EasycardAPI.java:86)] INFO - Do_Signon() result:-6:Reader no response
+[16:54:20][APIInterface.EasycardAPI.cmasSignOn(EasycardAPI.java:88)] INFO - End
+[16:54:21][Comm.Socket.SSL.connect(SSL.java:155)] INFO - sslSocket OK
+[16:54:21][Comm.Socket.SSL.connect(SSL.java:156)] INFO - end
+[16:58:01][CMAS.Process.initConfig(Process.java:68)] INFO - =============== API Start ===============
+[16:58:01][CMAS.ConfigManager.<init>(ConfigManager.java:39)] INFO - Start
+[16:58:01][CMAS.ConfigManager.<init>(ConfigManager.java:41)] INFO - End
+[16:58:01][CMAS.ConfigManager.prepareConfig(ConfigManager.java:46)] INFO - Start
+[16:58:01][CMAS.ConfigManager.prepareConfig(ConfigManager.java:78)] INFO - Test Environment
+[16:58:01][CMAS.ConfigManager.prepareConfig(ConfigManager.java:131)] INFO - End
+[16:58:01][CMAS.Process.initConfig(Process.java:73)] INFO - End
+[16:58:01][Reader.ApduRecvSender.setPortName(ApduRecvSender.java:35)] INFO - setter:COM9
+[16:58:01][Reader.EZReader.<init>(EZReader.java:22)] INFO - Start
+[16:58:01][Reader.EZReader.<init>(EZReader.java:25)] INFO - End
+[16:58:01][CMAS.Process.<init>(Process.java:50)] INFO - End
+[16:58:01][CMAS.Process.doSignon(Process.java:96)] INFO - Start
+[16:58:01][Comm.Socket.SSL.run(SSL.java:217)] DEBUG - SSL Thread Start
+[16:58:01][Comm.Socket.SSL.run(SSL.java:222)] DEBUG - cnt:0, retry:2
+[16:58:01][Comm.Socket.SSL.connect(SSL.java:114)] INFO - Start
+[16:58:01][Reader.PPR_Reset.<init>(PPR_Reset.java:43)] INFO - Start
+[16:58:01][Reader.PPR_Reset.<init>(PPR_Reset.java:68)] INFO - End
+[16:58:01][Reader.PPR_Reset.SetOffline(PPR_Reset.java:74)] INFO - setter:false
+[16:58:01][Reader.PPR_Reset.SetReq_TMLocationID(PPR_Reset.java:88)] INFO - setter:100011
+[16:58:01][Reader.PPR_Reset.SetReq_TMID(PPR_Reset.java:121)] INFO - setter:00
+[16:58:01][Reader.PPR_Reset.SetReq_TMTXNDateTime(PPR_Reset.java:155)] INFO - Start
+[16:58:01][Reader.PPR_Reset.SetReq_TMTXNDateTime(PPR_Reset.java:158)] INFO - setter: int(1431680281), format:20150515165801
+[16:58:01][Reader.PPR_Reset.SetReq_TMTXNDateTime(PPR_Reset.java:164)] INFO - End
+[16:58:01][Reader.PPR_Reset.SetReq_TMSerialNumber(PPR_Reset.java:199)] INFO - setter:165677
+[16:58:01][Reader.PPR_Reset.SetReq_TMSerialNumber(PPR_Reset.java:202)] INFO - setter:165677
+[16:58:01][Reader.PPR_Reset.SetReq_TMAgentNumber(PPR_Reset.java:226)] INFO - setter:1234
+[16:58:01][CMAS.Process.getmTimeZone(Process.java:80)] INFO - getter:Asia/Taipei
+[16:58:01][Reader.PPR_Reset.SetReq_TXNDateTime(PPR_Reset.java:264)] INFO - setter: intUnixTime(1431680281),timeZone:Asia/Taipei
+[16:58:01][Reader.PPR_Reset.SetReq_SAMSlotControlFlag(PPR_Reset.java:508)] INFO - Start
+[16:58:01][Reader.PPR_Reset.SetReq_SAMSlotControlFlag(PPR_Reset.java:526)] INFO - End
+[16:58:01][CMAS.Process.doSignon(Process.java:150)] DEBUG - ready to call reader
+[16:58:01][Reader.EZReader.exeCommand(EZReader.java:30)] INFO - Start
+[16:58:01][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:172)] INFO - Start
+[16:58:01][Reader.ApduRecvSender.openPort(ApduRecvSender.java:43)] INFO - Start, comportname:COM9COM9
+[16:58:02][Reader.ApduRecvSender.openPort(ApduRecvSender.java:98)] INFO - End
+[16:58:02][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:198)] DEBUG - pack APDU command:(00)(00)(46)(80)(01)(00)(00)(40)(30)(30)(30)(30)(31)(30)(30)(30)(31)(31)(30)(30)(32)(30)(31)(35)(30)(35)(31)(35)(31)(36)(35)(38)(30)(31)(31)(36)(35)(36)(37)(37)(31)(32)(33)(34)(99)(25)(56)(55)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(01)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(fa)(ce)
+[16:58:02][Reader.ApduRecvSender.write(ApduRecvSender.java:124)] INFO - Start
+[16:58:02][Reader.ApduRecvSender.read(ApduRecvSender.java:144)] INFO - Start
+[16:58:02][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:207)] DEBUG - read finish:(00)(00)(fc)
+[16:58:02][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:214)] INFO - read body len:252
+[16:58:02][Reader.ApduRecvSender.read(ApduRecvSender.java:144)] INFO - Start
+[16:58:02][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:222)] DEBUG - recv from Comport total Byte: 256
+[16:58:02][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:233)] INFO - End
+[16:58:02][Reader.PPR_Reset.debugResponseData(PPR_Reset.java:1346)] DEBUG - pprReset recv:(00)(00)(fc)(01)(b0)(80)(8c)(59)(26)(1d)(03)(23)(d0)(00)(54)(30)(36)(39)(31)(33)(34)(32)(00)(00)(5e)(94)(9b)(f3)(85)(fc)(89)(74)(5b)(ed)(4e)(d4)(fe)(00)(01)(ae)(d3)(a8)(d4)(a4)(af)(95)(c8)(01)(50)(39)(30)(30)(30)(37)(32)(34)(4d)(d9)(82)(20)(20)(00)(71)(02)(10)(27)(00)(f0)(49)(09)(00)(00)(00)(00)(00)(00)(0a)(10)(0d)(11)(27)(00)(df)(01)(df)(02)(df)(03)(df)(04)(df)(05)(df)(06)(df)(07)(df)(08)(df)(09)(df)(10)(df)(11)(df)(12)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(16)(d8)(50)(06)(7f)(ae)(f7)(0d)(01)(60)(7b)(f0)(c3)(04)(fd)(33)(bd)(6b)(ec)(11)(1a)(21)(06)(29)(8a)(c6)(04)(98)(5c)(24)(63)(85)(20)(3b)(3c)(0f)(b8)(0b)(e8)(03)(f4)(01)(01)(a0)(86)(01)(a0)(86)(01)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(64)(8a)(54)(55)(0a)(10)(0d)(11)(27)(00)(00)(00)(16)(d6)(64)(8a)(54)(55)(00)(90)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(90)(00)(e2)
+[16:58:02][CMAS.CmasKernel.<init>(CmasKernel.java:26)] INFO - Start
+[16:58:02][CMAS.CmasKernel.<init>(CmasKernel.java:28)] INFO - End
+[16:58:02][CMAS.CmasKernel.readerField2CmasSpec(CmasKernel.java:34)] INFO - Start
+[16:58:02][Reader.PPR_Reset.GetReq_TMSerialNumber(PPR_Reset.java:216)] INFO - getter:313635363737
+[16:58:02][Reader.PPR_Reset.GetReq_TMSerialNumber(PPR_Reset.java:216)] INFO - getter:313635363737
+[16:58:02][Reader.PPR_Reset.GetReq_TMTXNDateTime(PPR_Reset.java:171)] INFO - getter:20150515165801
+[16:58:02][Reader.PPR_Reset.GetReq_TMTXNTime(PPR_Reset.java:189)] INFO - getter:165801
+[16:58:02][Reader.PPR_Reset.GetReq_TMTXNDateTime(PPR_Reset.java:171)] INFO - getter:20150515165801
+[16:58:02][Reader.PPR_Reset.GetReq_TMTXNTime(PPR_Reset.java:189)] INFO - getter:165801
+[16:58:02][Reader.PPR_Reset.GetReq_TMTXNDateTime(PPR_Reset.java:171)] INFO - getter:20150515165801
+[16:58:02][Reader.PPR_Reset.GetReq_TMTXNDate(PPR_Reset.java:177)] INFO - getter:20150515
+[16:58:02][Reader.PPR_Reset.GetReq_TMTXNDateTime(PPR_Reset.java:171)] INFO - getter:20150515165801
+[16:58:02][Reader.PPR_Reset.GetReq_TMTXNDate(PPR_Reset.java:177)] INFO - getter:20150515
+[16:58:02][Reader.PPR_Reset.GetReq_TMTXNDateTime(PPR_Reset.java:171)] INFO - getter:20150515165801
+[16:58:02][Reader.PPR_Reset.GetReq_TMTXNDate(PPR_Reset.java:177)] INFO - getter:20150515
+[16:58:02][Reader.PPR_Reset.GetReq_TMSerialNumber(PPR_Reset.java:216)] INFO - getter:313635363737
+[16:58:02][Reader.PPR_Reset.GetResp_NewDeviceID(PPR_Reset.java:770)] DEBUG - getter newDeviceID:(0A)(10)(0D)(11)(27)(00)
+[16:58:02][Reader.PPR_Reset.GetResp_NewDeviceID(PPR_Reset.java:771)] INFO - getter:0A100D112700
+[16:58:02][Reader.PPR_Reset.GetResp_DeviceID(PPR_Reset.java:632)] INFO - getter:4ED4FE00
+[16:58:02][Reader.PPR_Reset.GetReq_NewServiceProviderIDByNewDeviceID(PPR_Reset.java:340)] INFO - getter:00010001
+[16:58:02][Reader.PPR_Reset.GetReq_NewLocationID(PPR_Reset.java:303)] INFO - getter:(00)(00)
+[16:58:02][Reader.PPR_Reset.GetResp_OneDayQuotaWriteForMicroPayment(PPR_Reset.java:895)] INFO - getter:3
+[16:58:02][Reader.PPR_Reset.GetResp_CPDReadFlag(PPR_Reset.java:873)] INFO - getter:0
+[16:58:02][Reader.PPR_Reset.GetResp_SAMSignOnControlFlag(PPR_Reset.java:918)] INFO - getter:3
+[16:58:02][Reader.PPR_Reset.GetReq_TMLocationID(PPR_Reset.java:112)] INFO - getter:0000100011
+[16:58:02][Reader.PPR_Reset.GetReq_TMID(PPR_Reset.java:146)] INFO - getter:00
+[16:58:02][Reader.PPR_Reset.GetResp_OneDayQuotaFlagForMicroPayment(PPR_Reset.java:995)] INFO - getter:3
+[16:58:02][Reader.PPR_Reset.GetResp_OnceQuotaFlagForMicroPayment(PPR_Reset.java:1019)] DEBUG - getter:orig:0F,bit:01
+[16:58:02][CMAS.CmasKernel.readerField2CmasSpec(CmasKernel.java:150)] INFO - End
+[16:58:02][CMAS.CmasDataSpec$SubTag6002.getOneDayQuotaFlag(CmasDataSpec.java:182)] INFO - getter:11
+[16:58:02][CMAS.CmasKernel.packRequeset(CmasKernel.java:255)] INFO - pack CMAS data:<TransXML><Trans><T0100>0800</T0100><T0300>881999</T0300><T1100>165677</T1100><T1101>165677</T1101><T1200>165801</T1200><T1201>165801</T1201><T1300>20150515</T1300><T1301>20150515</T1301><T3700>20150515165677</T3700><T4100>0A100D112700</T4100><T4101>4ED4FE00</T4101><T4102>192.168.1.101</T4102><T4103>KOBE-PC-24</T4103><T4104>B0808C59</T4104><T4200>00010001</T4200><T4210>00000</T4210><T4802>00</T4802><T4820>01</T4820><T4823>11</T4823><T4824>00</T4824><T5301>01</T5301><T5307>50067FAEF70D0160</T5307><T5308>7BF0C304FD33BD6B</T5308><T5361>5430363931333432</T5361><T5362>00005E94</T5362><T5363>9BF385FC89745BED</T5363><T5364>014DD9822020DF01DF02DF03DF04DF05DF06DF07DF08DF09DF10DF11DF12000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</T5364><T5365>007102F04909000000000000</T5365><T5366>102700</T5366><T5368>000016D8</T5368><T5369>11</T5369><T5370>0A100D112700000016D6648A545500900000000000000000000000000000000000</T5370><T5371>5039303030373234</T5371><T5501>15051577</T5501><T5503>0000100011</T5503><T5504>00</T5504><T5510>1234</T5510><T5588><T558801>01</T558801><T558803>5566</T558803></T5588><T5588><T558801>02</T558801><T558803>00000</T558803></T5588><T5588><T558801>03</T558801><T558802>EasyCardApi</T558802><T558803>00001</T558803></T5588><T5596><T559601>00000000</T559601><T559602>00000000</T559602><T559603>00000000</T559603><T559604>00000000</T559604></T5596><T6000>261D0323D000</T6000><T6002>11B80B01E8030001A0860101F40100   000010000000000</T6002><T6003>A086010000000000000000000000000000000000000000000000000000000000</T6003><T6004>00000</T6004><T6400>AED3A8D4A4AF95C8</T6400><T6408>EC111A2106298AC604985C246385203B</T6408></Trans></TransXML>
+[16:58:02][Comm.Socket.SSL.connect(SSL.java:155)] INFO - sslSocket OK
+[16:58:02][Comm.Socket.SSL.connect(SSL.java:156)] INFO - end
+[16:58:02][CMAS.Process.doSignon(Process.java:171)] INFO - ssl OK
+[16:58:02][CMAS.Process.doSignon(Process.java:174)] DEBUG - SSL no alive
+[16:58:02][Comm.Socket.SSL.sendRequest(SSL.java:173)] DEBUG - isBound:true
+[16:58:02][Comm.Socket.SSL.sendRequest(SSL.java:174)] DEBUG - isClosed:false
+[16:58:02][Comm.Socket.SSL.sendRequest(SSL.java:175)] DEBUG - isConnected:true
+[16:58:02][Comm.Socket.SSL.sendRequest(SSL.java:176)] DEBUG - isInputShutdown:false
+[16:58:02][Comm.Socket.SSL.sendRequest(SSL.java:177)] DEBUG - isOutputShutdown:false
+[16:58:02][Comm.Socket.SSL.sendRequest(SSL.java:179)] DEBUG - setting Timeout:30(sec)
+[16:58:03][Comm.Socket.MyX509TrustManager.checkServerTrusted(MyX509TrustManager.java:47)] INFO - Pass Server Cert. Check
+[16:58:03][Comm.Socket.SSL.sendRequest(SSL.java:190)] INFO - SSL Send OK!! waittin...recv response
+[16:58:04][CMAS.Process.doSignon(Process.java:180)] DEBUG - CMAS Response:<?xml version="1.0" encoding="UTF-8" standalone="no"?><TransXML><Trans><T0100>0810</T0100><T0300>881999</T0300><T0400>0</T0400><T0403>0</T0403><T0407>0</T0407><T0408>0</T0408><T0409>0</T0409><T0410>0</T0410><T1100>165678</T1100><T1101>165677</T1101><T1200>165814</T1200><T1201>165801</T1201><T1300>20150515</T1300><T1301>20150515</T1301><T3700>20150515165677</T3700><T3800>5qe3dp</T3800><T3900>00</T3900><T4100>0A100D112700</T4100><T4101>4ED4FE00</T4101><T4102>192.168.1.101</T4102><T4103>KOBE-PC-24</T4103><T4104>B0808C59</T4104><T4200>00010001</T4200><T4210>00000</T4210><T4802>00</T4802><T4813>0</T4813><T4814>0</T4814><T4815>0</T4815><T4816>0</T4816><T4817>0</T4817><T4820>01</T4820><T4823>11</T4823><T4824>00</T4824><T5301>01</T5301><T5303>02</T5303><T5306>F11EA1</T5306><T5307>50067FAEF70D0160</T5307><T5308>7BF0C304FD33BD6B</T5308><T5361>5430363931333432</T5361><T5362>00005E94</T5362><T5363>9BF385FC89745BED</T5363><T5364>014DD9822020DF01DF02DF03DF04DF05DF06DF07DF08DF09DF10DF11DF12000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</T5364><T5365>007102F04909000000000000</T5365><T5366>102700</T5366><T5368>000016D8</T5368><T5369>11</T5369><T5370>0A100D112700000016D6648A545500900000000000000000000000000000000000</T5370><T5371>5039303030373234</T5371><T5501>15051577</T5501><T5503>0000100011</T5503><T5504>00</T5504><T5510>1234</T5510><T5588><T558801>01</T558801><T558803>000001</T558803></T5588><T5588><T558801>02</T558801><T558802>BIG</T558802><T558803>03342</T558803></T5588><T5588><T558801>03</T558801><T558802>ECCAPP-V13</T558802><T558803>000013</T558803></T5588><T5588><T558801>04</T558801><T558803>000173</T558803></T5588><T5591>0</T5591><T5595><T559502>TM01</T559502><T559503>5909</T559503><T559504>20131125</T559504><T559505>99991231</T559505></T5595><T5595><T559502>TM02</T559502><T559503>00010001</T559503><T559504>20131125</T559504><T559505>99991231</T559505></T5595><T5595><T559502>TM03</T559502><T559503>1    </T559503><T559504>20131125</T559504><T559505>99991231</T559505></T5595><T5595><T559502>TM04</T559502><T559503>0000100011</T559503><T559504>20131125</T559504><T559505>99991231</T559505></T5595><T5595><T559502>TM17</T559502><T559503>特店00010001</T559503><T559504>20131125</T559504><T559505>99991231</T559505></T5595><T5595><T559502>TM18</T559502><T559503>分店0000100011</T559503><T559504>20131125</T559504><T559505>99991231</T559505></T5595><T5595><T559501>000001</T559501><T559502>TM09</T559502><T559503>123456</T559503><T559504>20130101</T559504><T559505>20990101</T559505></T5595><T5595><T559501>000001</T559501><T559502>TM10</T559502><T559503>/OUT/ssl/ck1.cer</T559503><T559504>20130101</T559504><T559505>20990101</T559505></T5595><T5595><T559501>03342</T559501><T559502>TM11</T559502><T559503>/out/blc/BLC03342A_140422.BIG</T559503><T559504>19700101</T559504><T559505>99991231</T559505></T5595><T5595><T559501>000013</T559501><T559502>TM12</T559502><T559503>/OUT/exe/ECCAPP/ECCAPP0013a.CAP</T559503><T559504>19700101</T559504><T559505>99991231</T559505></T5595><T5595><T559501>000173</T559501><T559502>ER01</T559502><T559503>ON</T559503><T559504>20150501</T559504><T559505>20151001</T559505></T5595><T5595><T559501>000173</T559501><T559502>ER02</T559502><T559503>RS232</T559503><T559504>20150501</T559504><T559505>20151001</T559505></T5595><T5595><T559501>000173</T559501><T559502>ER03</T559502><T559503>1</T559503><T559504>20150501</T559504><T559505>20151001</T559505></T5595><T5595><T559501>000173</T559501><T559502>TM19</T559502><T559503>1</T559503><T559504>20150501</T559504><T559505>20151001</T559505></T5595><T5595><T559501>000173</T559501><T559502>TM20</T559502><T559503>收銀機測試</T559503><T559504>20150501</T559504><T559505>20151001</T559505></T5595><T5595><T559501>000173</T559501><T559502>TM25</T559502><T559503>1</T559503><T559504>20150501</T559504><T559505>20151001</T559505></T5595><T5595><T559501>000173</T559501><T559502>TM30</T559502><T559503>110101100</T559503><T559504>20150501</T559504><T559505>20151001</T559505></T5595><T5595><T559501>000173</T559501><T559502>TM31</T559502><T559503>10</T559503><T559504>20150501</T559504><T559505>20151001</T559505></T5595><T5596><T559601>00000000</T559601><T559602>00000001</T559602><T559603>00000000</T559603><T559604>00000001</T559604></T5596><T6000>261D0323D000</T6000><T6002>11B80B01E8030001A0860101F40100000000000000000000</T6002><T6003>A086010000000000000000000000000000000000000000000000000000000000</T6003><T6004>00000</T6004><T6400>AED3A8D4A4AF95C8</T6400><T6401>5626F093D942F1C4</T6401><T6408>EC111A2106298AC604985C246385203B</T6408><T6409>A73BE2CF2DA995FDA9E83CB1EA2F2E72</T6409></Trans></TransXML>
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:100
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:300
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:400
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:403
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:407
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:408
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:409
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:410
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:1100
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:1101
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:1200
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:1201
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:1300
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:1301
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:3700
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:3800
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:3900
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:4100
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:4101
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:4102
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:4103
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:4104
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:4200
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:4210
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:4802
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:4813
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:4814
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:4815
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:4816
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:4817
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:4820
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:4823
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:4824
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5301
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5303
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5306
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5307
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5308
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5361
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5362
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5363
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5364
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5365
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5366
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5368
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5369
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5370
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5371
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5501
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5503
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5504
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5510
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5588
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5588
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5588
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5588
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5591
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5595
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:TM01
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:5909
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:20131125
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:99991231
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5595
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:TM02
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:00010001
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:20131125
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:99991231
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5595
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:TM03
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:1    
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:20131125
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:99991231
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5595
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:TM04
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:0000100011
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:20131125
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:99991231
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5595
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:TM17
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:特店00010001
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:20131125
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:99991231
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5595
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:TM18
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:分店0000100011
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:20131125
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:99991231
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5595
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:000001
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:TM09
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:123456
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:20130101
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:20990101
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5595
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:000001
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:TM10
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:/OUT/ssl/ck1.cer
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:20130101
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:20990101
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5595
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:03342
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:TM11
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:/out/blc/BLC03342A_140422.BIG
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:19700101
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:99991231
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5595
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:000013
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:TM12
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:/OUT/exe/ECCAPP/ECCAPP0013a.CAP
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:19700101
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:99991231
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5595
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:000173
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:ER01
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:ON
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:20150501
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:20151001
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5595
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:000173
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:ER02
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:RS232
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:20150501
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:20151001
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5595
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:000173
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:ER03
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:1
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:20150501
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:20151001
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5595
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:000173
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:TM19
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:1
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:20150501
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:20151001
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5595
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:000173
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:TM20
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:收銀機測試
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:20150501
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:20151001
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5595
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:000173
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:TM25
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:1
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:20150501
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:20151001
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5595
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:000173
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:TM30
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:110101100
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:20150501
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:20151001
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5595
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:000173
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:TM31
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:10
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:20150501
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1476)] DEBUG - 5595 value:20151001
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:5596
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:6000
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:6002
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1516)] DEBUG - 6002_data:11B80B01E8030001A0860101F40100000000000000000000
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1518)] DEBUG - setOneDayQuotaFlag:11
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:6003
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:6004
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:6400
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:6401
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1549)] DEBUG - CMAS Response 6401:5626F093D942F1C4
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:6408
+[16:58:04][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:63)] DEBUG - tag:6409
+[16:58:04][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1559)] DEBUG - CMAS Response 6409:A73BE2CF2DA995FDA9E83CB1EA2F2E72
+[16:58:04][CMAS.CmasDataSpec.getT6401(CmasDataSpec.java:1190)] INFO - getter:5626F093D942F1C4
+[16:58:04][CMAS.CmasDataSpec.getT6409(CmasDataSpec.java:1239)] INFO - getter:A73BE2CF2DA995FDA9E83CB1EA2F2E72
+[16:58:04][Reader.PPR_SignOn.SetReq_CheckEVFlagForMifareOnly(PPR_SignOn.java:293)] INFO - setter:
+[16:58:04][Reader.PPR_SignOn.SetReq_MerchantLimitUseForMicroPayment(PPR_SignOn.java:320)] INFO - setter:00
+[16:58:04][Reader.PPR_SignOn.SetReq_MerchantLimitUseForMicroPayment(PPR_SignOn.java:323)] DEBUG - OneDay..value:3C
+[16:58:04][Reader.PPR_SignOn.SetReq_MerchantLimitUseForMicroPayment(PPR_SignOn.java:328)] DEBUG - clearBit
+[16:58:04][Reader.PPR_SignOn.SetReq_MerchantLimitUseForMicroPayment(PPR_SignOn.java:332)] DEBUG - OneDay..value:3C
+[16:58:04][CMAS.CmasDataSpec$SubTag6002.getOneDayQuotaFlag(CmasDataSpec.java:182)] INFO - getter:11
+[16:58:04][Reader.PPR_SignOn.SetReq_OneDayQuotaFlagForMicroPayment(PPR_SignOn.java:354)] INFO - setter:11
+[16:58:04][Reader.EZReader.exeCommand(EZReader.java:30)] INFO - Start
+[16:58:04][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:172)] INFO - Start
+[16:58:04][Reader.ApduRecvSender.openPort(ApduRecvSender.java:43)] INFO - Start, comportname:COM9COM9
+[16:58:04][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:198)] DEBUG - pack APDU command:(00)(00)(86)(80)(02)(00)(00)(80)(56)(26)(f0)(93)(d9)(42)(f1)(c4)(a7)(3b)(e2)(cf)(2d)(a9)(95)(fd)(a9)(e8)(3c)(b1)(ea)(2f)(2e)(72)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(3c)(0f)(b8)(0b)(e8)(03)(f4)(01)(01)(a0)(86)(01)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(02)(f1)(1e)(a1)(1d)(d8)
+[16:58:04][Reader.ApduRecvSender.write(ApduRecvSender.java:124)] INFO - Start
+[16:58:04][Reader.ApduRecvSender.read(ApduRecvSender.java:144)] INFO - Start
+[16:58:04][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:207)] DEBUG - read finish:(00)(00)(1f)
+[16:58:04][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:214)] INFO - read body len:31
+[16:58:04][Reader.ApduRecvSender.read(ApduRecvSender.java:144)] INFO - Start
+[16:58:04][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:222)] DEBUG - recv from Comport total Byte: 35
+[16:58:04][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:233)] INFO - End
+[16:58:04][Reader.APDU.checkResponseFormat(APDU.java:134)] DEBUG - statusCode:9000
+[16:58:04][Reader.PPR_SignOn.debugResponseData(PPR_SignOn.java:662)] DEBUG - pprSignon recv:(00)(00)(1f)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(90)(00)(8f)
+[16:58:04][CMAS.Process.doSignon(Process.java:202)] DEBUG - After SerialNumber ++:165678
+[16:58:04][CMAS.CmasKernel.readerField2CmasSpec(CmasKernel.java:161)] DEBUG - getTM_Serial_Number:165678
+[16:58:04][CMAS.CmasKernel.packRequeset(CmasKernel.java:255)] INFO - pack CMAS data:<TransXML><Trans><T0100>0820</T0100><T0300>881999</T0300><T1100>165678</T1100><T1101>165678</T1101><T1200>165804</T1200><T1300>20150515</T1300><T3700>20150515165678</T3700><T4100>0A100D112700</T4100><T4200>00010001</T4200><T4210>00000</T4210><T4825>00</T4825><T5501>15051578</T5501><T5503>0000100011</T5503><T5504>00</T5504><T5510>1234</T5510></Trans></TransXML>
+[16:58:04][CMAS.Process.doSignon(Process.java:223)] DEBUG - SignOn Adv:<TransXML><Trans><T0100>0820</T0100><T0300>881999</T0300><T1100>165678</T1100><T1101>165678</T1101><T1200>165804</T1200><T1300>20150515</T1300><T3700>20150515165678</T3700><T4100>0A100D112700</T4100><T4200>00010001</T4200><T4210>00000</T4210><T4825>00</T4825><T5501>15051578</T5501><T5503>0000100011</T5503><T5504>00</T5504><T5510>1234</T5510></Trans></TransXML>
+[16:58:04][Comm.Socket.SSL.sendRequest(SSL.java:173)] DEBUG - isBound:true
+[16:58:04][Comm.Socket.SSL.sendRequest(SSL.java:174)] DEBUG - isClosed:false
+[16:58:04][Comm.Socket.SSL.sendRequest(SSL.java:175)] DEBUG - isConnected:true
+[16:58:04][Comm.Socket.SSL.sendRequest(SSL.java:176)] DEBUG - isInputShutdown:false
+[16:58:04][Comm.Socket.SSL.sendRequest(SSL.java:177)] DEBUG - isOutputShutdown:false
+[16:58:04][Comm.Socket.SSL.sendRequest(SSL.java:179)] DEBUG - setting Timeout:30(sec)
+[16:58:04][Comm.Socket.SSL.sendRequest(SSL.java:190)] INFO - SSL Send OK!! waittin...recv response
+[16:58:04][CMAS.Process.doSignon(Process.java:225)] DEBUG - SignOn Adv Response:<?xml version="1.0" encoding="UTF-8" standalone="no"?><TransXML><Trans><T0100>0830</T0100><T0300>881999</T0300><T0400>0</T0400><T0403>0</T0403><T0407>0</T0407><T0408>0</T0408><T0409>0</T0409><T0410>0</T0410><T1100>165678</T1100><T1101>165678</T1101><T1200>165814</T1200><T1300>20150515</T1300><T3700>20150515165678</T3700><T3800>zn7tzf</T3800><T3900>00</T3900><T4100>0A100D112700</T4100><T4200>00010001</T4200><T4210>00000</T4210><T4813>0</T4813><T4814>0</T4814><T4815>0</T4815><T4816>0</T4816><T4817>0</T4817><T4823>11</T4823><T4824>00</T4824><T4825>00</T4825><T5369>11</T5369><T5501>15051578</T5501><T5503>0000100011</T5503><T5504>00</T5504><T5510>1234</T5510><T5591>0</T5591></Trans></TransXML>
+[16:58:04][Comm.FTP.Ftp4j.connect2Server(Ftp4j.java:74)] INFO - Enable FTPS
+[16:58:05][Comm.Socket.MyX509TrustManager.checkServerTrusted(MyX509TrustManager.java:47)] INFO - Pass Server Cert. Check
+[16:58:05][CMAS.CmasFTPList.run(CmasFTPList.java:108)] INFO - ftps connect OK
+[16:58:05][CMAS.CmasFTPList.startDownload(CmasFTPList.java:60)] INFO - FTP Connect OK
+[16:58:05][Comm.FTP.Ftp4j.download(Ftp4j.java:157)] INFO - ftp download Remote:/ftp_edc/OUT/ssl/ck1.cer to local:config/CA.cer
+[16:58:06][Comm.FTP.Ftp4jListener.started(Ftp4jListener.java:30)] INFO - ftpListener started
+[16:58:06][Comm.Socket.MyX509TrustManager.checkServerTrusted(MyX509TrustManager.java:47)] INFO - Pass Server Cert. Check
+[16:58:06][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:06][Comm.FTP.Ftp4jListener.completed(Ftp4jListener.java:18)] INFO - ftpListener completed
+[16:58:06][Comm.FTP.Ftp4j.download(Ftp4j.java:157)] INFO - ftp download Remote:/ftp_edc/out/blc/BLC03342A_140422.BIG to local:config/CardNumber.black
+[16:58:07][Comm.FTP.Ftp4jListener.started(Ftp4jListener.java:30)] INFO - ftpListener started
+[16:58:07][Comm.Socket.MyX509TrustManager.checkServerTrusted(MyX509TrustManager.java:47)] INFO - Pass Server Cert. Check
+[16:58:07][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:07][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:07][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:07][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:07][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:07][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:07][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:08][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:08][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:08][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:08][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:08][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:08][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:08][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:08][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:08][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:09][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:09][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:09][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:09][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:09][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:09][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:09][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:09][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:09][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:09][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:09][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:09][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:09][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:09][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:09][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:09][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:09][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:10][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:10][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:10][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:10][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:10][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:10][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:10][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:11][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:11][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:11][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:11][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:11][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:11][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:11][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:11][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:11][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:11][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:11][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:11][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:11][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:11][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:11][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:11][Comm.FTP.Ftp4jListener.completed(Ftp4jListener.java:18)] INFO - ftpListener completed
+[16:58:11][Comm.FTP.Ftp4j.download(Ftp4j.java:157)] INFO - ftp download Remote:/ftp_edc/OUT/exe/ECCAPP/ECCAPP0013a.CAP to local:config/EasyCardApi.jar
+[16:58:12][Comm.FTP.Ftp4jListener.started(Ftp4jListener.java:30)] INFO - ftpListener started
+[16:58:12][Comm.Socket.MyX509TrustManager.checkServerTrusted(MyX509TrustManager.java:47)] INFO - Pass Server Cert. Check
+[16:58:12][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:12][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:12][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:12][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:12][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:13][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:13][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:13][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:13][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:13][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:13][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:13][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:13][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:13][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:13][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:14][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:14][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:14][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:14][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:14][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:14][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:14][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:14][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:14][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[16:58:14][Comm.FTP.Ftp4jListener.completed(Ftp4jListener.java:18)] INFO - ftpListener completed
+[16:58:14][CMAS.Process.doSignon(Process.java:250)] DEBUG - finally
+[16:58:14][Comm.Socket.SSL.disconnect(SSL.java:71)] INFO - Start
+[16:58:14][Comm.Socket.SSL.disconnect(SSL.java:78)] INFO - SSL Close
+[16:58:14][CMAS.ConfigManager.saveConfig(ConfigManager.java:137)] INFO - Start
+[16:58:15][CMAS.ConfigManager.saveConfig(ConfigManager.java:159)] INFO - end
+[16:58:15][CMAS.Process.doSignon(Process.java:259)] INFO - End
+[16:58:15][APIInterface.EasycardAPI.cmasSignOn(EasycardAPI.java:86)] INFO - Do_Signon() result:0:Success
+[16:58:15][APIInterface.EasycardAPI.cmasSignOn(EasycardAPI.java:88)] INFO - End
+[16:58:34][APIInterface.EasycardAPI.deduct(EasycardAPI.java:113)] INFO - Start
+[16:58:34][CMAS.Process.initConfig(Process.java:68)] INFO - =============== API Start ===============
+[16:58:34][CMAS.ConfigManager.<init>(ConfigManager.java:39)] INFO - Start
+[16:58:34][CMAS.ConfigManager.<init>(ConfigManager.java:41)] INFO - End
+[16:58:34][CMAS.ConfigManager.prepareConfig(ConfigManager.java:46)] INFO - Start
+[16:58:34][CMAS.ConfigManager.prepareConfig(ConfigManager.java:78)] INFO - Test Environment
+[16:58:34][CMAS.ConfigManager.prepareConfig(ConfigManager.java:131)] INFO - End
+[16:58:34][CMAS.Process.initConfig(Process.java:73)] INFO - End
+[16:58:34][Reader.ApduRecvSender.setPortName(ApduRecvSender.java:35)] INFO - setter:COM9
+[16:58:34][Reader.EZReader.<init>(EZReader.java:22)] INFO - Start
+[16:58:34][Reader.EZReader.<init>(EZReader.java:25)] INFO - End
+[16:58:34][CMAS.Process.<init>(Process.java:50)] INFO - End
+[16:58:34][Reader.PPR_TxnReqOffline.setReqMsgType(PPR_TxnReqOffline.java:62)] INFO - setter:1
+[16:58:34][Reader.PPR_TxnReqOffline.setReqTMLocationID(PPR_TxnReqOffline.java:96)] INFO - setter:100011
+[16:58:34][Reader.PPR_TxnReqOffline.setReqTMID(PPR_TxnReqOffline.java:122)] INFO - setter:00
+[16:58:34][Reader.PPR_TxnReqOffline.setReqTMTXNDateTime(PPR_TxnReqOffline.java:148)] INFO - setter:1431680314
+[16:58:34][Reader.PPR_TxnReqOffline.setReqTMSerialNumber(PPR_TxnReqOffline.java:170)] INFO - setter:165678
+[16:58:34][Reader.PPR_TxnReqOffline.setReqTMAgentNumber(PPR_TxnReqOffline.java:193)] INFO - setter:1234
+[16:58:34][CMAS.Process.getmTimeZone(Process.java:80)] INFO - getter:Asia/Taipei
+[16:58:34][Reader.PPR_TxnReqOffline.setReqTXNDateTime(PPR_TxnReqOffline.java:223)] INFO - setter: intUnixTime(1431680314),timeZone:Asia/Taipei
+[16:58:34][Reader.PPR_TxnReqOffline.setReqTxnAmt(PPR_TxnReqOffline.java:240)] INFO - setter:501
+[16:58:34][Reader.EZReader.exeCommand(EZReader.java:30)] INFO - Start
+[16:58:34][Reader.PPR_TxnReqOffline.GetRequest(PPR_TxnReqOffline.java:864)] DEBUG - Reader.PPR_TxnReqOffline request:(00)(00)(46)(80)(32)(01)(00)(40)(01)(00)(30)(30)(30)(30)(31)(30)(30)(30)(31)(31)(30)(30)(32)(30)(31)(35)(30)(35)(31)(35)(31)(36)(35)(38)(33)(34)(31)(36)(35)(36)(37)(38)(31)(32)(33)(34)(ba)(25)(56)(55)(f5)(01)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(fa)(22)
+[16:58:34][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:172)] INFO - Start
+[16:58:34][Reader.ApduRecvSender.openPort(ApduRecvSender.java:43)] INFO - Start, comportname:COM9COM9
+[16:58:34][Reader.ApduRecvSender.openPort(ApduRecvSender.java:98)] INFO - End
+[16:58:34][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:198)] DEBUG - pack APDU command:(00)(00)(46)(80)(32)(01)(00)(40)(01)(00)(30)(30)(30)(30)(31)(30)(30)(30)(31)(31)(30)(30)(32)(30)(31)(35)(30)(35)(31)(35)(31)(36)(35)(38)(33)(34)(31)(36)(35)(36)(37)(38)(31)(32)(33)(34)(ba)(25)(56)(55)(f5)(01)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(fa)(22)
+[16:58:34][Reader.ApduRecvSender.write(ApduRecvSender.java:124)] INFO - Start
+[16:58:34][Reader.ApduRecvSender.read(ApduRecvSender.java:144)] INFO - Start
+[16:58:39][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:207)] DEBUG - read finish:(00)(00)(fc)
+[16:58:39][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:214)] INFO - read body len:252
+[16:58:39][Reader.ApduRecvSender.read(ApduRecvSender.java:144)] INFO - Start
+[16:58:39][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:222)] DEBUG - recv from Comport total Byte: 256
+[16:58:39][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:233)] INFO - End
+[16:58:39][Reader.PPR_TxnReqOffline.SetRespond(PPR_TxnReqOffline.java:970)] INFO - Start
+[16:58:39][Reader.APDU.checkResponseFormat(APDU.java:134)] DEBUG - statusCode:6403
+[16:58:39][Reader.PPR_TxnReqOffline.SetRespond(PPR_TxnReqOffline.java:978)] INFO - end
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:890)] DEBUG - Reader.PPR_TxnReqOffline recv:(00)(00)(fc)(00)(19)(f4)(01)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(e1)(97)(68)(89)(00)(00)(87)(01)(00)(08)(00)(00)(e1)(97)(68)(01)(fe)(62)(e8)(d0)(00)(00)(00)(04)(f5)(01)(00)(01)(26)(1d)(03)(23)(d0)(01)(4e)(d4)(fe)(00)(0a)(10)(0d)(11)(27)(00)(fe)(11)(27)(00)(00)(00)(00)(00)(00)(00)(02)(39)(00)(00)(00)(54)(30)(36)(39)(31)(33)(34)(32)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(31)(36)(35)(36)(37)(38)(00)(84)(00)(00)(5d)(2e)(36)(55)(0b)(01)(00)(00)(cf)(00)(00)(fe)(00)(00)(01)(00)(47)(d4)(fe)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(01)(00)(14)(00)(00)(ae)(46)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(64)(03)(02)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:892)] DEBUG - Purse Version No.:(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:893)] DEBUG - Purse Usgage Control:(19)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:894)] DEBUG - Single AutoLoad Txn Amt:(f4)(01)(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:895)] DEBUG - PID:(00)(00)(00)(00)(00)(00)(00)(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:896)] DEBUG - CPU Admin. Key KVN:(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:898)] DEBUG - Credit Key KVN:(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:899)] DEBUG - Sign.key KVN:(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:900)] DEBUG - CPU Issuer key KVN:(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:901)] DEBUG - CTC:(00)(00)(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:902)] DEBUG - TM:(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:904)] DEBUG - TQ:(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:905)] DEBUG - Sub Area Code:(00)(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:906)] DEBUG - Purse Exp. Date:(00)(e1)(97)(68)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:907)] DEBUG - Purse Balance Before Txn:(89)(00)(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:908)] DEBUG - Txn SN Before Txn:(87)(01)(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:910)] DEBUG - Card Type:(08)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:911)] DEBUG - Personal Profile:(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:912)] DEBUG - Profile Exp Date:(00)(e1)(97)(68)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:913)] DEBUG - Area Code:(01)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:914)] DEBUG - Card Physical ID:(fe)(62)(e8)(d0)(00)(00)(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:916)] DEBUG - Card Physical ID Len:(04)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:917)] DEBUG - Txn Amt:(f5)(01)(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:918)] DEBUG - Spec. Version Number:(01)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:919)] DEBUG - Reader FW Version:(26)(1d)(03)(23)(d0)(01)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:920)] DEBUG - Device ID:(4e)(d4)(fe)(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:922)] DEBUG - New Device ID:(0a)(10)(0d)(11)(27)(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:923)] DEBUG - Service Provider ID:(FE)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:924)] DEBUG - New Service Provider ID:(11)(27)(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:925)] DEBUG - Location ID：(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:926)] DEBUG - New Location ID:(00)(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:928)] DEBUG - Deposit:(00)(00)(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:929)] DEBUG - Issuer Code:(02)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:930)] DEBUG - Bank Code:(39)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:931)] DEBUG - CPD Read Flag:(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:932)] DEBUG - CPD SAM ID:(00)(00)(54)(30)(36)(39)(31)(33)(34)(32)(00)(00)(00)(00)(00)(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:934)] DEBUG - CPD RAN:(00)(00)(00)(00)(00)(00)(00)(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:935)] DEBUG - CPD KVN:(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:936)] DEBUG - SID S-TAC:(00)(00)(00)(00)(00)(00)(00)(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:937)] DEBUG - TM Serial Number:(31)(36)(35)(36)(37)(38)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:938)] DEBUG - Last Credit Txn Log:(00)(84)(00)(00)(5d)(2e)(36)(55)(0b)(01)(00)(00)(cf)(00)(00)(fe)(00)(00)(01)(00)(47)(d4)(fe)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:940)] DEBUG - SVCrypto:(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:941)] DEBUG - Msg Type:(01)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:942)] DEBUG - Sub Type:(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:943)] DEBUG - Card One Day Quota:(14)(00)(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:944)] DEBUG - Card One Day Quota Date:(ae)(46)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:946)] DEBUG - TSQN:(00)(00)(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:947)] DEBUG - Purse Balance:(00)(00)(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:948)] DEBUG - Confirm Code:(00)(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:949)] DEBUG - SIGN:(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:950)] DEBUG - SID:(00)(00)(00)(00)(00)(00)(00)(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:952)] DEBUG - MAC:(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:953)] DEBUG - Txn Date Time:(00)(00)(00)(00)
+[16:58:39][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:954)] DEBUG - RFU:(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)
+[16:58:39][Reader.EZReader.exeCommand(EZReader.java:60)] ERROR - APDU respCode:6403
+[16:58:39][CMAS.Process.doDeduct(Process.java:307)] ERROR - errID:6403, msg:餘額不足
+[16:58:39][APIInterface.EasycardAPI.deduct(EasycardAPI.java:116)] INFO - Txn Result:6403_餘額不足
+[16:58:39][APIInterface.EasycardAPI.deduct(EasycardAPI.java:118)] INFO - End
+[17:02:22][APIInterface.EasycardAPI.deduct(EasycardAPI.java:113)] INFO - Start
+[17:02:23][CMAS.Process.initConfig(Process.java:68)] INFO - =============== API Start ===============
+[17:02:23][CMAS.ConfigManager.<init>(ConfigManager.java:39)] INFO - Start
+[17:02:23][CMAS.ConfigManager.<init>(ConfigManager.java:41)] INFO - End
+[17:02:23][CMAS.ConfigManager.prepareConfig(ConfigManager.java:46)] INFO - Start
+[17:02:23][CMAS.ConfigManager.prepareConfig(ConfigManager.java:78)] INFO - Test Environment
+[17:02:23][CMAS.ConfigManager.prepareConfig(ConfigManager.java:131)] INFO - End
+[17:02:23][CMAS.Process.initConfig(Process.java:73)] INFO - End
+[17:02:23][Reader.ApduRecvSender.setPortName(ApduRecvSender.java:35)] INFO - setter:COM9
+[17:02:23][Reader.EZReader.<init>(EZReader.java:22)] INFO - Start
+[17:02:23][Reader.EZReader.<init>(EZReader.java:25)] INFO - End
+[17:02:23][CMAS.Process.<init>(Process.java:50)] INFO - End
+[17:02:23][Reader.PPR_TxnReqOffline.setReqMsgType(PPR_TxnReqOffline.java:62)] INFO - setter:1
+[17:02:23][Reader.PPR_TxnReqOffline.setReqTMLocationID(PPR_TxnReqOffline.java:96)] INFO - setter:100011
+[17:02:23][Reader.PPR_TxnReqOffline.setReqTMID(PPR_TxnReqOffline.java:122)] INFO - setter:00
+[17:02:23][Reader.PPR_TxnReqOffline.setReqTMTXNDateTime(PPR_TxnReqOffline.java:148)] INFO - setter:1431680543
+[17:02:23][Reader.PPR_TxnReqOffline.setReqTMSerialNumber(PPR_TxnReqOffline.java:170)] INFO - setter:165678
+[17:02:23][Reader.PPR_TxnReqOffline.setReqTMAgentNumber(PPR_TxnReqOffline.java:193)] INFO - setter:1234
+[17:02:23][CMAS.Process.getmTimeZone(Process.java:80)] INFO - getter:Asia/Taipei
+[17:02:23][Reader.PPR_TxnReqOffline.setReqTXNDateTime(PPR_TxnReqOffline.java:223)] INFO - setter: intUnixTime(1431680543),timeZone:Asia/Taipei
+[17:02:23][Reader.PPR_TxnReqOffline.setReqTxnAmt(PPR_TxnReqOffline.java:240)] INFO - setter:50
+[17:02:23][Reader.EZReader.exeCommand(EZReader.java:30)] INFO - Start
+[17:02:23][Reader.PPR_TxnReqOffline.GetRequest(PPR_TxnReqOffline.java:864)] DEBUG - Reader.PPR_TxnReqOffline request:(00)(00)(46)(80)(32)(01)(00)(40)(01)(00)(30)(30)(30)(30)(31)(30)(30)(30)(31)(31)(30)(30)(32)(30)(31)(35)(30)(35)(31)(35)(31)(37)(30)(32)(32)(33)(31)(36)(35)(36)(37)(38)(31)(32)(33)(34)(9f)(26)(56)(55)(32)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(fa)(ca)
+[17:02:23][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:172)] INFO - Start
+[17:02:23][Reader.ApduRecvSender.openPort(ApduRecvSender.java:43)] INFO - Start, comportname:COM9COM9
+[17:02:23][Reader.ApduRecvSender.openPort(ApduRecvSender.java:98)] INFO - End
+[17:02:23][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:198)] DEBUG - pack APDU command:(00)(00)(46)(80)(32)(01)(00)(40)(01)(00)(30)(30)(30)(30)(31)(30)(30)(30)(31)(31)(30)(30)(32)(30)(31)(35)(30)(35)(31)(35)(31)(37)(30)(32)(32)(33)(31)(36)(35)(36)(37)(38)(31)(32)(33)(34)(9f)(26)(56)(55)(32)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(fa)(ca)
+[17:02:23][Reader.ApduRecvSender.write(ApduRecvSender.java:124)] INFO - Start
+[17:02:23][Reader.ApduRecvSender.read(ApduRecvSender.java:144)] INFO - Start
+[17:02:24][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:207)] DEBUG - read finish:(00)(00)(fc)
+[17:02:24][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:214)] INFO - read body len:252
+[17:02:24][Reader.ApduRecvSender.read(ApduRecvSender.java:144)] INFO - Start
+[17:02:24][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:222)] DEBUG - recv from Comport total Byte: 256
+[17:02:24][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:233)] INFO - End
+[17:02:24][Reader.PPR_TxnReqOffline.SetRespond(PPR_TxnReqOffline.java:970)] INFO - Start
+[17:02:24][Reader.APDU.checkResponseFormat(APDU.java:134)] DEBUG - statusCode:9000
+[17:02:24][Reader.PPR_TxnReqOffline.SetRespond(PPR_TxnReqOffline.java:978)] INFO - end
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:890)] DEBUG - Reader.PPR_TxnReqOffline recv:(00)(00)(fc)(00)(19)(f4)(01)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(e1)(97)(68)(89)(00)(00)(87)(01)(00)(08)(00)(00)(e1)(97)(68)(01)(fe)(62)(e8)(d0)(00)(00)(00)(04)(32)(00)(00)(01)(26)(1d)(03)(23)(d0)(01)(4e)(d4)(fe)(00)(0a)(10)(0d)(11)(27)(00)(fe)(11)(27)(00)(00)(00)(00)(00)(00)(00)(02)(39)(00)(00)(00)(54)(30)(36)(39)(31)(33)(34)(32)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(31)(36)(35)(36)(37)(38)(00)(84)(00)(00)(5d)(2e)(36)(55)(0b)(01)(00)(00)(cf)(00)(00)(fe)(00)(00)(01)(00)(47)(d4)(fe)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(01)(00)(14)(00)(00)(ae)(46)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(90)(00)(33)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:892)] DEBUG - Purse Version No.:(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:893)] DEBUG - Purse Usgage Control:(19)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:894)] DEBUG - Single AutoLoad Txn Amt:(f4)(01)(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:895)] DEBUG - PID:(00)(00)(00)(00)(00)(00)(00)(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:896)] DEBUG - CPU Admin. Key KVN:(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:898)] DEBUG - Credit Key KVN:(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:899)] DEBUG - Sign.key KVN:(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:900)] DEBUG - CPU Issuer key KVN:(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:901)] DEBUG - CTC:(00)(00)(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:902)] DEBUG - TM:(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:904)] DEBUG - TQ:(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:905)] DEBUG - Sub Area Code:(00)(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:906)] DEBUG - Purse Exp. Date:(00)(e1)(97)(68)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:907)] DEBUG - Purse Balance Before Txn:(89)(00)(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:908)] DEBUG - Txn SN Before Txn:(87)(01)(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:910)] DEBUG - Card Type:(08)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:911)] DEBUG - Personal Profile:(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:912)] DEBUG - Profile Exp Date:(00)(e1)(97)(68)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:913)] DEBUG - Area Code:(01)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:914)] DEBUG - Card Physical ID:(fe)(62)(e8)(d0)(00)(00)(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:916)] DEBUG - Card Physical ID Len:(04)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:917)] DEBUG - Txn Amt:(32)(00)(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:918)] DEBUG - Spec. Version Number:(01)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:919)] DEBUG - Reader FW Version:(26)(1d)(03)(23)(d0)(01)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:920)] DEBUG - Device ID:(4e)(d4)(fe)(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:922)] DEBUG - New Device ID:(0a)(10)(0d)(11)(27)(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:923)] DEBUG - Service Provider ID:(FE)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:924)] DEBUG - New Service Provider ID:(11)(27)(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:925)] DEBUG - Location ID：(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:926)] DEBUG - New Location ID:(00)(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:928)] DEBUG - Deposit:(00)(00)(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:929)] DEBUG - Issuer Code:(02)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:930)] DEBUG - Bank Code:(39)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:931)] DEBUG - CPD Read Flag:(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:932)] DEBUG - CPD SAM ID:(00)(00)(54)(30)(36)(39)(31)(33)(34)(32)(00)(00)(00)(00)(00)(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:934)] DEBUG - CPD RAN:(00)(00)(00)(00)(00)(00)(00)(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:935)] DEBUG - CPD KVN:(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:936)] DEBUG - SID S-TAC:(00)(00)(00)(00)(00)(00)(00)(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:937)] DEBUG - TM Serial Number:(31)(36)(35)(36)(37)(38)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:938)] DEBUG - Last Credit Txn Log:(00)(84)(00)(00)(5d)(2e)(36)(55)(0b)(01)(00)(00)(cf)(00)(00)(fe)(00)(00)(01)(00)(47)(d4)(fe)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:940)] DEBUG - SVCrypto:(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:941)] DEBUG - Msg Type:(01)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:942)] DEBUG - Sub Type:(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:943)] DEBUG - Card One Day Quota:(14)(00)(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:944)] DEBUG - Card One Day Quota Date:(ae)(46)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:946)] DEBUG - TSQN:(00)(00)(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:947)] DEBUG - Purse Balance:(00)(00)(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:948)] DEBUG - Confirm Code:(00)(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:949)] DEBUG - SIGN:(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:950)] DEBUG - SID:(00)(00)(00)(00)(00)(00)(00)(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:952)] DEBUG - MAC:(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:953)] DEBUG - Txn Date Time:(00)(00)(00)(00)
+[17:02:24][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:954)] DEBUG - RFU:(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)
+[17:02:24][APIInterface.EasycardAPI.deduct(EasycardAPI.java:116)] INFO - Txn Result:9000_執行成功
+[17:02:24][APIInterface.EasycardAPI.deduct(EasycardAPI.java:118)] INFO - End
+[17:18:57][APIInterface.EasycardAPI.deduct(EasycardAPI.java:113)] INFO - Start
+[17:18:57][CMAS.Process.initConfig(Process.java:69)] INFO - =============== API Start ===============
+[17:18:57][CMAS.ConfigManager.<init>(ConfigManager.java:39)] INFO - Start
+[17:18:57][CMAS.ConfigManager.<init>(ConfigManager.java:41)] INFO - End
+[17:18:57][CMAS.ConfigManager.prepareConfig(ConfigManager.java:46)] INFO - Start
+[17:18:57][CMAS.ConfigManager.prepareConfig(ConfigManager.java:78)] INFO - Test Environment
+[17:18:57][CMAS.ConfigManager.prepareConfig(ConfigManager.java:131)] INFO - End
+[17:18:57][CMAS.Process.initConfig(Process.java:74)] INFO - End
+[17:18:57][Reader.ApduRecvSender.setPortName(ApduRecvSender.java:35)] INFO - setter:COM9
+[17:18:57][Reader.EZReader.<init>(EZReader.java:22)] INFO - Start
+[17:18:57][Reader.EZReader.<init>(EZReader.java:25)] INFO - End
+[17:18:57][CMAS.Process.<init>(Process.java:51)] INFO - End
+[17:18:57][Reader.PPR_TxnReqOffline2.setReqMsgType(PPR_TxnReqOffline2.java:66)] INFO - setter:1
+[17:18:57][Reader.PPR_TxnReqOffline2.setReqTMLocationID(PPR_TxnReqOffline2.java:100)] INFO - setter:100011
+[17:18:57][Reader.PPR_TxnReqOffline2.setReqTMID(PPR_TxnReqOffline2.java:126)] INFO - setter:00
+[17:18:57][Reader.PPR_TxnReqOffline2.setReqTMTXNDateTime(PPR_TxnReqOffline2.java:152)] INFO - setter:1431681537
+[17:18:57][Reader.PPR_TxnReqOffline2.setReqTMSerialNumber(PPR_TxnReqOffline2.java:174)] INFO - setter:165678
+[17:18:57][Reader.PPR_TxnReqOffline2.setReqTMAgentNumber(PPR_TxnReqOffline2.java:197)] INFO - setter:1234
+[17:18:57][CMAS.Process.getmTimeZone(Process.java:81)] INFO - getter:Asia/Taipei
+[17:18:57][Reader.PPR_TxnReqOffline2.setReqTXNDateTime(PPR_TxnReqOffline2.java:227)] INFO - setter: intUnixTime(1431681537),timeZone:Asia/Taipei
+[17:18:57][Reader.PPR_TxnReqOffline2.setReqTxnAmt(PPR_TxnReqOffline2.java:244)] INFO - setter:50
+[17:18:57][Reader.EZReader.exeCommand(EZReader.java:30)] INFO - Start
+[17:18:57][Reader.PPR_TxnReqOffline2.GetRequest(PPR_TxnReqOffline2.java:1244)] DEBUG - Reader.PPR_TxnReqOffline2 request:(00)(00)(46)(80)(32)(01)(00)(40)(01)(00)(30)(30)(30)(30)(31)(30)(30)(30)(31)(31)(30)(30)(32)(30)(31)(35)(30)(35)(31)(35)(31)(37)(31)(38)(35)(37)(31)(36)(35)(36)(37)(38)(31)(32)(33)(34)(81)(2a)(56)(55)(32)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(fa)(d0)
+[17:18:57][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:172)] INFO - Start
+[17:18:57][Reader.ApduRecvSender.openPort(ApduRecvSender.java:43)] INFO - Start, comportname:COM9COM9
+[17:18:57][Reader.ApduRecvSender.openPort(ApduRecvSender.java:98)] INFO - End
+[17:18:57][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:198)] DEBUG - pack APDU command:(00)(00)(46)(80)(32)(01)(00)(40)(01)(00)(30)(30)(30)(30)(31)(30)(30)(30)(31)(31)(30)(30)(32)(30)(31)(35)(30)(35)(31)(35)(31)(37)(31)(38)(35)(37)(31)(36)(35)(36)(37)(38)(31)(32)(33)(34)(81)(2a)(56)(55)(32)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(fa)(d0)
+[17:18:57][Reader.ApduRecvSender.write(ApduRecvSender.java:124)] INFO - Start
+[17:18:57][Reader.ApduRecvSender.read(ApduRecvSender.java:144)] INFO - Start
+[17:18:57][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:207)] DEBUG - read finish:(00)(00)(fc)
+[17:18:57][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:214)] INFO - read body len:252
+[17:18:57][Reader.ApduRecvSender.read(ApduRecvSender.java:144)] INFO - Start
+[17:18:57][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:222)] DEBUG - recv from Comport total Byte: 256
+[17:18:57][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:233)] INFO - End
+[17:18:57][Reader.PPR_TxnReqOffline2.SetRespond(PPR_TxnReqOffline2.java:1350)] INFO - Start
+[17:18:57][Reader.PPR_TxnReqOffline2.SetRespond(PPR_TxnReqOffline2.java:1358)] ERROR - responsee totalLen was UnComplete
+[17:18:57][Reader.EZReader.exeCommand(EZReader.java:50)] ERROR - command: Reader.PPR_TxnReqOffline2,setRespond fail
+[17:18:57][CMAS.Process.doDeduct(Process.java:308)] ERROR - errID:-1, msg:Something Error
+[17:18:57][APIInterface.EasycardAPI.deduct(EasycardAPI.java:116)] INFO - Txn Result:-1_Something Error
+[17:18:57][APIInterface.EasycardAPI.deduct(EasycardAPI.java:118)] INFO - End
+[17:19:56][APIInterface.EasycardAPI.deduct(EasycardAPI.java:113)] INFO - Start
+[17:19:56][CMAS.Process.initConfig(Process.java:69)] INFO - =============== API Start ===============
+[17:19:56][CMAS.ConfigManager.<init>(ConfigManager.java:39)] INFO - Start
+[17:19:56][CMAS.ConfigManager.<init>(ConfigManager.java:41)] INFO - End
+[17:19:56][CMAS.ConfigManager.prepareConfig(ConfigManager.java:46)] INFO - Start
+[17:19:56][CMAS.ConfigManager.prepareConfig(ConfigManager.java:78)] INFO - Test Environment
+[17:19:56][CMAS.ConfigManager.prepareConfig(ConfigManager.java:131)] INFO - End
+[17:19:56][CMAS.Process.initConfig(Process.java:74)] INFO - End
+[17:19:56][Reader.ApduRecvSender.setPortName(ApduRecvSender.java:35)] INFO - setter:COM9
+[17:19:56][Reader.EZReader.<init>(EZReader.java:22)] INFO - Start
+[17:19:56][Reader.EZReader.<init>(EZReader.java:25)] INFO - End
+[17:19:56][CMAS.Process.<init>(Process.java:51)] INFO - End
+[17:19:56][Reader.PPR_TxnReqOffline2.setReqMsgType(PPR_TxnReqOffline2.java:66)] INFO - setter:1
+[17:19:56][Reader.PPR_TxnReqOffline2.setReqTMLocationID(PPR_TxnReqOffline2.java:100)] INFO - setter:100011
+[17:19:56][Reader.PPR_TxnReqOffline2.setReqTMID(PPR_TxnReqOffline2.java:126)] INFO - setter:00
+[17:19:56][Reader.PPR_TxnReqOffline2.setReqTMTXNDateTime(PPR_TxnReqOffline2.java:152)] INFO - setter:1431681596
+[17:19:56][Reader.PPR_TxnReqOffline2.setReqTMSerialNumber(PPR_TxnReqOffline2.java:174)] INFO - setter:165678
+[17:19:56][Reader.PPR_TxnReqOffline2.setReqTMAgentNumber(PPR_TxnReqOffline2.java:197)] INFO - setter:1234
+[17:19:56][CMAS.Process.getmTimeZone(Process.java:81)] INFO - getter:Asia/Taipei
+[17:19:56][Reader.PPR_TxnReqOffline2.setReqTXNDateTime(PPR_TxnReqOffline2.java:227)] INFO - setter: intUnixTime(1431681596),timeZone:Asia/Taipei
+[17:19:56][Reader.PPR_TxnReqOffline2.setReqTxnAmt(PPR_TxnReqOffline2.java:244)] INFO - setter:50
+[17:19:56][Reader.EZReader.exeCommand(EZReader.java:30)] INFO - Start
+[17:19:56][Reader.PPR_TxnReqOffline2.GetRequest(PPR_TxnReqOffline2.java:1244)] DEBUG - Reader.PPR_TxnReqOffline2 request:(00)(00)(46)(80)(32)(01)(00)(40)(01)(00)(30)(30)(30)(30)(31)(30)(30)(30)(31)(31)(30)(30)(32)(30)(31)(35)(30)(35)(31)(35)(31)(37)(31)(39)(35)(36)(31)(36)(35)(36)(37)(38)(31)(32)(33)(34)(bc)(2a)(56)(55)(32)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(fa)(ed)
+[17:19:56][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:172)] INFO - Start
+[17:19:56][Reader.ApduRecvSender.openPort(ApduRecvSender.java:43)] INFO - Start, comportname:COM9COM9
+[17:19:56][Reader.ApduRecvSender.openPort(ApduRecvSender.java:98)] INFO - End
+[17:19:56][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:198)] DEBUG - pack APDU command:(00)(00)(46)(80)(32)(01)(00)(40)(01)(00)(30)(30)(30)(30)(31)(30)(30)(30)(31)(31)(30)(30)(32)(30)(31)(35)(30)(35)(31)(35)(31)(37)(31)(39)(35)(36)(31)(36)(35)(36)(37)(38)(31)(32)(33)(34)(bc)(2a)(56)(55)(32)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(fa)(ed)
+[17:19:56][Reader.ApduRecvSender.write(ApduRecvSender.java:124)] INFO - Start
+[17:19:56][Reader.ApduRecvSender.read(ApduRecvSender.java:144)] INFO - Start
+[17:19:57][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:207)] DEBUG - read finish:(00)(00)(fc)
+[17:19:57][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:214)] INFO - read body len:252
+[17:19:57][Reader.ApduRecvSender.read(ApduRecvSender.java:144)] INFO - Start
+[17:19:57][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:222)] DEBUG - recv from Comport total Byte: 256
+[17:19:57][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:233)] INFO - End
+[17:19:57][Reader.PPR_TxnReqOffline2.SetRespond(PPR_TxnReqOffline2.java:1350)] INFO - Start
+[17:19:57][Reader.PPR_TxnReqOffline2.SetRespond(PPR_TxnReqOffline2.java:1357)] DEBUG - dataBody Len:0
+[17:19:57][Reader.PPR_TxnReqOffline2.SetRespond(PPR_TxnReqOffline2.java:1359)] ERROR - responsee totalLen was UnComplete
+[17:19:57][Reader.EZReader.exeCommand(EZReader.java:50)] ERROR - command: Reader.PPR_TxnReqOffline2,setRespond fail
+[17:19:57][CMAS.Process.doDeduct(Process.java:308)] ERROR - errID:-1, msg:Something Error
+[17:19:57][APIInterface.EasycardAPI.deduct(EasycardAPI.java:116)] INFO - Txn Result:-1_Something Error
+[17:19:57][APIInterface.EasycardAPI.deduct(EasycardAPI.java:118)] INFO - End
+[17:21:18][APIInterface.EasycardAPI.deduct(EasycardAPI.java:113)] INFO - Start
+[17:21:18][CMAS.Process.initConfig(Process.java:69)] INFO - =============== API Start ===============
+[17:21:18][CMAS.ConfigManager.<init>(ConfigManager.java:39)] INFO - Start
+[17:21:18][CMAS.ConfigManager.<init>(ConfigManager.java:41)] INFO - End
+[17:21:18][CMAS.ConfigManager.prepareConfig(ConfigManager.java:46)] INFO - Start
+[17:21:18][CMAS.ConfigManager.prepareConfig(ConfigManager.java:78)] INFO - Test Environment
+[17:21:18][CMAS.ConfigManager.prepareConfig(ConfigManager.java:131)] INFO - End
+[17:21:18][CMAS.Process.initConfig(Process.java:74)] INFO - End
+[17:21:18][Reader.ApduRecvSender.setPortName(ApduRecvSender.java:35)] INFO - setter:COM9
+[17:21:18][Reader.EZReader.<init>(EZReader.java:22)] INFO - Start
+[17:21:18][Reader.EZReader.<init>(EZReader.java:25)] INFO - End
+[17:21:18][CMAS.Process.<init>(Process.java:51)] INFO - End
+[17:21:18][Reader.PPR_TxnReqOffline2.setReqMsgType(PPR_TxnReqOffline2.java:66)] INFO - setter:1
+[17:21:18][Reader.PPR_TxnReqOffline2.setReqTMLocationID(PPR_TxnReqOffline2.java:100)] INFO - setter:100011
+[17:21:18][Reader.PPR_TxnReqOffline2.setReqTMID(PPR_TxnReqOffline2.java:126)] INFO - setter:00
+[17:21:18][Reader.PPR_TxnReqOffline2.setReqTMTXNDateTime(PPR_TxnReqOffline2.java:152)] INFO - setter:1431681678
+[17:21:18][Reader.PPR_TxnReqOffline2.setReqTMSerialNumber(PPR_TxnReqOffline2.java:174)] INFO - setter:165678
+[17:21:18][Reader.PPR_TxnReqOffline2.setReqTMAgentNumber(PPR_TxnReqOffline2.java:197)] INFO - setter:1234
+[17:21:18][CMAS.Process.getmTimeZone(Process.java:81)] INFO - getter:Asia/Taipei
+[17:21:18][Reader.PPR_TxnReqOffline2.setReqTXNDateTime(PPR_TxnReqOffline2.java:227)] INFO - setter: intUnixTime(1431681678),timeZone:Asia/Taipei
+[17:21:18][Reader.PPR_TxnReqOffline2.setReqTxnAmt(PPR_TxnReqOffline2.java:244)] INFO - setter:50
+[17:21:18][Reader.EZReader.exeCommand(EZReader.java:30)] INFO - Start
+[17:21:18][Reader.PPR_TxnReqOffline2.GetRequest(PPR_TxnReqOffline2.java:1244)] DEBUG - Reader.PPR_TxnReqOffline2 request:(00)(00)(46)(80)(32)(01)(00)(40)(01)(00)(30)(30)(30)(30)(31)(30)(30)(30)(31)(31)(30)(30)(32)(30)(31)(35)(30)(35)(31)(35)(31)(37)(32)(31)(31)(38)(31)(36)(35)(36)(37)(38)(31)(32)(33)(34)(0e)(2b)(56)(55)(32)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(fa)(5f)
+[17:21:18][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:172)] INFO - Start
+[17:21:18][Reader.ApduRecvSender.openPort(ApduRecvSender.java:43)] INFO - Start, comportname:COM9COM9
+[17:21:18][Reader.ApduRecvSender.openPort(ApduRecvSender.java:98)] INFO - End
+[17:21:18][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:198)] DEBUG - pack APDU command:(00)(00)(46)(80)(32)(01)(00)(40)(01)(00)(30)(30)(30)(30)(31)(30)(30)(30)(31)(31)(30)(30)(32)(30)(31)(35)(30)(35)(31)(35)(31)(37)(32)(31)(31)(38)(31)(36)(35)(36)(37)(38)(31)(32)(33)(34)(0e)(2b)(56)(55)(32)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(fa)(5f)
+[17:21:18][Reader.ApduRecvSender.write(ApduRecvSender.java:124)] INFO - Start
+[17:21:18][Reader.ApduRecvSender.read(ApduRecvSender.java:144)] INFO - Start
+[17:21:19][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:207)] DEBUG - read finish:(00)(00)(fc)
+[17:21:19][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:214)] INFO - read body len:252
+[17:21:19][Reader.ApduRecvSender.read(ApduRecvSender.java:144)] INFO - Start
+[17:21:19][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:222)] DEBUG - recv from Comport total Byte: 256
+[17:21:19][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:233)] INFO - End
+[17:21:19][Reader.PPR_TxnReqOffline2.SetRespond(PPR_TxnReqOffline2.java:1350)] INFO - Start
+[17:21:19][Reader.PPR_TxnReqOffline2.SetRespond(PPR_TxnReqOffline2.java:1357)] DEBUG - dataBody Len:252
+[17:21:19][Reader.PPR_TxnReqOffline2.SetRespond(PPR_TxnReqOffline2.java:1381)] INFO - end
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1270)] DEBUG - Reader.PPR_TxnReqOffline recv:(00)(00)(fc)(00)(19)(f4)(01)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(e1)(97)(68)(89)(00)(00)(87)(01)(00)(08)(00)(00)(e1)(97)(68)(01)(fe)(62)(e8)(d0)(00)(00)(00)(04)(32)(00)(00)(01)(26)(1d)(03)(23)(d0)(01)(4e)(d4)(fe)(00)(0a)(10)(0d)(11)(27)(00)(fe)(11)(27)(00)(00)(00)(00)(00)(00)(00)(02)(39)(00)(00)(00)(54)(30)(36)(39)(31)(33)(34)(32)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(31)(36)(35)(36)(37)(38)(00)(84)(00)(00)(5d)(2e)(36)(55)(0b)(01)(00)(00)(cf)(00)(00)(fe)(00)(00)(01)(00)(47)(d4)(fe)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(01)(00)(14)(00)(00)(ae)(46)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(90)(00)(33)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespPurseVersionNumber(PPR_TxnReqOffline2.java:677)] INFO - getter:00
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1272)] DEBUG - Purse Version No.:(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespPurseUsageControl(PPR_TxnReqOffline2.java:684)] INFO - getter:19
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1273)] DEBUG - Purse Usgage Control:(19)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespSingleAutoLoadTxnAmt(PPR_TxnReqOffline2.java:695)] INFO - getter:(f4)(01)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1274)] DEBUG - Single AutoLoad Txn Amt:(f4)(01)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespPID(PPR_TxnReqOffline2.java:707)] INFO - getter:(00)(00)(00)(00)(00)(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1275)] DEBUG - PID:(00)(00)(00)(00)(00)(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespCPUAdminKeyKVN(PPR_TxnReqOffline2.java:719)] INFO - getter:00
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1276)] DEBUG - CPU Admin. Key KVN:(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespCreditKeyKVN(PPR_TxnReqOffline2.java:730)] INFO - getter:00
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1278)] DEBUG - Credit Key KVN:(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespSignKeyKVN(PPR_TxnReqOffline2.java:740)] INFO - getter:00
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1279)] DEBUG - Sign.key KVN:(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespCPUIssuerKeyKVN(PPR_TxnReqOffline2.java:750)] INFO - getter:00
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1280)] DEBUG - CPU Issuer key KVN:(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespCTC(PPR_TxnReqOffline2.java:760)] INFO - getter:(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1281)] DEBUG - CTC:(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespTxnMode(PPR_TxnReqOffline2.java:772)] INFO - getter:00
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1282)] DEBUG - TM:(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespTxnQualifier(PPR_TxnReqOffline2.java:782)] INFO - getter:00
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1284)] DEBUG - TQ:(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespSubAreaCode(PPR_TxnReqOffline2.java:792)] INFO - getter:(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1285)] DEBUG - Sub Area Code:(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespPurseExpDate(PPR_TxnReqOffline2.java:803)] INFO - getter:(00)(e1)(97)(68)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1286)] DEBUG - Purse Exp. Date:(00)(e1)(97)(68)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespPurseBalanceBeforeTxn(PPR_TxnReqOffline2.java:816)] INFO - getter:(89)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1287)] DEBUG - Purse Balance Before Txn:(89)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespTxnSNBeforeTxn(PPR_TxnReqOffline2.java:827)] INFO - getter:(87)(01)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1288)] DEBUG - Txn SN Before Txn:(87)(01)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespCardType(PPR_TxnReqOffline2.java:838)] INFO - getter:08
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1290)] DEBUG - Card Type:(08)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespPersonalProfile(PPR_TxnReqOffline2.java:849)] INFO - getter:00
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1291)] DEBUG - Personal Profile:(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespProfileExpDate(PPR_TxnReqOffline2.java:859)] INFO - getter:(00)(e1)(97)(68)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1292)] DEBUG - Profile Exp Date:(00)(e1)(97)(68)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespAreaCode(PPR_TxnReqOffline2.java:870)] INFO - getter:01
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1293)] DEBUG - Area Code:(01)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespCardPhysicalID(PPR_TxnReqOffline2.java:880)] INFO - getter:(fe)(62)(e8)(d0)(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1294)] DEBUG - Card Physical ID:(fe)(62)(e8)(d0)(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespCardPhysicalIDLength(PPR_TxnReqOffline2.java:891)] INFO - getter:04
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1296)] DEBUG - Card Physical ID Len:(04)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespTxnAmt(PPR_TxnReqOffline2.java:901)] INFO - getter:(32)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1297)] DEBUG - Txn Amt:(32)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespSpecVersionNumber(PPR_TxnReqOffline2.java:911)] INFO - getter:01
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1298)] DEBUG - Spec. Version Number:(01)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespReaderFWVersion(PPR_TxnReqOffline2.java:921)] INFO - getter:(26)(1d)(03)(23)(d0)(01)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1299)] DEBUG - Reader FW Version:(26)(1d)(03)(23)(d0)(01)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespDeviceID(PPR_TxnReqOffline2.java:932)] INFO - getter:(4e)(d4)(fe)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1300)] DEBUG - Device ID:(4e)(d4)(fe)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespNewDeviceID(PPR_TxnReqOffline2.java:943)] INFO - getter:(0a)(10)(0d)(11)(27)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1302)] DEBUG - New Device ID:(0a)(10)(0d)(11)(27)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespServiceProviderID(PPR_TxnReqOffline2.java:953)] INFO - getter:FE
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1303)] DEBUG - Service Provider ID:(FE)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespNewServiceProviderID(PPR_TxnReqOffline2.java:963)] INFO - getter:(11)(27)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1304)] DEBUG - New Service Provider ID:(11)(27)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespLocationID(PPR_TxnReqOffline2.java:974)] INFO - getter:00
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1305)] DEBUG - Location ID：(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespNewLocationID(PPR_TxnReqOffline2.java:984)] INFO - getter:(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1306)] DEBUG - New Location ID:(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespDeposit(PPR_TxnReqOffline2.java:995)] INFO - getter:(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1308)] DEBUG - Deposit:(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespIssuerCode(PPR_TxnReqOffline2.java:1006)] INFO - getter:02
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1309)] DEBUG - Issuer Code:(02)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespBankCode(PPR_TxnReqOffline2.java:1017)] INFO - getter:39
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1310)] DEBUG - Bank Code:(39)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespCPDReadFlag(PPR_TxnReqOffline2.java:1027)] INFO - getter:00
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1311)] DEBUG - CPD Read Flag:(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespCPDSAMID(PPR_TxnReqOffline2.java:1037)] INFO - getter:(00)(00)(54)(30)(36)(39)(31)(33)(34)(32)(00)(00)(00)(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1312)] DEBUG - CPD SAM ID:(00)(00)(54)(30)(36)(39)(31)(33)(34)(32)(00)(00)(00)(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespCPDRAN_SAMCRN(PPR_TxnReqOffline2.java:1048)] INFO - getter:(00)(00)(00)(00)(00)(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1314)] DEBUG - CPD RAN:(00)(00)(00)(00)(00)(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespCPDKVN_SAMKVN(PPR_TxnReqOffline2.java:1060)] INFO - getter:00
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1315)] DEBUG - CPD KVN:(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespSIDSTAC(PPR_TxnReqOffline2.java:1071)] INFO - getter:(00)(00)(00)(00)(00)(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1316)] DEBUG - SID S-TAC:(00)(00)(00)(00)(00)(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespTMSerialNumber(PPR_TxnReqOffline2.java:1083)] INFO - getter:(31)(36)(35)(36)(37)(38)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1317)] DEBUG - TM Serial Number:(31)(36)(35)(36)(37)(38)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespLastCreditTxnLog(PPR_TxnReqOffline2.java:1095)] INFO - getter:(00)(84)(00)(00)(5d)(2e)(36)(55)(0b)(01)(00)(00)(cf)(00)(00)(fe)(00)(00)(01)(00)(47)(d4)(fe)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1318)] DEBUG - Last Credit Txn Log:(00)(84)(00)(00)(5d)(2e)(36)(55)(0b)(01)(00)(00)(cf)(00)(00)(fe)(00)(00)(01)(00)(47)(d4)(fe)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespSVCrypto(PPR_TxnReqOffline2.java:1107)] INFO - getter:(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1320)] DEBUG - SVCrypto:(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespMsgType(PPR_TxnReqOffline2.java:1119)] INFO - getter:01
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1321)] DEBUG - Msg Type:(01)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespSubType(PPR_TxnReqOffline2.java:1129)] INFO - getter:00
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1322)] DEBUG - Sub Type:(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespCardOneDayQuota(PPR_TxnReqOffline2.java:1140)] INFO - getter:(14)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1323)] DEBUG - Card One Day Quota:(14)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespCardOneDayQuotaDate(PPR_TxnReqOffline2.java:1151)] INFO - getter:(ae)(46)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1324)] DEBUG - Card One Day Quota Date:(ae)(46)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespTSQN(PPR_TxnReqOffline2.java:1162)] INFO - getter:(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1326)] DEBUG - TSQN:(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespPurseBalance(PPR_TxnReqOffline2.java:1174)] INFO - getter:(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1327)] DEBUG - Purse Balance:(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespConfirmCode(PPR_TxnReqOffline2.java:1186)] INFO - getter:(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1328)] DEBUG - Confirm Code:(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespSIGN(PPR_TxnReqOffline2.java:1198)] INFO - getter:(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1329)] DEBUG - SIGN:(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespSID(PPR_TxnReqOffline2.java:1210)] INFO - getter:(00)(00)(00)(00)(00)(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1330)] DEBUG - SID:(00)(00)(00)(00)(00)(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespMAC(PPR_TxnReqOffline2.java:1221)] INFO - getter:(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1332)] DEBUG - MAC:(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.getRespTxnDateTime(PPR_TxnReqOffline2.java:1232)] INFO - getter:(00)(00)(00)(00)
+[17:21:19][Reader.PPR_TxnReqOffline2.debugResponseData(PPR_TxnReqOffline2.java:1333)] DEBUG - Txn Date Time:(00)(00)(00)(00)
+[17:21:19][APIInterface.EasycardAPI.deduct(EasycardAPI.java:116)] INFO - Txn Result:9000_執行成功
+[17:21:19][APIInterface.EasycardAPI.deduct(EasycardAPI.java:118)] INFO - End
+[17:39:10][APIInterface.EasycardAPI.deduct(EasycardAPI.java:113)] INFO - Start
+[17:39:10][CMAS.Process.initConfig(Process.java:68)] INFO - =============== API Start ===============
+[17:39:10][CMAS.ConfigManager.<init>(ConfigManager.java:39)] INFO - Start
+[17:39:10][CMAS.ConfigManager.<init>(ConfigManager.java:41)] INFO - End
+[17:39:10][CMAS.ConfigManager.prepareConfig(ConfigManager.java:46)] INFO - Start
+[17:39:10][CMAS.ConfigManager.prepareConfig(ConfigManager.java:78)] INFO - Test Environment
+[17:39:10][CMAS.ConfigManager.prepareConfig(ConfigManager.java:131)] INFO - End
+[17:39:10][CMAS.Process.initConfig(Process.java:73)] INFO - End
+[17:39:10][Reader.ApduRecvSender.setPortName(ApduRecvSender.java:35)] INFO - setter:COM9
+[17:39:10][Reader.EZReader.<init>(EZReader.java:22)] INFO - Start
+[17:39:10][Reader.EZReader.<init>(EZReader.java:25)] INFO - End
+[17:39:10][CMAS.Process.<init>(Process.java:50)] INFO - End
+[17:39:10][Reader.PPR_TxnReqOffline.setReqMsgType(PPR_TxnReqOffline.java:66)] INFO - setter:1
+[17:39:10][Reader.PPR_TxnReqOffline.setReqTMLocationID(PPR_TxnReqOffline.java:100)] INFO - setter:100011
+[17:39:10][Reader.PPR_TxnReqOffline.setReqTMID(PPR_TxnReqOffline.java:126)] INFO - setter:00
+[17:39:10][Reader.PPR_TxnReqOffline.setReqTMTXNDateTime(PPR_TxnReqOffline.java:152)] INFO - setter:1431682750
+[17:39:10][Reader.PPR_TxnReqOffline.setReqTMSerialNumber(PPR_TxnReqOffline.java:174)] INFO - setter:165678
+[17:39:10][Reader.PPR_TxnReqOffline.setReqTMAgentNumber(PPR_TxnReqOffline.java:197)] INFO - setter:1234
+[17:39:10][CMAS.Process.getmTimeZone(Process.java:80)] INFO - getter:Asia/Taipei
+[17:39:10][Reader.PPR_TxnReqOffline.setReqTXNDateTime(PPR_TxnReqOffline.java:227)] INFO - setter: intUnixTime(1431682750),timeZone:Asia/Taipei
+[17:39:10][Reader.PPR_TxnReqOffline.setReqTxnAmt(PPR_TxnReqOffline.java:244)] INFO - setter:20
+[17:39:10][Reader.EZReader.exeCommand(EZReader.java:30)] INFO - Start
+[17:39:10][Reader.PPR_TxnReqOffline.GetRequest(PPR_TxnReqOffline.java:1244)] DEBUG - Reader.PPR_TxnReqOffline request:(00)(00)(46)(80)(32)(01)(00)(40)(01)(00)(30)(30)(30)(30)(31)(30)(30)(30)(31)(31)(30)(30)(32)(30)(31)(35)(30)(35)(31)(35)(31)(37)(33)(39)(31)(30)(31)(36)(35)(36)(37)(38)(31)(32)(33)(34)(3e)(2f)(56)(55)(14)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(fa)(4c)
+[17:39:10][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:172)] INFO - Start
+[17:39:10][Reader.ApduRecvSender.openPort(ApduRecvSender.java:43)] INFO - Start, comportname:COM9COM9
+[17:39:10][Reader.ApduRecvSender.openPort(ApduRecvSender.java:98)] INFO - End
+[17:39:10][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:198)] DEBUG - pack APDU command:(00)(00)(46)(80)(32)(01)(00)(40)(01)(00)(30)(30)(30)(30)(31)(30)(30)(30)(31)(31)(30)(30)(32)(30)(31)(35)(30)(35)(31)(35)(31)(37)(33)(39)(31)(30)(31)(36)(35)(36)(37)(38)(31)(32)(33)(34)(3e)(2f)(56)(55)(14)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(fa)(4c)
+[17:39:10][Reader.ApduRecvSender.write(ApduRecvSender.java:124)] INFO - Start
+[17:39:10][Reader.ApduRecvSender.read(ApduRecvSender.java:144)] INFO - Start
+[17:39:11][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:207)] DEBUG - read finish:(00)(00)(fc)
+[17:39:11][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:214)] INFO - read body len:252
+[17:39:11][Reader.ApduRecvSender.read(ApduRecvSender.java:144)] INFO - Start
+[17:39:11][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:222)] DEBUG - recv from Comport total Byte: 256
+[17:39:11][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:233)] INFO - End
+[17:39:11][Reader.PPR_TxnReqOffline.SetRespond(PPR_TxnReqOffline.java:1350)] INFO - Start
+[17:39:11][Reader.PPR_TxnReqOffline.SetRespond(PPR_TxnReqOffline.java:1357)] DEBUG - dataBody Len:252
+[17:39:11][Reader.PPR_TxnReqOffline.SetRespond(PPR_TxnReqOffline.java:1381)] INFO - end
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1270)] DEBUG - Reader.PPR_TxnReqOffline recv:(00)(00)(fc)(00)(19)(f4)(01)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(e1)(97)(68)(89)(00)(00)(87)(01)(00)(08)(00)(00)(e1)(97)(68)(01)(fe)(62)(e8)(d0)(00)(00)(00)(04)(14)(00)(00)(01)(26)(1d)(03)(23)(d0)(01)(4e)(d4)(fe)(00)(0a)(10)(0d)(11)(27)(00)(fe)(11)(27)(00)(00)(00)(00)(00)(00)(00)(02)(39)(00)(00)(00)(54)(30)(36)(39)(31)(33)(34)(32)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(31)(36)(35)(36)(37)(38)(00)(84)(00)(00)(5d)(2e)(36)(55)(0b)(01)(00)(00)(cf)(00)(00)(fe)(00)(00)(01)(00)(47)(d4)(fe)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(01)(00)(14)(00)(00)(ae)(46)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(90)(00)(15)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespPurseVersionNumber(PPR_TxnReqOffline.java:677)] INFO - getter:00
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1272)] DEBUG - Purse Version No.:(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespPurseUsageControl(PPR_TxnReqOffline.java:684)] INFO - getter:19
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1273)] DEBUG - Purse Usgage Control:(19)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespSingleAutoLoadTxnAmt(PPR_TxnReqOffline.java:695)] INFO - getter:(f4)(01)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1274)] DEBUG - Single AutoLoad Txn Amt:(f4)(01)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespPID(PPR_TxnReqOffline.java:707)] INFO - getter:(00)(00)(00)(00)(00)(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1275)] DEBUG - PID:(00)(00)(00)(00)(00)(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespCPUAdminKeyKVN(PPR_TxnReqOffline.java:719)] INFO - getter:00
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1276)] DEBUG - CPU Admin. Key KVN:(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespCreditKeyKVN(PPR_TxnReqOffline.java:730)] INFO - getter:00
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1278)] DEBUG - Credit Key KVN:(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespSignKeyKVN(PPR_TxnReqOffline.java:740)] INFO - getter:00
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1279)] DEBUG - Sign.key KVN:(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespCPUIssuerKeyKVN(PPR_TxnReqOffline.java:750)] INFO - getter:00
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1280)] DEBUG - CPU Issuer key KVN:(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespCTC(PPR_TxnReqOffline.java:760)] INFO - getter:(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1281)] DEBUG - CTC:(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespTxnMode(PPR_TxnReqOffline.java:772)] INFO - getter:00
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1282)] DEBUG - TM:(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespTxnQualifier(PPR_TxnReqOffline.java:782)] INFO - getter:00
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1284)] DEBUG - TQ:(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespSubAreaCode(PPR_TxnReqOffline.java:792)] INFO - getter:(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1285)] DEBUG - Sub Area Code:(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespPurseExpDate(PPR_TxnReqOffline.java:803)] INFO - getter:(00)(e1)(97)(68)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1286)] DEBUG - Purse Exp. Date:(00)(e1)(97)(68)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespPurseBalanceBeforeTxn(PPR_TxnReqOffline.java:816)] INFO - getter:(89)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1287)] DEBUG - Purse Balance Before Txn:(89)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespTxnSNBeforeTxn(PPR_TxnReqOffline.java:827)] INFO - getter:(87)(01)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1288)] DEBUG - Txn SN Before Txn:(87)(01)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespCardType(PPR_TxnReqOffline.java:838)] INFO - getter:08
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1290)] DEBUG - Card Type:(08)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespPersonalProfile(PPR_TxnReqOffline.java:849)] INFO - getter:00
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1291)] DEBUG - Personal Profile:(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespProfileExpDate(PPR_TxnReqOffline.java:859)] INFO - getter:(00)(e1)(97)(68)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1292)] DEBUG - Profile Exp Date:(00)(e1)(97)(68)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespAreaCode(PPR_TxnReqOffline.java:870)] INFO - getter:01
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1293)] DEBUG - Area Code:(01)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespCardPhysicalID(PPR_TxnReqOffline.java:880)] INFO - getter:(fe)(62)(e8)(d0)(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1294)] DEBUG - Card Physical ID:(fe)(62)(e8)(d0)(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespCardPhysicalIDLength(PPR_TxnReqOffline.java:891)] INFO - getter:04
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1296)] DEBUG - Card Physical ID Len:(04)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespTxnAmt(PPR_TxnReqOffline.java:901)] INFO - getter:(14)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1297)] DEBUG - Txn Amt:(14)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespSpecVersionNumber(PPR_TxnReqOffline.java:911)] INFO - getter:01
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1298)] DEBUG - Spec. Version Number:(01)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespReaderFWVersion(PPR_TxnReqOffline.java:921)] INFO - getter:(26)(1d)(03)(23)(d0)(01)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1299)] DEBUG - Reader FW Version:(26)(1d)(03)(23)(d0)(01)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespDeviceID(PPR_TxnReqOffline.java:932)] INFO - getter:(4e)(d4)(fe)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1300)] DEBUG - Device ID:(4e)(d4)(fe)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespNewDeviceID(PPR_TxnReqOffline.java:943)] INFO - getter:(0a)(10)(0d)(11)(27)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1302)] DEBUG - New Device ID:(0a)(10)(0d)(11)(27)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespServiceProviderID(PPR_TxnReqOffline.java:953)] INFO - getter:FE
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1303)] DEBUG - Service Provider ID:(FE)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespNewServiceProviderID(PPR_TxnReqOffline.java:963)] INFO - getter:(11)(27)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1304)] DEBUG - New Service Provider ID:(11)(27)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespLocationID(PPR_TxnReqOffline.java:974)] INFO - getter:00
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1305)] DEBUG - Location ID：(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespNewLocationID(PPR_TxnReqOffline.java:984)] INFO - getter:(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1306)] DEBUG - New Location ID:(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespDeposit(PPR_TxnReqOffline.java:995)] INFO - getter:(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1308)] DEBUG - Deposit:(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespIssuerCode(PPR_TxnReqOffline.java:1006)] INFO - getter:02
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1309)] DEBUG - Issuer Code:(02)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespBankCode(PPR_TxnReqOffline.java:1017)] INFO - getter:39
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1310)] DEBUG - Bank Code:(39)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespCPDReadFlag(PPR_TxnReqOffline.java:1027)] INFO - getter:00
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1311)] DEBUG - CPD Read Flag:(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespCPDSAMID(PPR_TxnReqOffline.java:1037)] INFO - getter:(00)(00)(54)(30)(36)(39)(31)(33)(34)(32)(00)(00)(00)(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1312)] DEBUG - CPD SAM ID:(00)(00)(54)(30)(36)(39)(31)(33)(34)(32)(00)(00)(00)(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespCPDRAN_SAMCRN(PPR_TxnReqOffline.java:1048)] INFO - getter:(00)(00)(00)(00)(00)(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1314)] DEBUG - CPD RAN:(00)(00)(00)(00)(00)(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespCPDKVN_SAMKVN(PPR_TxnReqOffline.java:1060)] INFO - getter:00
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1315)] DEBUG - CPD KVN:(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespSIDSTAC(PPR_TxnReqOffline.java:1071)] INFO - getter:(00)(00)(00)(00)(00)(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1316)] DEBUG - SID S-TAC:(00)(00)(00)(00)(00)(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespTMSerialNumber(PPR_TxnReqOffline.java:1083)] INFO - getter:(31)(36)(35)(36)(37)(38)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1317)] DEBUG - TM Serial Number:(31)(36)(35)(36)(37)(38)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespLastCreditTxnLog(PPR_TxnReqOffline.java:1095)] INFO - getter:(00)(84)(00)(00)(5d)(2e)(36)(55)(0b)(01)(00)(00)(cf)(00)(00)(fe)(00)(00)(01)(00)(47)(d4)(fe)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1318)] DEBUG - Last Credit Txn Log:(00)(84)(00)(00)(5d)(2e)(36)(55)(0b)(01)(00)(00)(cf)(00)(00)(fe)(00)(00)(01)(00)(47)(d4)(fe)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespSVCrypto(PPR_TxnReqOffline.java:1107)] INFO - getter:(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1320)] DEBUG - SVCrypto:(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespMsgType(PPR_TxnReqOffline.java:1119)] INFO - getter:01
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1321)] DEBUG - Msg Type:(01)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespSubType(PPR_TxnReqOffline.java:1129)] INFO - getter:00
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1322)] DEBUG - Sub Type:(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespCardOneDayQuota(PPR_TxnReqOffline.java:1140)] INFO - getter:(14)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1323)] DEBUG - Card One Day Quota:(14)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespCardOneDayQuotaDate(PPR_TxnReqOffline.java:1151)] INFO - getter:(ae)(46)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1324)] DEBUG - Card One Day Quota Date:(ae)(46)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespTSQN(PPR_TxnReqOffline.java:1162)] INFO - getter:(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1326)] DEBUG - TSQN:(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespPurseBalance(PPR_TxnReqOffline.java:1174)] INFO - getter:(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1327)] DEBUG - Purse Balance:(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespConfirmCode(PPR_TxnReqOffline.java:1186)] INFO - getter:(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1328)] DEBUG - Confirm Code:(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespSIGN(PPR_TxnReqOffline.java:1198)] INFO - getter:(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1329)] DEBUG - SIGN:(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespSID(PPR_TxnReqOffline.java:1210)] INFO - getter:(00)(00)(00)(00)(00)(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1330)] DEBUG - SID:(00)(00)(00)(00)(00)(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespMAC(PPR_TxnReqOffline.java:1221)] INFO - getter:(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1332)] DEBUG - MAC:(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.getRespTxnDateTime(PPR_TxnReqOffline.java:1232)] INFO - getter:(00)(00)(00)(00)
+[17:39:11][Reader.PPR_TxnReqOffline.debugResponseData(PPR_TxnReqOffline.java:1333)] DEBUG - Txn Date Time:(00)(00)(00)(00)
+[17:39:11][APIInterface.EasycardAPI.deduct(EasycardAPI.java:116)] INFO - Txn Result:9000_執行成功
+[17:39:11][APIInterface.EasycardAPI.deduct(EasycardAPI.java:118)] INFO - End
