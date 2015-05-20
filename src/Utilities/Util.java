@@ -305,11 +305,17 @@ public class Util {
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd");
 	private static final SimpleDateFormat DATE_FORMAT_SHORT = new SimpleDateFormat("yyMMdd");
 	private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HHmmss");
+	public static final SimpleDateFormat _YYMM = new SimpleDateFormat("yyMM");
 	/*
 	public static String sGetDateTime() {
 		return DATE_TIME_FORMAT.format(Calendar.getInstance().getTime());
 	}
 	*/
+	
+	public static String getDateTime(int unixTimeStamp, SimpleDateFormat format){
+		Date date = new Date((long)unixTimeStamp * 1000);
+		return format.format(date);
+	}
 	
 	public static String sGetDateTime(int unixTimeStamp) {
 		Date date = new Date((long)unixTimeStamp * 1000);
@@ -479,6 +485,24 @@ public class Util {
 			e.printStackTrace();
 		} 		
 		return sMAC;		
+	}
+	
+	public static long bytes2Long(byte[] array, int offset, int digits) {
+	    
+		long l=0;
+		int j = digits - 1;
+		for(int i=0; i<digits; i++){
+			l += ((long)(array[offset+i] & 0xff) << (((j-i)*8)));			
+		}
+		
+		return l;  
+	}
+	
+	public static String IntelFormat2Decimal(byte[] array, int offset, int digits){
+		
+		arrayReverse(array);
+		long l = bytes2Long(array, offset, digits);
+		return String.valueOf(l);
 	}
 	
 }

@@ -1,6 +1,7 @@
 package Reader;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
@@ -86,107 +87,179 @@ public class PPR_AuthTxnOffline extends APDU{
 	//-------------------- Request --------------------
 	
 	//++++++++++++++++++++ Response ++++++++++++++++++++
-	private static final int pRespTSQN = scRespDataOffset + 0;
-	private static final int lRespTSQN = 3;
-	public byte[] getRespTSQN(){
-		if (mRespond == null) {
-			return null;
+	private ResponseField respFld = null;
+	private class ResponseField extends BaseResponseAutoParser{
+		private int dataBodyLen;
+		private final int NORMAL_LEN = 64;
+		
+		public byte[] TSQN=null;
+		public byte[] purseBalance=null;
+		public byte[] confirmCode=null;
+		public byte[] SIGN=null;
+		public byte[] SID=null;
+		
+		public byte[] MAC=null;
+		public byte[] txnDateTime=null;
+		public byte[] cardOneDayQuota=null;
+		public byte[] cardOneDayQuotaDate=null;
+		
+		public ResponseField(int len){
+			this.dataBodyLen = len;
 		}
-		return Arrays.copyOfRange(mRespond, pRespTSQN, 
-				pRespTSQN + lRespTSQN);		
+		
+		public byte[] getTSQN() {
+			return TSQN;
+		}
+
+		public byte[] getPurseBalance() {
+			return purseBalance;
+		}
+
+		public byte[] getConfirmCode() {
+			return confirmCode;
+		}
+
+		public byte[] getSIGN() {
+			return SIGN;
+		}
+
+		public byte[] getSID() {
+			return SID;
+		}
+
+		public byte[] getMAC() {
+			return MAC;
+		}
+
+		public byte[] getTxnDateTime() {
+			return txnDateTime;
+		}
+
+		public byte[] getCardOneDayQuota() {
+			return cardOneDayQuota;
+		}
+
+		public byte[] getCardOneDayQuotaDate() {
+			return cardOneDayQuotaDate;
+		}
+
+		@Override
+		protected LinkedHashMap<String, Integer> getFields() {
+			// TODO Auto-generated method stub
+			LinkedHashMap<String, Integer> map = new LinkedHashMap<String, Integer>();
+			
+			if(this.dataBodyLen == NORMAL_LEN){
+				map.put("TSQN", 3);
+				map.put("purseBalance",3);
+				map.put("confirmCode",2);
+				map.put("SIGN",16);
+				map.put("SID",8);
+				
+				map.put("MAC",18);
+				map.put("txnDateTime",4);
+				map.put("cardOneDayQuota",3);
+				map.put("cardOneDayQuotaDate",2);
+			} else {
+				logger.error("Unknowen dataBody Len:"+dataBodyLen);
+				return null;
+			}
+			return map;
+			
+		}
+		
+		
+		
 	}
 	
-	private static final int pRespPurseBalance = pRespTSQN + lRespTSQN;
-	private static final int lRespPurseBalance = 3;
-	public byte[] getRespPurseBalance(){
-		if (mRespond == null) {
+	public byte[] getRespTSQN(){
+		if (respFld == null || respFld.getTSQN() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespPurseBalance, 
-				pRespPurseBalance + lRespPurseBalance);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getTSQN()));
+		return Arrays.copyOfRange(respFld.getTSQN(), 0, 
+				respFld.getTSQN().length);
+	}
+	
+	public byte[] getRespPurseBalance(){
+		if (respFld == null || respFld.getPurseBalance() == null){ 
+			logger.error("respFld or getter was null");
+			return null;
+		}
+		logger.info("getter:"+Util.hex2StringLog(respFld.getPurseBalance()));
+		return Arrays.copyOfRange(respFld.getPurseBalance(), 0, 
+				respFld.getPurseBalance().length);	
 	}	
 	
-	private static final int pRespConfirmCode = pRespTSQN + lRespTSQN;
-	private static final int lRespConfirmCode = 2;
 	public byte[] getRespConfirmCode(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getConfirmCode() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespConfirmCode, 
-				pRespConfirmCode + lRespConfirmCode);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getConfirmCode()));
+		return Arrays.copyOfRange(respFld.getConfirmCode(), 0, 
+				respFld.getConfirmCode().length);			
 	}
 	
-	private static final int pRespSIGN = pRespConfirmCode + lRespConfirmCode;
-	private static final int lRespSIGN = 16;
 	public byte[] getRespSIGN(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getSIGN() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespSIGN, 
-				pRespSIGN + lRespSIGN);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getSIGN()));
+		return Arrays.copyOfRange(respFld.getSIGN(), 0, 
+				respFld.getSIGN().length);			
 	}
 	
-	private static final int pRespSID = pRespSIGN + lRespSIGN;
-	private static final int lRespSID = 8;
 	public byte[] getRespSID(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getSID() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespSID, 
-				pRespSID + lRespSID);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getSID()));
+		return Arrays.copyOfRange(respFld.getSID(), 0, 
+				respFld.getSID().length);			
 	}
 	
-	private static final int pRespMAC = pRespSID + lRespSID;
-	private static final int lRespMAC = 18;
 	public byte[] getRespMAC(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getMAC() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespMAC, 
-				pRespMAC + lRespMAC);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getMAC()));
+		return Arrays.copyOfRange(respFld.getMAC(), 0, 
+				respFld.getMAC().length);		
 	}
 	
-	private static final int pRespTxnDateTime = pRespMAC + lRespMAC;
-	private static final int lRespTxnDateTime = 4;
 	public byte[] getRespTxnDateTime(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getTxnDateTime() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespTxnDateTime, 
-				pRespTxnDateTime + lRespTxnDateTime);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getTxnDateTime()));
+		return Arrays.copyOfRange(respFld.getTxnDateTime(), 0, 
+				respFld.getTxnDateTime().length);		
 	}
 	
-	private static final int pRespCardOneDayQuota = pRespTxnDateTime + lRespTxnDateTime;
-	private static final int lRespCardOneDayQuota = 3;
 	public byte[] getRespCardOneDayQuota(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getCardOneDayQuota() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespCardOneDayQuota, 
-				pRespCardOneDayQuota + lRespCardOneDayQuota);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getCardOneDayQuota()));
+		return Arrays.copyOfRange(respFld.getCardOneDayQuota(), 0, 
+				respFld.getCardOneDayQuota().length);		
 	}
 	
-	private static final int pRespCardOneDayQuotaDate = pRespCardOneDayQuota + lRespCardOneDayQuota;
-	private static final int lRespCardOneDayQuotaDate = 2;
 	public byte[] getRespCardOneDayQuotaDate(){
-		if (mRespond == null) {
+		if (respFld == null || respFld.getCardOneDayQuotaDate() == null){ 
+			logger.error("respFld or getter was null");
 			return null;
 		}
-		return Arrays.copyOfRange(mRespond, pRespCardOneDayQuotaDate, 
-				pRespCardOneDayQuotaDate + lRespCardOneDayQuotaDate);		
+		logger.info("getter:"+Util.hex2StringLog(respFld.getCardOneDayQuotaDate()));
+		return Arrays.copyOfRange(respFld.getCardOneDayQuotaDate(), 0, 
+				respFld.getCardOneDayQuotaDate().length);			
 	}
-	
-	
-	private static final int pRFU = pRespCardOneDayQuotaDate + lRespCardOneDayQuotaDate;
-	private static final int lRFU = 5;
-	public byte[] getRespRFU(){
-		if (mRespond == null) {
-			return null;
-		}
-		return Arrays.copyOfRange(mRespond, pRFU, 
-				pRFU + lRFU);		
-	}
-	
 	//-------------------- Response --------------------
 	@Override
 	public byte[] GetRequest() {
@@ -194,7 +267,6 @@ public class PPR_AuthTxnOffline extends APDU{
 		
 		mRequest[scReqLength - 1] = Req_EDC = getEDC(mRequest, scReqLength);
 		logger.debug(PPR_AuthTxnOffline.class.getName()+" request:" + Util.hex2StringLog(mRequest));
-		
 		
 		return mRequest;
 	}
@@ -233,7 +305,6 @@ public class PPR_AuthTxnOffline extends APDU{
 			logger.debug("Card One Day Quota:"+Util.hex2StringLog(this.getRespCardOneDayQuota()));
 			logger.debug("Card One Day Quota Date:"+Util.hex2StringLog(this.getRespCardOneDayQuotaDate()));
 			
-			logger.debug("RFU:"+Util.hex2StringLog(this.getRespRFU()));
 		}
 		else
 			logger.error("responseBuffer NULL");
@@ -248,16 +319,40 @@ public class PPR_AuthTxnOffline extends APDU{
 
 	@Override
 	public boolean SetRespond(byte[] bytes) {
-		// TODO Auto-generated method stub
+		
 		logger.info("Start");
-		
-		if(this.checkResponseFormat(bytes, scRespDataLength) != true)
+		if(bytes==null || bytes.length <=scRespDataOffset){
+			logger.error("setRespond buffer was Null or len<=3");
 			return false;
+		}
 		
+		//check total Length
+		int dataLength = (bytes[2] & 0x000000FF) + (bytes[1] << 8 & 0x0000FF00) + (bytes[0] << 16 & 0x00FF0000);
+		logger.debug("dataBody Len:"+dataLength);
+		if(bytes.length != dataLength+scRespDataOffset+1){//+1 was checkSum
+			logger.error("responsee totalLen was UnComplete");
+			return false;
+		}
+		Resp_SW1 = bytes[scRespDataOffset + dataLength - 2];
+		Resp_SW2 = bytes[scRespDataOffset + dataLength - 2 +1];
+		
+		
+		
+		//check checkSum
+		byte sum = getEDC(bytes, bytes.length);
+		if (sum != bytes[scRespLength - 1]) {
+			// check sum error...
+			logger.error("CheckSum error");
+			return false;
+		}
+		
+		//copy buffer to mResponse
 		mRespond = Arrays.copyOf(bytes, bytes.length);
-		
-		
-		logger.info("end");
+		byte[] b = Arrays.copyOfRange(bytes, scRespDataOffset, scRespDataOffset+scRespDataLength);
+		respFld = new ResponseField(dataLength-2);// -2 was statusCode
+		respFld.parse(b);
+
+		logger.info("end");			
 		return true;
 	}
 

@@ -24,8 +24,8 @@ import Reader.PPR_Reset;
 import Reader.ApduRecvSender;
 import Reader.PPR_SignOn;
 import Reader.PPR_SignOnQuery;
-
 import Reader.PPR_TxnReqOffline;
+import Utilities.Util;
 
 
 
@@ -96,11 +96,13 @@ public class Process {
 		logger.info("Start");
 		int []signOn0800 = {100, 300, 1100, 1101, 1200, 1201, 1300, 1301, 3700, 4100, 4101, 4102, 4103, 4104, 4200, 4210, 4802, 4820, 4823, 4824, 5301, 5307, 5308, 5361, 5362, 5363, 5364, 5365, 5366, 5368, 5369, 5370, 5371, 5501, 5503, 5504, 5510, 5588, 5596, 6000, 6002, 6003, 6004, 6400, 6408};
 		int []signOn0820 = {100, 300, 1100, 1101, 1200, 1300, 3700, 4100, 4200, 4210, 4825, 5501, 5503, 5504, 5510, 6406};
+		
 		IRespCode result;
 		//Properties easyCardApip = cfgList.get(ConfigManager.ConfigOrder.EASYCARD_API.ordinal());
 		Properties txnInfo = cfgList.get(ConfigManager.ConfigOrder.TXN_INFO.ordinal());
 		Properties uderDef = cfgList.get(ConfigManager.ConfigOrder.USER_DEF.ordinal());
 		Properties hostInfo = cfgList.get(ConfigManager.ConfigOrder.HOST_INFO.ordinal());
+		Properties easycardApi = cfgList.get(ConfigManager.ConfigOrder.EASYCARD_API.ordinal());
 		
 		String cmasRquest=null;
 		String cmasResponse=null;
@@ -145,6 +147,11 @@ public class Process {
 				pprReset.SetReq_TXNDateTime(unixTimeStamp, this.getmTimeZone());
 				
 				
+				byte[] b = Util.ascii2Bcd(easycardApi.getProperty("New_Location_ID"));
+				pprReset.SetReq_LocationID(b[0]);
+				
+				pprReset.SetReq_NewLocationID(Short.valueOf(easycardApi.getProperty("New_Location_ID")));
+				
 				pprReset.SetReq_SAMSlotControlFlag(true, 1);
 				
 				logger.debug("ready to call reader");
@@ -154,15 +161,18 @@ public class Process {
 					logger.error("exe PPR_Reset error:"+String.format("%s", result.getId()));
 					return result;
 				}
-			
+				//update Reader ID
+				easycardApi.setProperty("Reader_ID", Util.bcd2Ascii(pprReset.GetResp_ReaderID()));
+				
+				
 				//prepare CMAS Data
 				CmasDataSpec specResetReq = new CmasDataSpec();				
 				kernel = new CmasKernel();
-				kernel.readerField2CmasSpec(pprReset, specResetReq, cfgList, t5596);
+				kernel.readerField2CmasSpec(pprReset, specResetReq, cfgList, t5596);				
 				cmasRquest = kernel.packRequeset(signOn0800,specResetReq);
 				
 				
-				//waitting connecting finish first
+				//waiting connection finish first
 				ssl.join();	
 				if(!ssl.isSocketOK())
 				{
@@ -170,11 +180,9 @@ public class Process {
 					return ApiRespCode.SSL_CONNECT_FAIL;
 				} else logger.info("ssl OK");
 				
-				if(ssl.isAlive()) logger.debug("SSL alive");
-				else logger.debug("SSL no alive");
-				
+				//if(ssl.isAlive()) logger.debug("SSL alive");
+				//else logger.debug("SSL no alive");
 
-				
 				if((cmasResponse = ssl.sendRequest(cmasRquest))!=null){
 					//got response
 					logger.debug("CMAS Response:"+cmasResponse);
@@ -184,10 +192,10 @@ public class Process {
 					if(t3900.equalsIgnoreCase("19")) {//txn serialNo. duplicate
 						logger.info("TM Serial Number:"+specResetReq.getT1100()+", needed to change:"+specResetResp.getT1100());
 						//update SerialNumber
-						txnInfo.setProperty("TM_Serial_Number", specResetResp.getT1100());
+						txnInfo.setProperty("TM_Serial_Number", specResetResp.getT1100());											
 					} else if(t3900.equalsIgnoreCase("00")){
-						pprSignon= new PPR_SignOn();
-						kernel.cmasSpec2ReaderField(specResetResp, pprSignon, cfgList);
+						pprSignon= new PPR_SignOn();						
+						kernel.cmasSpec2ReaderField(specResetResp, pprSignon, cfgList);						
 						totalCnt = Integer.valueOf(specResetResp.getT5596().getT559601());
 						recvCnt = Integer.valueOf(specResetResp.getT5596().getT559603());
 						t5596.setT559601(specResetResp.getT5596().getT559601());
@@ -199,7 +207,19 @@ public class Process {
 						
 						//SerialNumber
 						txnInfo.setProperty("TM_Serial_Number", specResetResp.getT1100());
-						logger.debug("After SerialNumber ++:"+txnInfo.getProperty("TM_Serial_Number"));							
+						//branch_company
+						easycardApi.setProperty("Company_Branch", specResetResp.getT4210());
+						//new locatoin id
+						ArrayList<CmasDataSpec.SubTag5595> t5595s = specResetResp.getT5595s();
+						for(int i=0; i<t5595s.size(); i++){
+							logger.debug("5595:"+t5595s.get(i).getT559502());
+							if(t5595s.get(i).getT559502().equalsIgnoreCase("TM03")){ // 分公司代號								
+								easycardApi.setProperty("New_Location_ID", t5595s.get(i).getT559503());
+								break;
+							}
+						}
+						
+						
 					} else {
 						logger.error("CMAS Reject Code:"+t3900);
 						return ApiRespCode.fromCode(t3900, CmasRespCode.values());					
@@ -210,12 +230,21 @@ public class Process {
 				}
 			}//while
 			
-			//logger.debug("send SignOn again");
-			//cmasResponse = ssl.sendRequest(cmasRquest);
-			//logger.debug("send SignOn again OK");
+		
 			
-			if(t3900.equalsIgnoreCase("00")){
-				
+			if(t3900.equalsIgnoreCase("00")){		
+				//FTP download Start another thread
+				if(anyFileNeededToDownload(specResetResp.getT5595s())){
+					cmasFTP = new CmasFTPList(hostInfo.getProperty("FtpUrl"), 
+						hostInfo.getProperty("FtpIP"),
+						990,
+						hostInfo.getProperty("FtpLoginId"),
+						hostInfo.getProperty("FtpLoinPwd"),
+						specResetResp.getT5595s(),
+						cfgList);
+					
+					cmasFTP.start();					
+				}
 				//SignOn Advice			
 				CmasDataSpec specSignonAdv = new CmasDataSpec();
 				kernel.readerField2CmasSpec(pprSignon, specSignonAdv, specResetResp, cfgList);
@@ -224,19 +253,8 @@ public class Process {
 				cmasResponse = ssl.sendRequest(cmasAdv);
 				logger.debug("SignOn Adv Response:"+cmasResponse);
 				
-				//FTP download Start
-				cmasFTP = new CmasFTPList(hostInfo.getProperty("FtpUrl"), 
-						hostInfo.getProperty("FtpIP"),
-						990,
-						hostInfo.getProperty("FtpLoginId"),
-						hostInfo.getProperty("FtpLoinPwd"),
-						specResetResp.getT5595s());
-				cmasFTP.start();					
-				
-				
-				
 			
-				cmasFTP.join();
+				if(cmasFTP!=null)cmasFTP.join();
 						
 			}
 		} catch(Exception e) {			
@@ -259,6 +277,22 @@ public class Process {
 		logger.info("End");
 		return ApiRespCode.SUCCESS;
 	}
+	private boolean anyFileNeededToDownload(ArrayList<CmasDataSpec.SubTag5595> t5595s){
+		boolean result = false;
+		String tag=null;
+		for(int i=0; i<t5595s.size(); i++){
+			tag = t5595s.get(i).getT559502();
+			if(//tag.equalsIgnoreCase("TM10") ||
+			   tag.equalsIgnoreCase("TM11")	||
+			   tag.equalsIgnoreCase("TM12")){				
+				logger.info("Host notified something needed to download:"+tag);
+				result = true;
+				break;				
+			}
+		}		
+		return result;
+	}
+	
 	
 	public IRespCode doSignOnQuery(){
 		
@@ -275,13 +309,20 @@ public class Process {
 	}
 	
 	public IRespCode doDeduct(int amt){
-		
+		SSL ssl = null;
 		IRespCode result = null;
 		int tmSerialNo = 0;
 		//Properties easyCardApip = cfgList.get(ConfigManager.ConfigOrder.EASYCARD_API.ordinal());
 		Properties txnInfo = cfgList.get(ConfigManager.ConfigOrder.TXN_INFO.ordinal());
 		Properties userDef = cfgList.get(ConfigManager.ConfigOrder.USER_DEF.ordinal());
 		Properties hostInfo = cfgList.get(ConfigManager.ConfigOrder.HOST_INFO.ordinal());
+		
+		//ssl connect to send advice or online txn
+		ssl = new SSL(hostInfo.getProperty("HostUrl"), 
+				Integer.valueOf(hostInfo.getProperty("HostPort")), 
+				null,
+				null);
+		ssl.start();
 		
 		//PPR_TxnReq_OFfline
 		PPR_TxnReqOffline pprTxnReqOffline = new PPR_TxnReqOffline();
@@ -310,7 +351,7 @@ public class Process {
 		
 		//PPR_TxnReq_OFfline end
 		
-		/*
+		
 		//PPR_AuthTxn_Offline
 		PPR_AuthTxnOffline pprAuthTxnOffline = new PPR_AuthTxnOffline();
 		result = reader.exeCommand(pprAuthTxnOffline);	
@@ -319,6 +360,30 @@ public class Process {
 			return result;
 		}	
 		
+		//pack advice
+		int[] field = {100,200,211,213,214,300,400,408,409,410,1100,1101,1200,1201,1300,1301,1400,3700,4100,4101,4103,4104,4200,4210,4800,4801,4802,4803,4804,4805,4808,4809,4810,4811,4812,4813,4826,5301,5303,5304,5305,5361,5362,5363,5371,5501,5503,5504,5510,6404,6405,6406};
+		CmasKernel kernel = new CmasKernel();
+		CmasDataSpec specAdvice = new CmasDataSpec();
+		kernel.readerField2CmasSpec(pprTxnReqOffline, pprAuthTxnOffline, specAdvice, cfgList);
+		String cmasReq = kernel.packRequeset(field, specAdvice);
+		
+		//send advice
+		try {
+			ssl.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			logger.error("ssl join exception:"+e.getMessage());
+		}	
+		if(!ssl.isSocketOK())
+		{
+			logger.error("ssl connect fail");
+			return ApiRespCode.SSL_CONNECT_FAIL;
+		} else logger.info("ssl OK");
+		String cmasResp = ssl.sendRequest(cmasReq);
+		logger.debug("CMAS deduct advice Response:"+cmasResp);
+		
+		
 		// Txn Success, SN++
 		tmSerialNo = tmSerialNo+1;
 		txnInfo.setProperty("TM_Serial_Number", String.valueOf(tmSerialNo));
@@ -326,7 +391,7 @@ public class Process {
 		
 		cfgManager.saveConfig();
 		//PPR_AuthTxn_Offline end
-		*/
+		
 		return result;
 	}
 
