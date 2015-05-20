@@ -16,6 +16,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import Utilities.Util;
+
 public class CmasDataSpec {
 
 	static Logger logger = Logger.getLogger(CmasDataSpec.class);
@@ -1480,7 +1482,16 @@ public class CmasDataSpec {
 						if(child5595.getNodeName().equalsIgnoreCase("T559504")) t5595.setT559504(child5595.getTextContent());
 						if(child5595.getNodeName().equalsIgnoreCase("T559505")) t5595.setT559505(child5595.getTextContent());
 					}
-				}				
+				}
+				
+				if(t5595.getT559502().equalsIgnoreCase("TM03")){//公司分號
+					String tm03Value = t5595.getT559503().replaceAll("\\s+", ""); //remove space
+					if(tm03Value.length()%2 !=0){
+						tm03Value = new String(Util.paddingChar(tm03Value, false, (byte)0x30, tm03Value.length()+1));
+						logger.debug("TM03 Value:"+tm03Value);
+						t5595.setT559503(tm03Value);
+					}
+				}
 				setT5595(t5595);				
 				break;	
 				

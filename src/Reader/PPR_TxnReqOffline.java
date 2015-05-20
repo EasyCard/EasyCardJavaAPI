@@ -356,6 +356,11 @@ public class PPR_TxnReqOffline extends APDU{
 	private ResponseField respFld = null;
 	private class ResponseField extends BaseResponseAutoParser{
 		private int dataBodyLen;
+		private final int NORMAL_LEN = 250;//9000, 6403(餘額不足), 6415(需授權交易) 
+		private final int ERROR1_LEN = 120;//640E(餘額異常)、610F(二代餘額異常)、6418(通路限制)
+		private final int ERROR2_LEN = 40;//6103(CPD檢查異常)
+		
+		
 		
 		public byte purseVersionNumber;
 		public byte purseUsageControl;
@@ -613,7 +618,7 @@ public class PPR_TxnReqOffline extends APDU{
 			// TODO Auto-generated method stub
 			LinkedHashMap<String, Integer> maps = new LinkedHashMap<String, Integer>();
 			
-			if(dataBodyLen == 250){//250
+			if(dataBodyLen == NORMAL_LEN){//250
 				maps.put("purseVersionNumber",1);
 				maps.put("purseUsageControl",1);
 				maps.put("singleAutoLoadTxnAmt",3);
@@ -677,7 +682,7 @@ public class PPR_TxnReqOffline extends APDU{
 				maps.put("MAC",18);
 				maps.put("txnDateTime",4);
 				
-			} else if(dataBodyLen == 120) {
+			} else if(dataBodyLen == ERROR1_LEN) {
 				
 				maps.put("purseVersionNumber",1);
 				maps.put("purseUsageControl",1);
@@ -721,7 +726,7 @@ public class PPR_TxnReqOffline extends APDU{
 				maps.put("CPUSettingParameter",1);
 				
 				
-			} else if(dataBodyLen == 40) {
+			} else if(dataBodyLen == ERROR2_LEN) {
 				
 				maps.put("purseVersionNumber",1);				
 				maps.put("PID",8);				
@@ -751,7 +756,6 @@ public class PPR_TxnReqOffline extends APDU{
 	
 	}
 	
-	//++++++++++++++++++++ Response ++++++++++++++++++++
 	public byte getRespPurseVersionNumber(){
 		if (respFld==null) return 0x00;		
 			
@@ -760,8 +764,8 @@ public class PPR_TxnReqOffline extends APDU{
 	}
 		
 		
-	public byte getRespPurseUsageControl(){
-			if (respFld == null) return 0x00;	
+	public byte getRespPurseUsageControl(){		
+		if (respFld == null) return 0x00;	
 		logger.info("getter:"+String.format("%02X", respFld.getPurseUsageControl()));	
 		return respFld.getPurseUsageControl();
 	}
@@ -1470,6 +1474,7 @@ public class PPR_TxnReqOffline extends APDU{
 		logger.info("Start");
 		if(bytes==null || bytes.length <=scRespDataOffset){
 			logger.error("setRespond buffer was Null or len<=3");
+			return false;
 		}
 		
 		//check total Length

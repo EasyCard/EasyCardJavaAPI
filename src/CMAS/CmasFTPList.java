@@ -1,8 +1,10 @@
 package CMAS;
 
 import java.util.ArrayList;
+import java.util.Properties;
 
 import org.apache.log4j.Logger;
+
 
 
 
@@ -17,6 +19,7 @@ public class CmasFTPList extends Thread{
 	private boolean isFtpsOK = false;
 	
 	ArrayList<CmasDataSpec.SubTag5595> t5595s = null;
+	ArrayList<Properties> cfgLsit = null;
 	private String url = null;
 	private String bkIP=null;
 	private int port = 0;
@@ -28,7 +31,8 @@ public class CmasFTPList extends Thread{
 			int port, 
 			String id,
 			String pwd, 
-			ArrayList<CmasDataSpec.SubTag5595> t5595s){
+			ArrayList<CmasDataSpec.SubTag5595> t5595s,
+			ArrayList<Properties> cfgList){
 		
 		this.url = url;
 		this.bkIP = bkIP;
@@ -36,6 +40,7 @@ public class CmasFTPList extends Thread{
 		this.id = id;
 		this.pwd = pwd;
 		this.t5595s = t5595s;
+		this.cfgLsit = cfgList;
 	}
 	
 	/**
@@ -57,21 +62,28 @@ public class CmasFTPList extends Thread{
 		try{			
 			
 			String rootDir = ftps.getCurrentDIR();
+			Properties easycardApi = this.cfgLsit.get(ConfigManager.ConfigOrder.EASYCARD_API.ordinal());
 			logger.info("FTP Connect OK");
 			for(CmasDataSpec.SubTag5595 t5595:t5595s)
-			{		
-				String filename=null;
+			{						
 				String t559501=t5595.getT559502();
-				if(t559501.equalsIgnoreCase("TM10")) //ssl C Cert
-					filename = ConfigManager.CA_CERT;
-				if(t559501.equalsIgnoreCase("TM11"))
-					filename = ConfigManager.CARD_NUMBER_BLACKLIST;//black list
-				else if(t559501.equalsIgnoreCase("TM12"))
-					filename = ConfigManager.API_JAR;//api file
-				if(filename != null) {					
-					ftps.download(rootDir + t5595.getT559503(), filename); // download to
+				/*if(t559501.equalsIgnoreCase("TM10")){ //ssl CA Cert
+					if(ftps.download(rootDir + t5595.getT559503(), ConfigManager.CA_CERT)){ // download to
+						logger.info("download CA Cert OK");
+						easycardApi.setProperty("SSL_CA_Ver", t5595.getT559501());
+					} else logger.error("download CA Cert fail");
+				} else*/ 
+				if(t559501.equalsIgnoreCase("TM11")){
+					if(ftps.download(rootDir + t5595.getT559503(), ConfigManager.CARD_NUMBER_BLACKLIST)){ // download to
+						logger.info("download BlackList OK");
+						easycardApi.setProperty("BlackListVer", t5595.getT559501());		
+					} else logger.error("download BlackList fail");
+				} else if(t559501.equalsIgnoreCase("TM12")) {
+					if(ftps.download(rootDir + t5595.getT559503(), ConfigManager.API_JAR)){ // download to
+						logger.info("download API OK");
+						easycardApi.setProperty("ApiVer", t5595.getT559501());
+					} else logger.error("download API Fail");
 				}
-				
 			}
 		} catch(Exception e) {
 			
@@ -84,10 +96,12 @@ public class CmasFTPList extends Thread{
 		ftps.disconnect();
 	}
 	
+	
 	public void run()
 	{
 		int retry = 4;//twice try url, twice try ip
 		int cnt = 0;
+			
 		while(cnt < retry)
 		{
 			if(ftps.connect2Server(url,port,id,pwd,true) == false){

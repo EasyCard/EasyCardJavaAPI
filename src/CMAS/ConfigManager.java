@@ -29,10 +29,10 @@ public class ConfigManager {
 	
 	public enum ConfigOrder
 	{
+		USER_DEF,
 		EASYCARD_API,
 		TXN_INFO,
 		HOST_INFO,
-		USER_DEF,
 	}
 	
 	public ConfigManager(){
@@ -70,11 +70,12 @@ public class ConfigManager {
 						cfgList.add(txnInfo);
 						break;				
 					case HOST_INFO:	
-						if(easyCardApip.getProperty("Environment").equalsIgnoreCase("0")) {
+												
+						if(userDef.getProperty("Environment").equalsIgnoreCase("0")) {
 							logger.info("Develop Environment");
 							filename = ConfigManager.HOST_DEVE_INFO_FILE;
 						}
-						else if(easyCardApip.getProperty("Environment").equalsIgnoreCase("1")) {
+						else if(userDef.getProperty("Environment").equalsIgnoreCase("1")) {
 							logger.info("Test Environment");
 							filename = ConfigManager.HOST_TEST_INFO_FILE;
 						}
@@ -136,12 +137,19 @@ public class ConfigManager {
 		
 		logger.info("Start");
 		Properties p = cfgList.get(ConfigOrder.TXN_INFO.ordinal());
+		Properties p2 = cfgList.get(ConfigOrder.EASYCARD_API.ordinal());
+		
 		//save TxnInfo pro.
 		try{
 			File f = new File(ConfigManager.TXN_INFO_FILE);
 			FileOutputStream os;			
 			os = new FileOutputStream(f);			 		
 			p.store(os, null);			
+			os.close();
+			
+			f = new File(ConfigManager.EASYCARD_API_FILE);			
+			os = new FileOutputStream(f);			 		
+			p2.store(os, null);			
 			os.close();
 		}
 		catch(NullPointerException ne)
