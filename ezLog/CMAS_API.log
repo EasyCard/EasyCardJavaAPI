@@ -5132,3 +5132,373 @@
 [16:21:44][CMAS.ConfigManager.saveConfig(ConfigManager.java:167)] INFO - end
 [16:21:44][APIInterface.EasycardAPI.deduct(EasycardAPI.java:116)] INFO - Txn Result:9000_執行成功
 [16:21:44][APIInterface.EasycardAPI.deduct(EasycardAPI.java:118)] INFO - End
+[14:57:36][CMAS.Process.initConfig(Process.java:68)] INFO - =============== API Start ===============
+[14:57:36][CMAS.ConfigManager.<init>(ConfigManager.java:39)] INFO - Start
+[14:57:36][CMAS.ConfigManager.<init>(ConfigManager.java:41)] INFO - End
+[14:57:36][CMAS.ConfigManager.prepareConfig(ConfigManager.java:46)] INFO - Start
+[14:57:36][CMAS.ConfigManager.prepareConfig(ConfigManager.java:79)] INFO - Test Environment
+[14:57:36][CMAS.ConfigManager.prepareConfig(ConfigManager.java:132)] INFO - End
+[14:57:36][CMAS.Process.initConfig(Process.java:73)] INFO - End
+[14:57:36][Reader.ApduRecvSender.setPortName(ApduRecvSender.java:35)] INFO - setter:COM9
+[14:57:36][Reader.EZReader.<init>(EZReader.java:22)] INFO - Start
+[14:57:36][Reader.EZReader.<init>(EZReader.java:25)] INFO - End
+[14:57:36][CMAS.Process.<init>(Process.java:50)] INFO - End
+[14:57:36][CMAS.Process.doSignon(Process.java:96)] INFO - Start
+[14:57:36][Comm.Socket.SSL.run(SSL.java:217)] DEBUG - SSL Thread Start
+[14:57:36][Comm.Socket.SSL.run(SSL.java:222)] DEBUG - cnt:0, retry:2
+[14:57:36][Comm.Socket.SSL.connect(SSL.java:114)] INFO - Start
+[14:57:36][Reader.PPR_Reset.<init>(PPR_Reset.java:43)] INFO - Start
+[14:57:36][Reader.PPR_Reset.<init>(PPR_Reset.java:68)] INFO - End
+[14:57:36][Reader.PPR_Reset.SetOffline(PPR_Reset.java:74)] INFO - setter:false
+[14:57:36][Reader.PPR_Reset.SetReq_TMLocationID(PPR_Reset.java:88)] INFO - setter:100011
+[14:57:36][Reader.PPR_Reset.SetReq_TMID(PPR_Reset.java:121)] INFO - setter:00
+[14:57:36][Reader.PPR_Reset.SetReq_TMTXNDateTime(PPR_Reset.java:155)] INFO - Start
+[14:57:36][Reader.PPR_Reset.SetReq_TMTXNDateTime(PPR_Reset.java:158)] INFO - setter: int(1432709856), format:20150527145736
+[14:57:36][Reader.PPR_Reset.SetReq_TMTXNDateTime(PPR_Reset.java:164)] INFO - End
+[14:57:36][Reader.PPR_Reset.SetReq_TMSerialNumber(PPR_Reset.java:199)] INFO - setter:165724
+[14:57:37][Reader.PPR_Reset.SetReq_TMSerialNumber(PPR_Reset.java:202)] INFO - setter:165724
+[14:57:37][Reader.PPR_Reset.SetReq_TMAgentNumber(PPR_Reset.java:226)] INFO - setter:1234
+[14:57:37][CMAS.Process.getmTimeZone(Process.java:80)] INFO - getter:Asia/Taipei
+[14:57:37][Reader.PPR_Reset.SetReq_TXNDateTime(PPR_Reset.java:264)] INFO - setter: intUnixTime(1432709856),timeZone:Asia/Taipei
+[14:57:37][Reader.PPR_Reset.SetReq_LocationID(PPR_Reset.java:282)] INFO - setter:0x01
+[14:57:37][Reader.PPR_Reset.SetReq_NewLocationID(PPR_Reset.java:292)] INFO - setter:1
+[14:57:37][Reader.PPR_Reset.SetReq_SAMSlotControlFlag(PPR_Reset.java:508)] INFO - Start
+[14:57:37][Reader.PPR_Reset.SetReq_SAMSlotControlFlag(PPR_Reset.java:526)] INFO - End
+[14:57:37][CMAS.Process.doSignon(Process.java:157)] DEBUG - ready to call reader
+[14:57:37][Reader.EZReader.exeCommand(EZReader.java:30)] INFO - Start
+[14:57:37][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:172)] INFO - Start
+[14:57:37][Reader.ApduRecvSender.openPort(ApduRecvSender.java:43)] INFO - Start, comportname:COM9COM9
+[14:57:37][Reader.ApduRecvSender.openPort(ApduRecvSender.java:98)] INFO - End
+[14:57:37][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:198)] DEBUG - pack APDU command:(00)(00)(46)(80)(01)(00)(00)(40)(30)(30)(30)(30)(31)(30)(30)(30)(31)(31)(30)(30)(32)(30)(31)(35)(30)(35)(32)(37)(31)(34)(35)(37)(33)(36)(31)(36)(35)(37)(32)(34)(31)(32)(33)(34)(60)(db)(65)(55)(01)(01)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(01)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(fa)(f5)
+[14:57:37][Reader.ApduRecvSender.write(ApduRecvSender.java:124)] INFO - Start
+[14:57:37][Reader.ApduRecvSender.read(ApduRecvSender.java:144)] INFO - Start
+[14:57:37][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:207)] DEBUG - read finish:(00)(00)(fc)
+[14:57:37][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:214)] INFO - read body len:252
+[14:57:37][Reader.ApduRecvSender.read(ApduRecvSender.java:144)] INFO - Start
+[14:57:37][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:222)] DEBUG - recv from Comport total Byte: 256
+[14:57:37][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:233)] INFO - End
+[14:57:37][Reader.PPR_Reset.debugResponseData(PPR_Reset.java:1346)] DEBUG - pprReset recv:(00)(00)(fc)(01)(b0)(80)(8c)(59)(26)(1d)(03)(23)(d0)(00)(54)(30)(36)(39)(31)(33)(34)(32)(00)(00)(5e)(ad)(68)(37)(6c)(17)(2b)(aa)(4e)(e3)(4e)(d4)(fe)(00)(01)(50)(8d)(c0)(3c)(64)(a5)(eb)(42)(01)(50)(39)(30)(30)(30)(37)(32)(34)(4d)(d9)(82)(20)(20)(00)(71)(02)(10)(27)(00)(f0)(49)(09)(00)(00)(00)(00)(00)(00)(0a)(10)(0d)(11)(27)(00)(df)(01)(df)(02)(df)(03)(df)(04)(df)(05)(df)(06)(df)(07)(df)(08)(df)(09)(df)(10)(df)(11)(df)(12)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(17)(10)(e8)(ce)(3e)(1b)(f1)(71)(6c)(bf)(f6)(88)(ee)(1f)(b6)(92)(31)(50)(1b)(63)(af)(44)(d7)(5c)(90)(10)(ed)(34)(3f)(d9)(29)(3a)(1f)(f4)(3c)(0f)(b8)(0b)(e8)(03)(f4)(01)(01)(a0)(86)(01)(a0)(86)(01)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(0d)(da)(65)(55)(0a)(10)(0d)(11)(27)(00)(00)(00)(17)(0f)(0d)(da)(65)(55)(00)(90)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(90)(00)(b7)
+[14:57:37][CMAS.CmasKernel.<init>(CmasKernel.java:33)] INFO - Start
+[14:57:37][CMAS.CmasKernel.<init>(CmasKernel.java:35)] INFO - End
+[14:57:37][CMAS.CmasKernel.readerField2CmasSpec(CmasKernel.java:41)] INFO - Start
+[14:57:37][Reader.PPR_Reset.GetReq_TMSerialNumber(PPR_Reset.java:216)] INFO - getter:313635373234
+[14:57:37][Reader.PPR_Reset.GetReq_TMSerialNumber(PPR_Reset.java:216)] INFO - getter:313635373234
+[14:57:37][Reader.PPR_Reset.GetReq_TMTXNDateTime(PPR_Reset.java:171)] INFO - getter:20150527145736
+[14:57:37][Reader.PPR_Reset.GetReq_TMTXNTime(PPR_Reset.java:189)] INFO - getter:145736
+[14:57:37][Reader.PPR_Reset.GetReq_TMTXNDateTime(PPR_Reset.java:171)] INFO - getter:20150527145736
+[14:57:37][Reader.PPR_Reset.GetReq_TMTXNTime(PPR_Reset.java:189)] INFO - getter:145736
+[14:57:37][Reader.PPR_Reset.GetReq_TMTXNDateTime(PPR_Reset.java:171)] INFO - getter:20150527145736
+[14:57:37][Reader.PPR_Reset.GetReq_TMTXNDate(PPR_Reset.java:177)] INFO - getter:20150527
+[14:57:37][Reader.PPR_Reset.GetReq_TMTXNDateTime(PPR_Reset.java:171)] INFO - getter:20150527145736
+[14:57:37][Reader.PPR_Reset.GetReq_TMTXNDate(PPR_Reset.java:177)] INFO - getter:20150527
+[14:57:37][Reader.PPR_Reset.GetReq_TMTXNDateTime(PPR_Reset.java:171)] INFO - getter:20150527145736
+[14:57:37][Reader.PPR_Reset.GetReq_TMTXNDate(PPR_Reset.java:177)] INFO - getter:20150527
+[14:57:37][Reader.PPR_Reset.GetReq_TMSerialNumber(PPR_Reset.java:216)] INFO - getter:313635373234
+[14:57:37][Reader.PPR_Reset.GetResp_NewDeviceID(PPR_Reset.java:770)] DEBUG - getter newDeviceID:(0A)(10)(0D)(11)(27)(00)
+[14:57:37][Reader.PPR_Reset.GetResp_NewDeviceID(PPR_Reset.java:771)] INFO - getter:0A100D112700
+[14:57:37][Reader.PPR_Reset.GetResp_DeviceID(PPR_Reset.java:632)] INFO - getter:4ED4FE00
+[14:57:37][Reader.PPR_Reset.GetReq_NewServiceProviderIDByNewDeviceID(PPR_Reset.java:340)] INFO - getter:00010001
+[14:57:37][Reader.PPR_Reset.GetReq_NewLocationID(PPR_Reset.java:303)] INFO - getter:(01)(00)
+[14:57:37][Reader.PPR_Reset.GetResp_OneDayQuotaWriteForMicroPayment(PPR_Reset.java:895)] INFO - getter:3
+[14:57:37][Reader.PPR_Reset.GetResp_CPDReadFlag(PPR_Reset.java:873)] INFO - getter:0
+[14:57:37][Reader.PPR_Reset.GetResp_SAMSignOnControlFlag(PPR_Reset.java:918)] INFO - getter:3
+[14:57:37][Reader.PPR_Reset.GetReq_TMLocationID(PPR_Reset.java:112)] INFO - getter:0000100011
+[14:57:37][Reader.PPR_Reset.GetReq_TMID(PPR_Reset.java:146)] INFO - getter:00
+[14:57:37][Reader.PPR_Reset.GetResp_OneDayQuotaFlagForMicroPayment(PPR_Reset.java:995)] INFO - getter:3
+[14:57:37][Reader.PPR_Reset.GetResp_OnceQuotaFlagForMicroPayment(PPR_Reset.java:1019)] DEBUG - getter:orig:0F,bit:01
+[14:57:37][CMAS.CmasKernel.readerField2CmasSpec(CmasKernel.java:162)] INFO - End
+[14:57:37][CMAS.CmasDataSpec$SubTag6002.getOneDayQuotaFlag(CmasDataSpec.java:184)] INFO - getter:11
+[14:57:37][CMAS.CmasKernel.packRequeset(CmasKernel.java:486)] INFO - pack CMAS data:<TransXML><Trans><T0100>0800</T0100><T0300>881999</T0300><T1100>165724</T1100><T1101>165724</T1101><T1200>145736</T1200><T1201>145736</T1201><T1300>20150527</T1300><T1301>20150527</T1301><T3700>20150527165724</T3700><T4100>0A100D112700</T4100><T4101>4ED4FE00</T4101><T4102>172.20.10.3</T4102><T4103>KOBE-PC-24</T4103><T4104>B0808C59</T4104><T4200>00010001</T4200><T4210>00256</T4210><T4802>00</T4802><T4820>01</T4820><T4823>11</T4823><T4824>00</T4824><T5301>01</T5301><T5307>E8CE3E1BF1716CBF</T5307><T5308>F688EE1FB6923150</T5308><T5361>5430363931333432</T5361><T5362>00005EAD</T5362><T5363>68376C172BAA4EE3</T5363><T5364>014DD9822020DF01DF02DF03DF04DF05DF06DF07DF08DF09DF10DF11DF12000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</T5364><T5365>007102F04909000000000000</T5365><T5366>102700</T5366><T5368>00001710</T5368><T5369>11</T5369><T5370>0A100D1127000000170F0DDA655500900000000000000000000000000000000000</T5370><T5371>5039303030373234</T5371><T5501>00000000</T5501><T5503>0000100011</T5503><T5504>00</T5504><T5510>1234</T5510><T5588><T558801>01</T558801><T558803>5566</T558803></T5588><T5588><T558801>02</T558801><T558803>00000</T558803></T5588><T5588><T558801>03</T558801><T558802>EasyCardApi</T558802><T558803>000013</T558803></T5588><T5596><T559601>00000000</T559601><T559602>00000000</T559602><T559603>00000000</T559603><T559604>00000000</T559604></T5596><T6000>261D0323D000</T6000><T6002>11B80B01E8030001A0860101F40100  0000130000000000</T6002><T6003>A086010000000000000000000000000000000000000000000000000000000000</T6003><T6004>00000</T6004><T6400>508DC03C64A5EB42</T6400><T6408>1B63AF44D75C9010ED343FD9293A1FF4</T6408></Trans></TransXML>
+[14:57:38][Comm.Socket.SSL.connect(SSL.java:155)] INFO - sslSocket OK
+[14:57:38][Comm.Socket.SSL.connect(SSL.java:156)] INFO - end
+[14:57:38][CMAS.Process.doSignon(Process.java:181)] INFO - ssl OK
+[14:57:38][Comm.Socket.SSL.sendRequest(SSL.java:173)] DEBUG - isBound:true
+[14:57:38][Comm.Socket.SSL.sendRequest(SSL.java:174)] DEBUG - isClosed:false
+[14:57:38][Comm.Socket.SSL.sendRequest(SSL.java:175)] DEBUG - isConnected:true
+[14:57:38][Comm.Socket.SSL.sendRequest(SSL.java:176)] DEBUG - isInputShutdown:false
+[14:57:38][Comm.Socket.SSL.sendRequest(SSL.java:177)] DEBUG - isOutputShutdown:false
+[14:57:38][Comm.Socket.SSL.sendRequest(SSL.java:179)] DEBUG - setting Timeout:30(sec)
+[14:57:38][Comm.Socket.MyX509TrustManager.checkServerTrusted(MyX509TrustManager.java:47)] INFO - Pass Server Cert. Check
+[14:57:39][Comm.Socket.SSL.sendRequest(SSL.java:190)] INFO - SSL Send OK!! waittin...recv response
+[14:57:39][CMAS.Process.doSignon(Process.java:188)] DEBUG - CMAS Response:<?xml version="1.0" encoding="UTF-8" standalone="no"?><TransXML><Trans><T0100>0810</T0100><T0300>881999</T0300><T0400>0</T0400><T0403>0</T0403><T0407>0</T0407><T0408>0</T0408><T0409>0</T0409><T0410>0</T0410><T1100>165731</T1100><T1101>165724</T1101><T1200>145741</T1200><T1201>145736</T1201><T1300>20150527</T1300><T1301>20150527</T1301><T3700>20150527165724</T3700><T3800>w6wvrH</T3800><T3900>00</T3900><T4100>0A100D112700</T4100><T4101>4ED4FE00</T4101><T4102>172.20.10.3</T4102><T4103>KOBE-PC-24</T4103><T4104>B0808C59</T4104><T4200>00010001</T4200><T4210>00256</T4210><T4802>00</T4802><T4813>0</T4813><T4814>0</T4814><T4815>0</T4815><T4816>0</T4816><T4817>0</T4817><T4820>01</T4820><T4823>11</T4823><T4824>00</T4824><T5301>01</T5301><T5303>02</T5303><T5306>F11EA1</T5306><T5307>E8CE3E1BF1716CBF</T5307><T5308>F688EE1FB6923150</T5308><T5361>5430363931333432</T5361><T5362>00005EAD</T5362><T5363>68376C172BAA4EE3</T5363><T5364>014DD9822020DF01DF02DF03DF04DF05DF06DF07DF08DF09DF10DF11DF12000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</T5364><T5365>007102F04909000000000000</T5365><T5366>102700</T5366><T5368>00001710</T5368><T5369>11</T5369><T5370>0A100D1127000000170F0DDA655500900000000000000000000000000000000000</T5370><T5371>5039303030373234</T5371><T5501>00000000</T5501><T5503>0000100011</T5503><T5504>00</T5504><T5510>1234</T5510><T5588><T558801>01</T558801><T558803>000001</T558803></T5588><T5588><T558801>02</T558801><T558802>BIG</T558802><T558803>03342</T558803></T5588><T5588><T558801>04</T558801><T558803>000179</T558803></T5588><T5591>0</T5591><T5595><T559502>TM01</T559502><T559503>5909</T559503><T559504>20131125</T559504><T559505>99991231</T559505></T5595><T5595><T559502>TM02</T559502><T559503>00010001</T559503><T559504>20131125</T559504><T559505>99991231</T559505></T5595><T5595><T559502>TM03</T559502><T559503>1    </T559503><T559504>20131125</T559504><T559505>99991231</T559505></T5595><T5595><T559502>TM04</T559502><T559503>0000100011</T559503><T559504>20131125</T559504><T559505>99991231</T559505></T5595><T5595><T559502>TM17</T559502><T559503>特店00010001</T559503><T559504>20131125</T559504><T559505>99991231</T559505></T5595><T5595><T559502>TM18</T559502><T559503>分店0000100011</T559503><T559504>20131125</T559504><T559505>99991231</T559505></T5595><T5595><T559501>000001</T559501><T559502>TM09</T559502><T559503>123456</T559503><T559504>20130101</T559504><T559505>20990101</T559505></T5595><T5595><T559501>000001</T559501><T559502>TM10</T559502><T559503>/OUT/ssl/ck1.cer</T559503><T559504>20130101</T559504><T559505>20990101</T559505></T5595><T5595><T559501>03342</T559501><T559502>TM11</T559502><T559503>/out/blc/BLC03342A_140422.BIG</T559503><T559504>19700101</T559504><T559505>99991231</T559505></T5595><T5595><T559501>000179</T559501><T559502>ER01</T559502><T559503>ON</T559503><T559504>20150501</T559504><T559505>20151102</T559505></T5595><T5595><T559501>000179</T559501><T559502>ER02</T559502><T559503>RS232</T559503><T559504>20150501</T559504><T559505>20151102</T559505></T5595><T5595><T559501>000179</T559501><T559502>ER03</T559502><T559503>0</T559503><T559504>20150501</T559504><T559505>20151102</T559505></T5595><T5595><T559501>000179</T559501><T559502>ER05</T559502><T559503>1_115200_8_N_1</T559503><T559504>20150501</T559504><T559505>20151102</T559505></T5595><T5595><T559501>000179</T559501><T559502>TM19</T559502><T559503>1</T559503><T559504>20150501</T559504><T559505>20151102</T559505></T5595><T5595><T559501>000179</T559501><T559502>TM20</T559502><T559503>收銀機測試</T559503><T559504>20150501</T559504><T559505>20151102</T559505></T5595><T5595><T559501>000179</T559501><T559502>TM25</T559502><T559503>1</T559503><T559504>20150501</T559504><T559505>20151102</T559505></T5595><T5595><T559501>000179</T559501><T559502>TM30</T559502><T559503>110101100</T559503><T559504>20150501</T559504><T559505>20151102</T559505></T5595><T5595><T559501>000179</T559501><T559502>TM31</T559502><T559503>10</T559503><T559504>20150501</T559504><T559505>20151102</T559505></T5595><T5596><T559601>00000000</T559601><T559602>00000001</T559602><T559603>00000000</T559603><T559604>00000001</T559604></T5596><T6000>261D0323D000</T6000><T6002>11B80B01E8030001A0860101F40100000000000000000000</T6002><T6003>A086010000000000000000000000000000000000000000000000000000000000</T6003><T6004>00000</T6004><T6400>508DC03C64A5EB42</T6400><T6401>07C5E58111865F17</T6401><T6408>1B63AF44D75C9010ED343FD9293A1FF4</T6408><T6409>332EF4FC9AEE6FCFB3EFA1E59FF40FC4</T6409></Trans></TransXML>
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:100
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:300
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:400
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:403
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:407
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:408
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:409
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:410
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:1100
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:1101
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:1200
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:1201
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:1300
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:1301
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:3700
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:3800
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:3900
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:4100
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:4101
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:4102
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:4103
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:4104
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:4200
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:4210
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:4802
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:4813
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:4814
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:4815
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:4816
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:4817
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:4820
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:4823
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:4824
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5301
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5303
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5306
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5307
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5308
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5361
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5362
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5363
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5364
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5365
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5366
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5368
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5369
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5370
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5371
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5501
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5503
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5504
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5510
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5588
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5588
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5588
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5591
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5595
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:TM01
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:5909
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:20131125
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:99991231
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5595
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:TM02
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:00010001
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:20131125
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:99991231
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5595
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:TM03
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:1    
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:20131125
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:99991231
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1491)] DEBUG - TM03 Value:01
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5595
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:TM04
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:0000100011
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:20131125
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:99991231
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5595
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:TM17
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:特店00010001
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:20131125
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:99991231
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5595
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:TM18
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:分店0000100011
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:20131125
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:99991231
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5595
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:000001
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:TM09
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:123456
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:20130101
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:20990101
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5595
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:000001
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:TM10
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:/OUT/ssl/ck1.cer
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:20130101
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:20990101
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5595
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:03342
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:TM11
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:/out/blc/BLC03342A_140422.BIG
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:19700101
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:99991231
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5595
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:000179
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:ER01
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:ON
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:20150501
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:20151102
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5595
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:000179
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:ER02
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:RS232
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:20150501
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:20151102
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5595
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:000179
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:ER03
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:0
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:20150501
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:20151102
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5595
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:000179
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:ER05
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:1_115200_8_N_1
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:20150501
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:20151102
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5595
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:000179
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:TM19
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:1
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:20150501
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:20151102
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5595
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:000179
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:TM20
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:收銀機測試
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:20150501
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:20151102
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5595
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:000179
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:TM25
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:1
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:20150501
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:20151102
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5595
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:000179
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:TM30
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:110101100
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:20150501
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:20151102
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5595
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:000179
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:TM31
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:10
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:20150501
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1478)] DEBUG - 5595 value:20151102
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:5596
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:6000
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:6002
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1527)] DEBUG - 6002_data:11B80B01E8030001A0860101F40100000000000000000000
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1529)] DEBUG - setOneDayQuotaFlag:11
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:6003
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:6004
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:6400
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:6401
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1560)] DEBUG - CMAS Response 6401:07C5E58111865F17
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:6408
+[14:57:39][CMAS.CmasDataSpec.getTag(CmasDataSpec.java:65)] DEBUG - tag:6409
+[14:57:39][CMAS.CmasDataSpec.tagParser(CmasDataSpec.java:1570)] DEBUG - CMAS Response 6409:332EF4FC9AEE6FCFB3EFA1E59FF40FC4
+[14:57:39][CMAS.CmasDataSpec.getT6401(CmasDataSpec.java:1192)] INFO - getter:07C5E58111865F17
+[14:57:39][CMAS.CmasDataSpec.getT6409(CmasDataSpec.java:1241)] INFO - getter:332EF4FC9AEE6FCFB3EFA1E59FF40FC4
+[14:57:39][Reader.PPR_SignOn.SetReq_CheckEVFlagForMifareOnly(PPR_SignOn.java:293)] INFO - setter:
+[14:57:39][Reader.PPR_SignOn.SetReq_MerchantLimitUseForMicroPayment(PPR_SignOn.java:320)] INFO - setter:00
+[14:57:39][Reader.PPR_SignOn.SetReq_MerchantLimitUseForMicroPayment(PPR_SignOn.java:323)] DEBUG - OneDay..value:3C
+[14:57:39][Reader.PPR_SignOn.SetReq_MerchantLimitUseForMicroPayment(PPR_SignOn.java:328)] DEBUG - clearBit
+[14:57:39][Reader.PPR_SignOn.SetReq_MerchantLimitUseForMicroPayment(PPR_SignOn.java:332)] DEBUG - OneDay..value:3C
+[14:57:39][CMAS.CmasDataSpec$SubTag6002.getOneDayQuotaFlag(CmasDataSpec.java:184)] INFO - getter:11
+[14:57:39][Reader.PPR_SignOn.SetReq_OneDayQuotaFlagForMicroPayment(PPR_SignOn.java:354)] INFO - setter:11
+[14:57:39][Reader.EZReader.exeCommand(EZReader.java:30)] INFO - Start
+[14:57:39][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:172)] INFO - Start
+[14:57:39][Reader.ApduRecvSender.openPort(ApduRecvSender.java:43)] INFO - Start, comportname:COM9COM9
+[14:57:39][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:198)] DEBUG - pack APDU command:(00)(00)(86)(80)(02)(00)(00)(80)(07)(c5)(e5)(81)(11)(86)(5f)(17)(33)(2e)(f4)(fc)(9a)(ee)(6f)(cf)(b3)(ef)(a1)(e5)(9f)(f4)(0f)(c4)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(3c)(0f)(b8)(0b)(e8)(03)(f4)(01)(01)(a0)(86)(01)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(02)(f1)(1e)(a1)(1d)(6d)
+[14:57:39][Reader.ApduRecvSender.write(ApduRecvSender.java:124)] INFO - Start
+[14:57:39][Reader.ApduRecvSender.read(ApduRecvSender.java:144)] INFO - Start
+[14:57:39][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:207)] DEBUG - read finish:(00)(00)(1f)
+[14:57:39][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:214)] INFO - read body len:31
+[14:57:39][Reader.ApduRecvSender.read(ApduRecvSender.java:144)] INFO - Start
+[14:57:39][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:222)] DEBUG - recv from Comport total Byte: 35
+[14:57:39][Reader.ApduRecvSender.sendRecv(ApduRecvSender.java:233)] INFO - End
+[14:57:39][Reader.APDU.checkResponseFormat(APDU.java:134)] DEBUG - statusCode:9000
+[14:57:39][Reader.PPR_SignOn.debugResponseData(PPR_SignOn.java:662)] DEBUG - pprSignon recv:(00)(00)(1f)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(00)(90)(00)(8f)
+[14:57:39][CMAS.Process.doSignon(Process.java:215)] DEBUG - 5595:TM01
+[14:57:39][CMAS.Process.doSignon(Process.java:215)] DEBUG - 5595:TM02
+[14:57:39][CMAS.Process.doSignon(Process.java:215)] DEBUG - 5595:TM03
+[14:57:39][CMAS.Process.anyFileNeededToDownload(Process.java:288)] INFO - Host notified something needed to download:TM11
+[14:57:39][CMAS.CmasKernel.readerField2CmasSpec(CmasKernel.java:173)] DEBUG - getTM_Serial_Number:165731
+[14:57:39][CMAS.CmasKernel.packRequeset(CmasKernel.java:486)] INFO - pack CMAS data:<TransXML><Trans><T0100>0820</T0100><T0300>881999</T0300><T1100>165731</T1100><T1101>165731</T1101><T1200>145739</T1200><T1300>20150527</T1300><T3700>20150527165731</T3700><T4100>0A100D112700</T4100><T4200>00010001</T4200><T4210>00256</T4210><T4825>00</T4825><T5501>00000000</T5501><T5503>0000100011</T5503><T5504>00</T5504><T5510>1234</T5510><T6406></T6406></Trans></TransXML>
+[14:57:39][CMAS.Process.doSignon(Process.java:252)] DEBUG - SignOn Adv:<TransXML><Trans><T0100>0820</T0100><T0300>881999</T0300><T1100>165731</T1100><T1101>165731</T1101><T1200>145739</T1200><T1300>20150527</T1300><T3700>20150527165731</T3700><T4100>0A100D112700</T4100><T4200>00010001</T4200><T4210>00256</T4210><T4825>00</T4825><T5501>00000000</T5501><T5503>0000100011</T5503><T5504>00</T5504><T5510>1234</T5510><T6406></T6406></Trans></TransXML>
+[14:57:39][Comm.Socket.SSL.sendRequest(SSL.java:173)] DEBUG - isBound:true
+[14:57:39][Comm.Socket.SSL.sendRequest(SSL.java:174)] DEBUG - isClosed:false
+[14:57:39][Comm.Socket.SSL.sendRequest(SSL.java:175)] DEBUG - isConnected:true
+[14:57:39][Comm.Socket.SSL.sendRequest(SSL.java:176)] DEBUG - isInputShutdown:false
+[14:57:39][Comm.Socket.SSL.sendRequest(SSL.java:177)] DEBUG - isOutputShutdown:false
+[14:57:39][Comm.Socket.SSL.sendRequest(SSL.java:179)] DEBUG - setting Timeout:30(sec)
+[14:57:39][Comm.Socket.SSL.sendRequest(SSL.java:190)] INFO - SSL Send OK!! waittin...recv response
+[14:57:39][Comm.FTP.Ftp4j.connect2Server(Ftp4j.java:74)] INFO - Enable FTPS
+[14:57:39][CMAS.Process.doSignon(Process.java:254)] DEBUG - SignOn Adv Response:<?xml version="1.0" encoding="UTF-8" standalone="no"?><TransXML><Trans><T0100>0830</T0100><T0300>881999</T0300><T0400>0</T0400><T0403>0</T0403><T0407>0</T0407><T0408>0</T0408><T0409>0</T0409><T0410>0</T0410><T1100>165731</T1100><T1101>165731</T1101><T1200>145742</T1200><T1300>20150527</T1300><T3700>20150527165731</T3700><T3800>7CkQzd</T3800><T3900>00</T3900><T4100>0A100D112700</T4100><T4200>00010001</T4200><T4210>00256</T4210><T4813>0</T4813><T4814>0</T4814><T4815>0</T4815><T4816>0</T4816><T4817>0</T4817><T4823>11</T4823><T4824>00</T4824><T4825>00</T4825><T5369>11</T5369><T5501>00000000</T5501><T5503>0000100011</T5503><T5504>00</T5504><T5510>1234</T5510><T5591>0</T5591></Trans></TransXML>
+[14:57:40][Comm.Socket.MyX509TrustManager.checkServerTrusted(MyX509TrustManager.java:47)] INFO - Pass Server Cert. Check
+[14:57:40][CMAS.CmasFTPList.run(CmasFTPList.java:122)] INFO - ftps connect OK
+[14:57:41][CMAS.CmasFTPList.startDownload(CmasFTPList.java:66)] INFO - FTP Connect OK
+[14:57:41][Comm.FTP.Ftp4j.download(Ftp4j.java:157)] INFO - ftp download Remote:/ftp_edc/out/blc/BLC03342A_140422.BIG to local:config/CardNumber.black
+[14:57:41][Comm.FTP.Ftp4jListener.started(Ftp4jListener.java:30)] INFO - ftpListener started
+[14:57:41][Comm.Socket.MyX509TrustManager.checkServerTrusted(MyX509TrustManager.java:47)] INFO - Pass Server Cert. Check
+[14:57:41][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:41][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:42][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:42][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:42][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:42][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:42][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:42][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:42][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:42][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:42][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:42][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:42][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:42][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:42][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:42][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:42][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:42][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:42][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:42][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:42][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:42][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:42][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:42][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:42][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:43][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:43][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:43][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:43][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:43][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:43][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:43][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:43][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:43][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:43][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:43][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:43][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:43][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:43][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:43][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:43][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:43][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:43][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:43][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:43][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:43][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:43][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:43][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:43][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:43][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:43][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:43][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:44][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:44][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:44][Comm.FTP.Ftp4jListener.transferred(Ftp4jListener.java:36)] INFO - ftpListener transferred
+[14:57:44][Comm.FTP.Ftp4jListener.completed(Ftp4jListener.java:18)] INFO - ftpListener completed
+[14:57:44][CMAS.CmasFTPList.startDownload(CmasFTPList.java:78)] INFO - download BlackList OK
+[14:57:44][CMAS.Process.doSignon(Process.java:268)] DEBUG - finally
+[14:57:44][Comm.Socket.SSL.disconnect(SSL.java:71)] INFO - Start
+[14:57:44][Comm.Socket.SSL.disconnect(SSL.java:78)] INFO - SSL Close
+[14:57:44][CMAS.ConfigManager.saveConfig(ConfigManager.java:138)] INFO - Start
+[14:57:44][CMAS.ConfigManager.saveConfig(ConfigManager.java:167)] INFO - end
+[14:57:44][CMAS.Process.doSignon(Process.java:277)] INFO - End
+[14:57:44][APIInterface.EasycardAPI.cmasSignOn(EasycardAPI.java:86)] INFO - Do_Signon() result:0:Success
+[14:57:44][APIInterface.EasycardAPI.cmasSignOn(EasycardAPI.java:88)] INFO - End
