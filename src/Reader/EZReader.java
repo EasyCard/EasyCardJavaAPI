@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 
 import ErrorMessage.ApiRespCode;
 import ErrorMessage.IRespCode;
-import ErrorMessage.ReaderRespCode;
+
 
 
 public class EZReader{
@@ -72,9 +72,14 @@ public class EZReader{
     		return ReaderRespCode.UNKNOWN_ERROR_CODE;
     	}
     	
-		return result;
+		return result;    	
+    }
+    
+    public boolean checkCardIDInBlacklist(String cardId){
+    	boolean result = true;
     	
     	
+    	return result;
     }
 }
 

@@ -36,11 +36,11 @@ public class CmasKernel {
 	}
 	
 	//public CmasKernel(CmasDataSpec spec, PPR_Reset reset, Properties pApi) {
-	public void readerField2CmasSpec(PPR_Reset pprReset, CmasDataSpec spec, ArrayList<Properties> cfgList, SubTag5596 _t5596) {
+	public void readerField2CmasSpec(PPR_Reset pprReset, CmasDataSpec spec, ConfigManager configManager, SubTag5596 _t5596) {
 		// TODO Auto-generated constructor stub
 		logger.info("Start");
-		Properties pApi = cfgList.get(ConfigManager.ConfigOrder.EASYCARD_API.ordinal());
-		Properties pTxnInfo = cfgList.get(ConfigManager.ConfigOrder.TXN_INFO.ordinal());
+		//Properties pApi = cfgList.get(ConfigManager.ConfigOrder.EASYCARD_API.ordinal());
+		//Properties pTxnInfo = cfgList.get(ConfigManager.ConfigOrder.TXN_INFO.ordinal());
 		
 		spec.setT0100("0800");
 		spec.setT0300("881999");
@@ -92,7 +92,7 @@ public class CmasKernel {
 				,s[4],s[5]
 		));
 		*/
-		spec.setT5501(pTxnInfo.getProperty("Batch_No"));
+		spec.setT5501(configManager.getBatchNo());
 		
 		
 		spec.setT5503(pprReset.GetReq_TMLocationID());
@@ -110,13 +110,13 @@ public class CmasKernel {
 		
 		tag = spec.new SubTag5588(); 
 		tag.setT558801("02");
-		tag.setT558803(pApi.getProperty("BlackListVer"));
+		tag.setT558803(configManager.getBlackListVersion());
 		spec.setT5588s(tag);
 		
 		tag = spec.new SubTag5588(); 		
 		tag.setT558801("03");
-		tag.setT558802(pApi.getProperty("ApiName"));
-		tag.setT558803(pApi.getProperty("ApiVer"));
+		tag.setT558802(configManager.getApiName());
+		tag.setT558803(configManager.getApiVersion());
 		spec.setT5588s(tag);
 		
 		
@@ -143,7 +143,7 @@ public class CmasKernel {
 		t6002.setCheckDeductFlag(String.format("%02d", pprReset.GetResp_CheckDebitFlag()));
 		t6002.setCheckDeductValue(Util.bcd2Ascii(pprReset.GetResp_CheckDebitValue()));
 		t6002.setDeductLimitFlag(String.format("%02d", pprReset.GetResp_MerchantLimitUseForMicroPayment()));
-		t6002.setApiVersion(String.format("%8s", pApi.getProperty("ApiVer")));
+		t6002.setApiVersion(String.format("%8s", configManager.getApiVersion()));
 		t6002.setRFU("0000000000");
 		
 		
@@ -153,7 +153,7 @@ public class CmasKernel {
 				+"000000000000000000000000000000000000"
 		);
 		
-		spec.setT6004(pApi.getProperty("BlackListVer"));
+		spec.setT6004(configManager.getBlackListVersion());
 		//spec.setT6004("12345");
 		
 		spec.setT6400(Util.bcd2Ascii(pprReset.GetResp_S_TAC()));
@@ -162,17 +162,17 @@ public class CmasKernel {
 		logger.info("End");
 	}
 	
-	public void readerField2CmasSpec(PPR_SignOn pprSignOn, CmasDataSpec specAdv, CmasDataSpec specResetResp, ArrayList<Properties> cfgList)
+	public void readerField2CmasSpec(PPR_SignOn pprSignOn, CmasDataSpec specAdv, CmasDataSpec specResetResp, ConfigManager configManager)
 	{
 		//signon advice
-		Properties txnInfo = cfgList.get(ConfigManager.ConfigOrder.TXN_INFO.ordinal());
+		//Properties txnInfo = cfgList.get(ConfigManager.ConfigOrder.TXN_INFO.ordinal());
 		
 		specAdv.setT0100("0820");
 		specAdv.setT0300("881999");
 		
-		logger.debug("getTM_Serial_Number:"+txnInfo.getProperty("TM_Serial_Number"));
-		specAdv.setT1100(txnInfo.getProperty("TM_Serial_Number"));
-		specAdv.setT1101(txnInfo.getProperty("TM_Serial_Number"));
+		logger.debug("getTM_Serial_Number:"+configManager.getTMSerialNo());
+		specAdv.setT1100(configManager.getTMSerialNo());
+		specAdv.setT1101(configManager.getTMSerialNo());
 		
 		
 		int unixTimeStamp = (int) (System.currentTimeMillis() / 1000L);
@@ -192,7 +192,7 @@ public class CmasKernel {
 				,d[2],d[3],d[4],d[5],d[6],d[7]
 				,s[4],s[5]
 		));*/
-		specAdv.setT5501(txnInfo.getProperty("Batch_No"));
+		specAdv.setT5501(configManager.getBatchNo());
 		
 		
 		specAdv.setT5503(specResetResp.getT5503());
@@ -206,11 +206,11 @@ public class CmasKernel {
 		
 	}
 
-	public void readerField2CmasSpec(PPR_TxnReqOffline pprTxnReqOffline, PPR_AuthTxnOffline pprAuthTxnOffline, CmasDataSpec deductAdvice, ArrayList<Properties> cfgList){
+	public void readerField2CmasSpec(PPR_TxnReqOffline pprTxnReqOffline, PPR_AuthTxnOffline pprAuthTxnOffline, CmasDataSpec deductAdvice, ConfigManager configManager){
 		// deduct advice
 		byte[] b = null;
-		Properties txnInfo = cfgList.get(ConfigManager.ConfigOrder.TXN_INFO.ordinal());
-		Properties easycardApi = cfgList.get(ConfigManager.ConfigOrder.EASYCARD_API.ordinal());
+		//Properties txnInfo = cfgList.get(ConfigManager.ConfigOrder.TXN_INFO.ordinal());
+		//Properties easycardApi = cfgList.get(ConfigManager.ConfigOrder.EASYCARD_API.ordinal());
 		
 		deductAdvice.setT0100("0220");
 		
@@ -263,8 +263,8 @@ public class CmasKernel {
 		deductAdvice.setT0410(t0410);
 		
 		//t1100,t1101
-		deductAdvice.setT1100(txnInfo.getProperty("TM_Serial_Number"));
-		deductAdvice.setT1101(txnInfo.getProperty("TM_Serial_Number"));
+		deductAdvice.setT1100(configManager.getTMSerialNo());
+		deductAdvice.setT1101(configManager.getTMSerialNo());
 		
 		//t1200, t1201, t1300, t1301
 		b = pprTxnReqOffline.getReqTMTXNDateTime().getBytes();
@@ -296,7 +296,7 @@ public class CmasKernel {
 		deductAdvice.setT4103(Util.getMACAddress());
 		
 		//t4104
-		deductAdvice.setT4104(easycardApi.getProperty("Reader_ID"));
+		deductAdvice.setT4104(configManager.getReaderID());
 		
 		
 		//t4200
@@ -305,7 +305,7 @@ public class CmasKernel {
 		deductAdvice.setT4200(String.format("%08d", Util.bytes2Long(b, 0, b.length)));
 		
 		//t4210
-		deductAdvice.setT4210(easycardApi.getProperty("Company_Branch"));
+		deductAdvice.setT4210(configManager.getNewLocationID());
 		
 		//t4800
 		deductAdvice.setT4800(String.format("%02X", pprTxnReqOffline.getRespPurseVersionNumber()));
@@ -394,7 +394,7 @@ public class CmasKernel {
 					,d[2],d[3],d[4],d[5],d[6],d[7]
 					,s[4],s[5]
 			));*/
-			deductAdvice.setT5501(txnInfo.getProperty("Batch_No"));
+			deductAdvice.setT5501(configManager.getBatchNo());
 			
 			//t5503
 			deductAdvice.setT5503(pprTxnReqOffline.getReqTMLocationID());
@@ -422,7 +422,7 @@ public class CmasKernel {
 				
 	}
 	
-	public int cmasSpec2ReaderField(CmasDataSpec spec, PPR_SignOn pprSignon, ArrayList<Properties> cfgList)
+	public int cmasSpec2ReaderField(CmasDataSpec spec, PPR_SignOn pprSignon, ConfigManager configManager)
 	{
 		int result = 0;
 		

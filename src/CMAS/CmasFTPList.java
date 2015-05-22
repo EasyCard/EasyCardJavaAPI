@@ -19,7 +19,8 @@ public class CmasFTPList extends Thread{
 	private boolean isFtpsOK = false;
 	
 	ArrayList<CmasDataSpec.SubTag5595> t5595s = null;
-	ArrayList<Properties> cfgLsit = null;
+	//ArrayList<Properties> cfgLsit = null;
+	private ConfigManager configManager = null;
 	private String url = null;
 	private String bkIP=null;
 	private int port = 0;
@@ -32,7 +33,7 @@ public class CmasFTPList extends Thread{
 			String id,
 			String pwd, 
 			ArrayList<CmasDataSpec.SubTag5595> t5595s,
-			ArrayList<Properties> cfgList){
+			ConfigManager config){
 		
 		this.url = url;
 		this.bkIP = bkIP;
@@ -40,7 +41,7 @@ public class CmasFTPList extends Thread{
 		this.id = id;
 		this.pwd = pwd;
 		this.t5595s = t5595s;
-		this.cfgLsit = cfgList;
+		this.configManager = config;
 	}
 	
 	/**
@@ -62,7 +63,7 @@ public class CmasFTPList extends Thread{
 		try{			
 			
 			String rootDir = ftps.getCurrentDIR();
-			Properties easycardApi = this.cfgLsit.get(ConfigManager.ConfigOrder.EASYCARD_API.ordinal());
+
 			logger.info("FTP Connect OK");
 			for(CmasDataSpec.SubTag5595 t5595:t5595s)
 			{						
@@ -76,12 +77,13 @@ public class CmasFTPList extends Thread{
 				if(t559501.equalsIgnoreCase("TM11")){
 					if(ftps.download(rootDir + t5595.getT559503(), ConfigManager.CARD_NUMBER_BLACKLIST)){ // download to
 						logger.info("download BlackList OK");
-						easycardApi.setProperty("BlackListVer", t5595.getT559501());		
+						configManager.setBlackListVersion(t5595.getT559501());
+		
 					} else logger.error("download BlackList fail");
 				} else if(t559501.equalsIgnoreCase("TM12")) {
 					if(ftps.download(rootDir + t5595.getT559503(), ConfigManager.API_JAR)){ // download to
-						logger.info("download API OK");
-						easycardApi.setProperty("ApiVer", t5595.getT559501());
+						logger.info("download API OK");						
+						configManager.setApiVersion(t5595.getT559501());
 					} else logger.error("download API Fail");
 				}
 			}

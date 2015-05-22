@@ -300,6 +300,7 @@ public class PPR_Reset extends APDU {
 		byte data[] = Arrays.copyOfRange(mRequest, scReqData_NewLocationID, 
 				scReqData_NewLocationID + scReqData_NewLocationID_Len);
 		
+		Util.arrayReverse(data);
 		logger.info("getter:"+Util.hex2StringLog(data));
 		return data;
 	
