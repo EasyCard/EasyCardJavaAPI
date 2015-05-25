@@ -356,9 +356,10 @@ public class PPR_TxnReqOffline extends APDU{
 	private ResponseField respFld = null;
 	private class ResponseField extends BaseResponseAutoParser{
 		private int dataBodyLen;
-		private final int NORMAL_LEN = 250;//9000, 6403(餘額不足), 6415(需授權交易) 
-		private final int ERROR1_LEN = 120;//640E(餘額異常)、610F(二代餘額異常)、6418(通路限制)
-		private final int ERROR2_LEN = 40;//6103(CPD檢查異常)
+		private final int NORMAL_LEN = 250 + 2;//9000, 6403(餘額不足), 6415(需授權交易) 
+		private final int ERROR1_LEN = 120 + 2;//640E(餘額異常)、610F(二代餘額異常)、6418(通路限制)
+		private final int ERROR2_LEN = 40 + 2;//6103(CPD檢查異常)
+		private final int ERROR3_LEN = 2;//6103(CPD檢查異常)
 		
 		
 		
@@ -424,6 +425,7 @@ public class PPR_TxnReqOffline extends APDU{
 		
 		public byte[] MAC=null;
 		public byte[] txnDateTime=null;
+		public byte[] statusCode=null;
 		
 		//120bytes additional fields
 		public byte[] loyaltyCounter = null;
@@ -595,6 +597,10 @@ public class PPR_TxnReqOffline extends APDU{
 		public byte[] getTxnDateTime() {
 			return txnDateTime;
 		}
+		public byte[] getStatusCode() {
+			return statusCode;
+		}
+		
 		
 		//120bytes additional fields
 		public byte[] getLoyaltyCounter(){
@@ -681,6 +687,7 @@ public class PPR_TxnReqOffline extends APDU{
 				
 				maps.put("MAC",18);
 				maps.put("txnDateTime",4);
+				maps.put("statusCode",2);
 				
 			} else if(dataBodyLen == ERROR1_LEN) {
 				
@@ -724,7 +731,7 @@ public class PPR_TxnReqOffline extends APDU{
 				maps.put("mifareSettingParameter",1);
 				
 				maps.put("CPUSettingParameter",1);
-				
+				maps.put("statusCode",2);
 				
 			} else if(dataBodyLen == ERROR2_LEN) {
 				
@@ -745,7 +752,10 @@ public class PPR_TxnReqOffline extends APDU{
 				maps.put("locationID",1);
 				maps.put("newLocationID",2);
 				maps.put("issuerCode",1);
+				maps.put("statusCode",2);
 				
+			} else if(dataBodyLen == ERROR3_LEN) {
+				maps.put("statusCode",2);
 			} else {
 				logger.error("Unknowen dataBody Len:"+dataBodyLen);
 				return null;
@@ -1487,20 +1497,20 @@ public class PPR_TxnReqOffline extends APDU{
 		Resp_SW1 = bytes[scRespDataOffset + dataLength - 2];
 		Resp_SW2 = bytes[scRespDataOffset + dataLength - 2 +1];
 		
-		
-		
+				
 		//check checkSum
 		byte sum = getEDC(bytes, bytes.length);
-		if (sum != bytes[scRespLength - 1]) {
+		if (sum != bytes[bytes.length - 1]) {
 			// check sum error...
 			logger.error("CheckSum error");
 			return false;
 		}
 		
+		
 		//copy buffer to mResponse
 		mRespond = Arrays.copyOf(bytes, bytes.length);
-		byte[] b = Arrays.copyOfRange(bytes, scRespDataOffset, scRespDataOffset+scRespDataLength);
-		respFld = new ResponseField(dataLength-2);// -2 was statusCode
+		byte[] b = Arrays.copyOfRange(bytes, scRespDataOffset, scRespDataOffset+dataLength);
+		respFld = new ResponseField(dataLength);// -2 was statusCode
 		respFld.parse(b);
 
 		logger.info("end");			

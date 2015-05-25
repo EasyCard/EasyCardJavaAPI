@@ -50,8 +50,7 @@ public class EZReader{
     			logger.error("command: "+command.getClass().getName()+",setRespond fail");
     			return ApiRespCode.ERROR;
     		}
-    		//for debug
-    		command.debugResponseData();
+    		
     		
     		
     		if((statusCode = command.GetRespCode()) != 0x9000)
@@ -60,9 +59,11 @@ public class EZReader{
     			logger.error("APDU respCode:"+hexCode);
     			result = ApiRespCode.fromCode(hexCode, ReaderRespCode.values());
     		}    		
-    		else
+    		else {
+    			//for debug
+        		command.debugResponseData();
     			result = ReaderRespCode._9000;
-    		
+    		}
     		
     		
     	}
