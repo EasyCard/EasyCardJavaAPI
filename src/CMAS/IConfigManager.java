@@ -2,6 +2,14 @@ package CMAS;
 
 public interface IConfigManager {
 	
+	public static final String ROOT_DIR="config/";
+	public static final String CARD_NUMBER_BLACKLIST = ROOT_DIR + "CardNumber.black";
+	public static final String CARD_NUMBER_BLACKLIST_TEMP = ROOT_DIR + "CardNumber.temp";
+	public static final String CARD_NUMBER_BLACKLIST_PREVER = ROOT_DIR + "CardNumber.prever";
+	public static final String CA_CERT = ROOT_DIR + "CA.cer";
+	public static final String API_JAR = ROOT_DIR + "EasyCardApi.jar";
+	public static final String LOG4J_CONFIG_FILE = ROOT_DIR+"log4j.properties";
+	
 	public boolean initial();
 	public boolean finish();
 	
@@ -14,8 +22,6 @@ public interface IConfigManager {
 	public String getBlackListVersion();
 	public void setBlackListVersion(String verName);
 	
-	public String getCompanyBranchID();
-	public void setCompanyBranchID(String id);
 	
 	public String getNewLocationID();
 	public void setNewLocationID(String id);

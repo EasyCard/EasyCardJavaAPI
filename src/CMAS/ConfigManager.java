@@ -17,17 +17,14 @@ public class ConfigManager implements IConfigManager{
 	static Logger logger = Logger.getLogger(ConfigManager.class);
 	private ArrayList<Properties> cfgList = null;
 	
-	public static final String ROOT_DIR="config/";
+	//public static final String ROOT_DIR="config/";
 	public static final String EASYCARD_API_FILE = ROOT_DIR + "EasycardAPI.properties"; 
 	public static final String TXN_INFO_FILE = ROOT_DIR + "TxnInfo.properties";
 	public static final String HOST_DEVE_INFO_FILE = ROOT_DIR + "HostDeve.properties";
 	public static final String HOST_TEST_INFO_FILE = ROOT_DIR + "HostTest.properties";
 	public static final String HOST_PROD_INFO_FILE = ROOT_DIR + "HostProduction.properties";
 	public static final String USER_DEFINITION_FILE = ROOT_DIR + "UserDefinition.properties";
-	public static final String CARD_NUMBER_BLACKLIST = ROOT_DIR + "CardNumber.black";
-	public static final String CA_CERT = ROOT_DIR + "CA.cer";
-	public static final String API_JAR = ROOT_DIR + "EasyCardApi.jar";
-	public static final String LOG4J_CONFIG_FILE = ROOT_DIR+"log4j.properties";
+	
 	
 	public enum ConfigOrder
 	{
@@ -353,7 +350,7 @@ public class ConfigManager implements IConfigManager{
 		cfgList.get(ConfigOrder.EASYCARD_API.ordinal()).setProperty("BlackListVer", verName);
 		logger.info("setter:"+verName);
 	}
-
+/*
 	@Override
 	public String getCompanyBranchID() {
 		// TODO Auto-generated method stub
@@ -368,7 +365,7 @@ public class ConfigManager implements IConfigManager{
 		cfgList.get(ConfigOrder.EASYCARD_API.ordinal()).setProperty("CompanyBranchID", id);
 		logger.info("setter:"+id);
 	}
-
+*/
 	@Override
 	public String getNewLocationID() {
 		// TODO Auto-generated method stub
@@ -447,7 +444,7 @@ public class ConfigManager implements IConfigManager{
 	@Override
 	public String getFtpUrl() {
 		// TODO Auto-generated method stub
-		String url = cfgList.get(ConfigOrder.HOST_INFO.ordinal()).getProperty("HostUrl");
+		String url = cfgList.get(ConfigOrder.HOST_INFO.ordinal()).getProperty("FtpUrl");
 		logger.info("getter:"+url);
 		return url;
 	}
@@ -455,7 +452,7 @@ public class ConfigManager implements IConfigManager{
 	@Override
 	public void setFtpUrl(String url) {
 		// TODO Auto-generated method stub
-		cfgList.get(ConfigOrder.HOST_INFO.ordinal()).setProperty("HostPort", url);
+		cfgList.get(ConfigOrder.HOST_INFO.ordinal()).setProperty("FtpUrl", url);
 		logger.info("setter:"+url);
 	}
 

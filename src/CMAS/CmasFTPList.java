@@ -1,5 +1,6 @@
 package CMAS;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -8,8 +9,13 @@ import org.apache.log4j.Logger;
 
 
 
+
+
+
 import Comm.FTP.Ftp4j;
 import CMAS.ConfigManager;
+import Reader.BigBlackList;
+import Utilities.Util;
 
 public class CmasFTPList extends Thread{
 	
@@ -20,7 +26,7 @@ public class CmasFTPList extends Thread{
 	
 	ArrayList<CmasDataSpec.SubTag5595> t5595s = null;
 	//ArrayList<Properties> cfgLsit = null;
-	private ConfigManager configManager = null;
+	private IConfigManager configManager = null;
 	private String url = null;
 	private String bkIP=null;
 	private int port = 0;
@@ -33,7 +39,7 @@ public class CmasFTPList extends Thread{
 			String id,
 			String pwd, 
 			ArrayList<CmasDataSpec.SubTag5595> t5595s,
-			ConfigManager config){
+			IConfigManager config){
 		
 		this.url = url;
 		this.bkIP = bkIP;
@@ -63,6 +69,7 @@ public class CmasFTPList extends Thread{
 		try{			
 			
 			String rootDir = ftps.getCurrentDIR();
+			
 
 			logger.info("FTP Connect OK");
 			for(CmasDataSpec.SubTag5595 t5595:t5595s)
@@ -75,10 +82,24 @@ public class CmasFTPList extends Thread{
 					} else logger.error("download CA Cert fail");
 				} else*/ 
 				if(t559501.equalsIgnoreCase("TM11")){
-					if(ftps.download(rootDir + t5595.getT559503(), ConfigManager.CARD_NUMBER_BLACKLIST)){ // download to
-						logger.info("download BlackList OK");
-						configManager.setBlackListVersion(t5595.getT559501());
-		
+					
+					if(ftps.download(rootDir + t5595.getT559503(), ConfigManager.CARD_NUMBER_BLACKLIST_TEMP)){ // download to
+						BigBlackList bigBlc = new BigBlackList();
+						if(bigBlc.configure(BigBlackList.class.getClassLoader().getResourceAsStream(ConfigManager.CARD_NUMBER_BLACKLIST_TEMP))==false){
+							// maybe blackFile wrong!!!
+							logger.error("FTPS download blackList file something wrong!!!");
+						} else {	
+							File preBlc = new File(ConfigManager.CARD_NUMBER_BLACKLIST_PREVER);
+							File blc = new File(ConfigManager.CARD_NUMBER_BLACKLIST);
+							File blcTemp = new File(ConfigManager.CARD_NUMBER_BLACKLIST_TEMP);
+							if(preBlc.exists()==true && preBlc.delete()==false) logger.error(ConfigManager.CARD_NUMBER_BLACKLIST_PREVER+" deleted fail");
+							if(blc.renameTo(preBlc) == false) logger.error(ConfigManager.CARD_NUMBER_BLACKLIST+" renameTo "+ConfigManager.CARD_NUMBER_BLACKLIST_PREVER);
+							if(blcTemp.renameTo(blc) ==false) logger.error(ConfigManager.CARD_NUMBER_BLACKLIST_TEMP+" renameTo "+ConfigManager.CARD_NUMBER_BLACKLIST);
+							
+							logger.info("download BlackList OK");
+							configManager.setBlackListVersion(t5595.getT559501());
+							
+						}
 					} else logger.error("download BlackList fail");
 				} else if(t559501.equalsIgnoreCase("TM12")) {
 					if(ftps.download(rootDir + t5595.getT559503(), ConfigManager.API_JAR)){ // download to
@@ -131,6 +152,7 @@ public class CmasFTPList extends Thread{
 			startDownload();
 		}
 	}
+	
 	
 	
 }

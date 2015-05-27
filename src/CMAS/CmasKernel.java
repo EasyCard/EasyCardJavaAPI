@@ -4,7 +4,7 @@ package CMAS;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Properties;
+
 
 
 
@@ -17,7 +17,7 @@ import CMAS.CmasDataSpec.Issuer;
 import CMAS.CmasDataSpec.SubTag5588;
 import CMAS.CmasDataSpec.SubTag5596;
 import CMAS.CmasDataSpec.SubTag6002;
-import CMAS.ConfigManager;
+import CMAS.IConfigManager;
 import Reader.PPR_AuthTxnOffline;
 import Reader.PPR_Reset;
 import Reader.PPR_SignOn;
@@ -36,7 +36,7 @@ public class CmasKernel {
 	}
 	
 	//public CmasKernel(CmasDataSpec spec, PPR_Reset reset, Properties pApi) {
-	public void readerField2CmasSpec(PPR_Reset pprReset, CmasDataSpec spec, ConfigManager configManager, SubTag5596 _t5596) {
+	public void readerField2CmasSpec(PPR_Reset pprReset, CmasDataSpec spec, IConfigManager configManager, SubTag5596 _t5596) {
 		// TODO Auto-generated constructor stub
 		logger.info("Start");
 		//Properties pApi = cfgList.get(ConfigManager.ConfigOrder.EASYCARD_API.ordinal());
@@ -162,7 +162,7 @@ public class CmasKernel {
 		logger.info("End");
 	}
 	
-	public void readerField2CmasSpec(PPR_SignOn pprSignOn, CmasDataSpec specAdv, CmasDataSpec specResetResp, ConfigManager configManager)
+	public void readerField2CmasSpec(PPR_SignOn pprSignOn, CmasDataSpec specAdv, CmasDataSpec specResetResp, IConfigManager configManager)
 	{
 		//signon advice
 		//Properties txnInfo = cfgList.get(ConfigManager.ConfigOrder.TXN_INFO.ordinal());
@@ -206,7 +206,7 @@ public class CmasKernel {
 		
 	}
 
-	public void readerField2CmasSpec(PPR_TxnReqOffline pprTxnReqOffline, PPR_AuthTxnOffline pprAuthTxnOffline, CmasDataSpec deductAdvice, ConfigManager configManager){
+	public void readerField2CmasSpec(PPR_TxnReqOffline pprTxnReqOffline, PPR_AuthTxnOffline pprAuthTxnOffline, CmasDataSpec deductAdvice, IConfigManager configManager){
 		// deduct advice
 		byte[] b = null;
 		//Properties txnInfo = cfgList.get(ConfigManager.ConfigOrder.TXN_INFO.ordinal());
@@ -422,7 +422,7 @@ public class CmasKernel {
 				
 	}
 	
-	public int cmasSpec2ReaderField(CmasDataSpec spec, PPR_SignOn pprSignon, ConfigManager configManager)
+	public int cmasSpec2ReaderField(CmasDataSpec spec, PPR_SignOn pprSignon, IConfigManager configManager)
 	{
 		int result = 0;
 		

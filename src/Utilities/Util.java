@@ -16,6 +16,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
 
+import org.apache.log4j.Logger;
+
 public class Util {
 	public static String sGetHexString(byte[] data) {
 	    StringBuffer sb = new StringBuffer();
@@ -498,11 +500,37 @@ public class Util {
 		return l;  
 	}
 	
+	public static long bytes2Long(byte[] array, int offset, int digits, boolean reverse) {
+	    
+		long l=0;
+		int j = digits - 1;
+		
+		if(reverse){
+			for(int i=j; i>=0; i--){
+				l += ((long)(array[offset+i] & 0xff) << (i*8));			
+			}
+			
+		} else {
+			l = bytes2Long(array, offset, digits);
+		}
+		return l;  
+	}
 	public static String IntelFormat2Decimal(byte[] array, int offset, int digits){
 		
 		arrayReverse(array);
 		long l = bytes2Long(array, offset, digits);
 		return String.valueOf(l);
+	}
+	
+	public static boolean fileRename(String oldName, String newName){
+		boolean result = true;
+		
+		
+		File oldfile = new File(oldName);
+		File newfile = new File(newName);
+		result = oldfile.renameTo(newfile);
+		
+		return result;
 	}
 	
 }

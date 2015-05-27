@@ -94,6 +94,7 @@ public class Ftp4j {
 		}
 		
 		try {
+			logger.debug("FTP Host:"+host+", FTP port:"+port);
 			client.connect(host, port);
 			client.login(id, pwd);			
 			result = true;
