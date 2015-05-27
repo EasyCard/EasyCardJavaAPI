@@ -56,22 +56,7 @@ public class EasycardAPI {
 	    //logger.info("End");
 	}
 
-/*
-	private static boolean apiInit(){
-		
-		try{
-						
-			//PropertyConfigurator.configure("lib//log4j.properties");
-			
-		}catch(Exception e){
-			
-			logger.debug("init fail:"+e.getMessage());
-			return false;
-		}
-		
-		return true;
-	}
-	*/
+
 
 	public static void cmasSignOn()
 	{	

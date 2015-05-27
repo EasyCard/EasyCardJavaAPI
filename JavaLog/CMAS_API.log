@@ -1,4 +1,0 @@
-[10:53:04][APIInterface.EasycardAPI.main(EasycardAPI.java:30)] INFO - ********** App Start **********
-[10:53:04][APIInterface.EasycardAPI.cmasSignOn(EasycardAPI.java:57)] INFO - Start
-[10:53:04][CMAS.Process.<init>(Process.java:39)] INFO - Start
-[10:53:04][CMAS.Process.initConfig(Process.java:60)] INFO - Start
