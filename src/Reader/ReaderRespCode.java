@@ -1,8 +1,6 @@
-package ErrorMessage;
+package Reader;
 
-
-
-
+import ErrorMessage.IRespCode;
 
 public enum ReaderRespCode implements IRespCode{
 	_9970("9970","讀卡機無回應請檢查讀卡機",1),

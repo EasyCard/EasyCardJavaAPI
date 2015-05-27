@@ -1,4 +1,6 @@
-package ErrorMessage;
+package CMAS;
+
+import ErrorMessage.IRespCode;
 
 
 public enum CmasRespCode implements IRespCode{
