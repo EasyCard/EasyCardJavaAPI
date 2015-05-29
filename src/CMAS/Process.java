@@ -18,6 +18,7 @@ import CMAS.CmasRespCode;
 import ErrorMessage.IRespCode;
 import Reader.ReaderRespCode;
 import CMAS.ConfigManager;
+import Reader.BigBlackList;
 import Reader.EZReader;
 import Reader.PPR_AuthTxnOffline;
 import Reader.PPR_Reset;
@@ -327,14 +328,38 @@ public class Process {
 		return result;
 	}
 	
+	
+	private boolean needed2PackLockCardAdvice(IRespCode respCode){
+		boolean result = false;
+		
+		if(respCode == ReaderRespCode._640E || 
+		   respCode == ReaderRespCode._610F ||			
+		   respCode == ReaderRespCode._6418 || 			
+		   respCode == ReaderRespCode._6103)
+			result = true;
+		
+		return result;
+		
+	}
+	
+	//check cardID, if cardID existed in blacklist, reader locked it
+	private boolean checkCardIDInBlackList(byte[] cardID){
+		boolean result = false;
+		
+		BigBlackList bigBlc = new BigBlackList();
+		if(!bigBlc.configure(Process.class.getClassLoader().getResourceAsStream(IConfigManager.CARD_NUMBER_BLACKLIST))){
+			logger.error("configure "+IConfigManager.CARD_NUMBER_BLACKLIST+" fail");
+			if(!bigBlc.configure(Process.class.getClassLoader().getResourceAsStream(IConfigManager.CARD_NUMBER_BLACKLIST_PREVER))){
+				logger.error("configure "+IConfigManager.CARD_NUMBER_BLACKLIST_PREVER+" fail");
+			}
+		} else result = bigBlc.checkCardID(cardID); 
+			
+		return result;
+	}
 	public IRespCode doDeduct(int amt){
 		SSL ssl = null;
 		IRespCode result = null;
 		int tmSerialNo = 0;
-		//Properties easyCardApip = cfgList.get(ConfigManager.ConfigOrder.EASYCARD_API.ordinal());
-		//Properties txnInfo = cfgList.get(ConfigManager.ConfigOrder.TXN_INFO.ordinal());
-		//Properties userDef = cfgList.get(ConfigManager.ConfigOrder.USER_DEF.ordinal());
-		//Properties hostInfo = cfgList.get(ConfigManager.ConfigOrder.HOST_INFO.ordinal());
 		
 		//ssl connect to send advice or online txn
 		ssl = new SSL(configManager.getHostUrl(), 
@@ -362,11 +387,18 @@ public class Process {
 			//需要onLine授權交易
 			//todo...
 			return result;
-		}
-		else if(result != ReaderRespCode._9000){
+		} else if(pprTxnReqOffline.getErrorRespFld() != null){
+			// pack LockCard Advice
+			CmasDataSpec lockAdvice = new CmasDataSpec();
+			CmasKernel kernel = new CmasKernel();
+			kernel.readerField2CmasLockAdvice(pprTxnReqOffline.getErrorRespFld(), CmasDataSpec lockAdvice, configManager, result);
+			
+		} else if(result != ReaderRespCode._9000){
 			logger.error("errID:"+result.getId()+", msg:"+result.getMsg());
 			return result;
 		}
+		//check blackList ID
+		
 		
 		//PPR_TxnReq_OFfline end
 		

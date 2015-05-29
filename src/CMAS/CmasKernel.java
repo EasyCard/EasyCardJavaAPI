@@ -11,6 +11,9 @@ import java.util.Arrays;
 
 
 
+
+
+
 import org.apache.log4j.Logger;
 
 import CMAS.CmasDataSpec.Issuer;
@@ -18,16 +21,22 @@ import CMAS.CmasDataSpec.SubTag5588;
 import CMAS.CmasDataSpec.SubTag5596;
 import CMAS.CmasDataSpec.SubTag6002;
 import CMAS.IConfigManager;
+import ErrorMessage.IRespCode;
+import Reader.ErrorResponse;
 import Reader.PPR_AuthTxnOffline;
 import Reader.PPR_Reset;
 import Reader.PPR_SignOn;
 import Reader.PPR_TxnReqOffline;
+import Reader.ReaderRespCode;
 import Utilities.DataFormat;
 import Utilities.Util;
 
 public class CmasKernel {
 
 	static Logger logger = Logger.getLogger(CmasKernel.class);
+	private final int CMAS_4801_SIZE = 90;
+	private final int CMAS_4828_SIZE = 20;
+	private final int CMAS_4829_SIZE = 32;
 
 	public CmasKernel(){
 		logger.info("Start");
@@ -35,7 +44,7 @@ public class CmasKernel {
 		logger.info("End");
 	}
 	
-	//public CmasKernel(CmasDataSpec spec, PPR_Reset reset, Properties pApi) {
+	//SignOn 0800
 	public void readerField2CmasSpec(PPR_Reset pprReset, CmasDataSpec spec, IConfigManager configManager, SubTag5596 _t5596) {
 		// TODO Auto-generated constructor stub
 		logger.info("Start");
@@ -162,6 +171,7 @@ public class CmasKernel {
 		logger.info("End");
 	}
 	
+	//SignOn 0820
 	public void readerField2CmasSpec(PPR_SignOn pprSignOn, CmasDataSpec specAdv, CmasDataSpec specResetResp, IConfigManager configManager)
 	{
 		//signon advice
@@ -206,6 +216,7 @@ public class CmasKernel {
 		
 	}
 
+	//deduct offline advice 0220
 	public void readerField2CmasSpec(PPR_TxnReqOffline pprTxnReqOffline, PPR_AuthTxnOffline pprAuthTxnOffline, CmasDataSpec deductAdvice, IConfigManager configManager){
 		// deduct advice
 		byte[] b = null;
@@ -311,7 +322,7 @@ public class CmasKernel {
 		deductAdvice.setT4800(String.format("%02X", pprTxnReqOffline.getRespPurseVersionNumber()));
 		
 		//t4801
-		byte[] t4801 = new byte[45];
+		byte[] t4801 = new byte[CMAS_4801_SIZE/2];
 		System.arraycopy(pprTxnReqOffline.getRespLastCreditTxnLog(), 0, t4801, 0, pprTxnReqOffline.getRespLastCreditTxnLog().length);		
 		deductAdvice.setT4801(Util.bcd2Ascii(t4801));
 		
@@ -421,6 +432,122 @@ public class CmasKernel {
 
 				
 	}
+	
+	//Reader Response ErrorCode 640E, 610F, 6418, 6103 , pack advice
+	public void readerErrorCode2CmasLockAdvice(ErrorResponse errorRespFld, CmasDataSpec lockAdvice, IConfigManager configManager, IRespCode respCode){
+		
+		byte[] b = null;
+		lockAdvice.setT0100("0320");
+		
+		//t0200
+		b = Arrays.copyOfRange(errorRespFld.getCardPhysicalID(), 0, errorRespFld.getCardPhysicalIDLength());
+		String t0200 = Util.IntelFormat2Decimal(b, 0, errorRespFld.getCardPhysicalIDLength());
+		lockAdvice.setT0200(t0200);
+				
+		//t0211
+		lockAdvice.setT0211(Util.bcd2Ascii(errorRespFld.getPID()));
+				
+		//t0213 cardType
+		lockAdvice.setT0213(String.format("%02X", errorRespFld.getCardType()));
+				
+		//t0214 
+		lockAdvice.setT0214(String.format("%02X", errorRespFld.getPersonalProfile()));
+				
+		//t0300
+		lockAdvice.setT0300("596100");
+				
+		//t1100,t1101
+		lockAdvice.setT1100(configManager.getTMSerialNo());
+		lockAdvice.setT1101(configManager.getTMSerialNo());
+		
+		lockAdvice.setT1200(Util.sGetTime());
+		lockAdvice.setT1201(Util.sGetTime());
+		
+		lockAdvice.setT1300(Util.sGetDate());
+		lockAdvice.setT1301(Util.sGetDate());
+		
+		//t3700
+		lockAdvice.setT3700(lockAdvice.getT1300() + lockAdvice.getT1100());
+			
+		//t4100
+		lockAdvice.setT4100(Util.bcd2Ascii(errorRespFld.getNewDeviceID()));
+				
+		//t4101
+		lockAdvice.setT4101(Util.bcd2Ascii(errorRespFld.getDeviceID()));
+		
+		//t4200
+		b = errorRespFld.getNewServiceProviderID();
+		Util.arrayReverse(b);
+		lockAdvice.setT4200(String.format("%08d", Util.bytes2Long(b, 0, b.length)));
+				
+		//t4210
+		lockAdvice.setT4210(configManager.getNewLocationID());
+				
+		//t4800
+		lockAdvice.setT4800(String.format("%02X", errorRespFld.getPurseVersionNumber()));
+				
+		if(respCode != ReaderRespCode._6103){
+			//t4801		
+			byte[] t4801 = new byte[CMAS_4801_SIZE/2];
+			System.arraycopy(errorRespFld.getLastCreditTxnLog(), 0, t4801, 0, errorRespFld.getLastCreditTxnLog().length);		
+			lockAdvice.setT4801(Util.bcd2Ascii(t4801));
+		
+			//t4803
+			lockAdvice.setT4803(String.format("%02X", errorRespFld.getBankCode()));
+			
+			
+			//t4804
+			lockAdvice.setT4804(String.format("%02X", errorRespFld.getAreaCode()));
+								
+			//t4805
+			lockAdvice.setT4805(Util.bcd2Ascii(errorRespFld.getSubAreaCode()));
+			
+			//t4806
+			lockAdvice.setT4806(Util.bcd2Ascii(errorRespFld.getProfileExpDate()));
+			
+		
+			//t4814
+			b = Arrays.copyOfRange(errorRespFld.getDeposit(), 0, errorRespFld.getDeposit().length);
+			String t4814 = Util.IntelFormat2Decimal(b, 0, errorRespFld.getDeposit().length);
+			lockAdvice.setT4814(t4814);
+			
+			//t4818
+			lockAdvice.setT4818(Util.bcd2Ascii(errorRespFld.getAnotherEV()));
+			
+			//t4828		
+			byte[] t4828 = new byte[CMAS_4828_SIZE/2];
+			t4828[0] = errorRespFld.getMifareSettingParameter();				
+			lockAdvice.setT4828(Util.bcd2Ascii(t4828));
+			
+			//t4829		
+			byte[] t4829 = new byte[CMAS_4829_SIZE/2];
+			t4829[0] = errorRespFld.getCPUSettingParameter();				
+			lockAdvice.setT4829(Util.bcd2Ascii(t4829));
+		}
+		//t4802
+		lockAdvice.setT4802(String.format("%02X", errorRespFld.getIssuerCode()));
+				
+		if(respCode == ReaderRespCode._6103){		
+			//t4812
+			lockAdvice.setT4812(Util.bcd2Ascii(errorRespFld.getCTC()));
+		}		
+		
+		
+						
+		//t5501
+		lockAdvice.setT5501(configManager.getBatchNo());
+					
+		//t5503
+		lockAdvice.setT5503(configManager.getTMLocationID());
+					
+					//t5504
+		lockAdvice.setT5504(configManager.getTMID());
+					
+		//t5510
+		lockAdvice.setT5510(configManager.getTMAgentNo());
+									
+	}
+	
 	
 	public int cmasSpec2ReaderField(CmasDataSpec spec, PPR_SignOn pprSignon, IConfigManager configManager)
 	{

@@ -209,6 +209,23 @@ public class BigBlackList {
 		return date;
 	}
 	
+	public boolean checkCardID(byte[] cardIDNeededReverseFirst){
+		
+		boolean result = false;
+		try{
+			
+			long l = Util.bytes2Long(cardIDNeededReverseFirst, 0, cardIDNeededReverseFirst.length, true);
+			logger.debug("cardID long value:"+l);
+			result = this.checkCardID(l);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("checkCardID exception:"+e.getMessage());
+		}
+		
+		return result;
+	}
+	
 	public boolean checkCardID(long cardid){
 		
 		if(fileBody == null){

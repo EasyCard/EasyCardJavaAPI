@@ -354,12 +354,12 @@ public class PPR_TxnReqOffline extends APDU{
 	
 	//++++++++++++++++++++ Response ++++++++++++++++++++
 	private ResponseField respFld = null;
+	private ErrorResponse errRespFld = null;
 	private class ResponseField extends BaseResponseAutoParser{
 		private int dataBodyLen;
 		private final int NORMAL_LEN = 250 + 2;//9000, 6403(餘額不足), 6415(需授權交易) 
-		private final int ERROR1_LEN = 120 + 2;//640E(餘額異常)、610F(二代餘額異常)、6418(通路限制)
-		private final int ERROR2_LEN = 40 + 2;//6103(CPD檢查異常)
-		private final int ERROR3_LEN = 2;//6103(CPD檢查異常)
+		
+		private final int ERROR3_LEN = 2;//
 		
 		
 		
@@ -427,12 +427,13 @@ public class PPR_TxnReqOffline extends APDU{
 		public byte[] txnDateTime=null;
 		public byte[] statusCode=null;
 		
+		/*
 		//120bytes additional fields
 		public byte[] loyaltyCounter = null;
 		public byte[] anotherEV = null;
 		public byte mifareSettingParameter;
 		public byte CPUSettingParameter;
-		
+		*/
 		//constructor
 		public ResponseField(int len){
 			dataBodyLen = len;
@@ -601,7 +602,7 @@ public class PPR_TxnReqOffline extends APDU{
 			return statusCode;
 		}
 		
-		
+		/*
 		//120bytes additional fields
 		public byte[] getLoyaltyCounter(){
 			return loyaltyCounter;
@@ -618,7 +619,7 @@ public class PPR_TxnReqOffline extends APDU{
 		public byte getCPUSettingParameter(){
 			return CPUSettingParameter;
 		}
-		
+		*/
 		@Override
 		protected LinkedHashMap<String, Integer> getFields() {
 			// TODO Auto-generated method stub
@@ -689,7 +690,7 @@ public class PPR_TxnReqOffline extends APDU{
 				maps.put("txnDateTime",4);
 				maps.put("statusCode",2);
 				
-			} else if(dataBodyLen == ERROR1_LEN) {
+			} /*else if(dataBodyLen == ERROR1_LEN) {
 				
 				maps.put("purseVersionNumber",1);
 				maps.put("purseUsageControl",1);
@@ -754,7 +755,7 @@ public class PPR_TxnReqOffline extends APDU{
 				maps.put("issuerCode",1);
 				maps.put("statusCode",2);
 				
-			} else if(dataBodyLen == ERROR3_LEN) {
+			}*/else if(dataBodyLen == ERROR3_LEN) {
 				maps.put("statusCode",2);
 			} else {
 				logger.error("Unknowen dataBody Len:"+dataBodyLen);
@@ -1329,6 +1330,7 @@ public class PPR_TxnReqOffline extends APDU{
 				respFld.getTxnDateTime().length);
 	}	
 	
+	/*
 	//120 bytes, additional fields
 	public byte[] getRespLoyaltyCounter(){
 		if (respFld == null || respFld.getLoyaltyCounter() == null){ 
@@ -1366,9 +1368,11 @@ public class PPR_TxnReqOffline extends APDU{
 		}
 		logger.info("getter:"+String.format("%02X", respFld.getCPUSettingParameter()));
 		return respFld.getCPUSettingParameter();
-	}
+	}*/
 	//-------------------- Response --------------------
-	
+	public ErrorResponse getErrorRespFld(){
+		return errRespFld;
+	}
 	
 	@Override
 	public byte[] GetRequest() {
@@ -1510,8 +1514,16 @@ public class PPR_TxnReqOffline extends APDU{
 		//copy buffer to mResponse
 		mRespond = Arrays.copyOf(bytes, bytes.length);
 		byte[] b = Arrays.copyOfRange(bytes, scRespDataOffset, scRespDataOffset+dataLength);
-		respFld = new ResponseField(dataLength);// -2 was statusCode
-		respFld.parse(b);
+		
+		if(ErrorResponse.isErrorResponse(this.GetRespCode())){
+			errRespFld = new ErrorResponse(dataLength);
+			errRespFld.parse(b);
+		} else {
+			respFld = new ResponseField(dataLength);//
+			respFld.parse(b);
+		}
+		
+		
 
 		logger.info("end");			
 		return true;
