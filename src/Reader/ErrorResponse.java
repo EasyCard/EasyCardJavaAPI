@@ -322,7 +322,7 @@ public class ErrorResponse extends BaseResponseAutoParser{
 			return null;
 		}
 		
-		return null;
+		return maps;
 	}
 
 	static public boolean isErrorResponse(int respCode){

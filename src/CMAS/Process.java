@@ -20,7 +20,9 @@ import Reader.ReaderRespCode;
 import CMAS.ConfigManager;
 import Reader.BigBlackList;
 import Reader.EZReader;
+import Reader.ErrorResponse;
 import Reader.PPR_AuthTxnOffline;
+import Reader.PPR_ReadCardBasicData;
 import Reader.PPR_Reset;
 import Reader.ApduRecvSender;
 import Reader.PPR_SignOn;
@@ -41,10 +43,11 @@ public class Process {
 	 private ConfigManager configManager = null;
 	 private static final String CONFIG_INIT_FAIL = "CMAS Config Initial Error";
 	 
-	 @SuppressWarnings("serial")
-	class ProcessException extends Exception{
-		 
-		 public ProcessException(String msg){
+	
+	@SuppressWarnings("serial")
+	public class ProcessException extends Exception{
+
+		public ProcessException(String msg){
 			 super(msg);
 		 }		 
 	 }
@@ -389,10 +392,11 @@ public class Process {
 			return result;
 		} else if(pprTxnReqOffline.getErrorRespFld() != null){
 			// pack LockCard Advice
-			CmasDataSpec lockAdvice = new CmasDataSpec();
-			CmasKernel kernel = new CmasKernel();
-			kernel.readerField2CmasLockAdvice(pprTxnReqOffline.getErrorRespFld(), CmasDataSpec lockAdvice, configManager, result);
 			
+			CmasDataSpec cmaslockAdvice = new CmasDataSpec();
+			CmasKernel kernel = new CmasKernel();
+			kernel.readerErrorCode2CmasLockAdvice(pprTxnReqOffline.getErrorRespFld(), cmaslockAdvice, configManager, result);
+			String lockAdvice = kernel.packRequeset(CmasKernel.CMAS_LOCKCARD_ADVICE_FLD, cmaslockAdvice);
 		} else if(result != ReaderRespCode._9000){
 			logger.error("errID:"+result.getId()+", msg:"+result.getMsg());
 			return result;
@@ -447,5 +451,19 @@ public class Process {
 		return result;
 	}
 
+	
+	public IRespCode doReadCardBasicData(){
+		IRespCode result = null;
+		
+		PPR_ReadCardBasicData pprReadCardBasicData = new PPR_ReadCardBasicData();
+		
+		result = reader.exeCommand(pprReadCardBasicData);
+		
+		if(result == ReaderRespCode._640E){
+			
+		}
+		
+		return result;
+	}
 }
 

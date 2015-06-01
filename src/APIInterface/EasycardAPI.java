@@ -3,7 +3,10 @@ package APIInterface;
 import org.apache.log4j.Logger;
 
 
+
+
 import CMAS.Process;
+import CMAS.Process.ProcessException;
 import ErrorMessage.IRespCode;
 
 
@@ -40,6 +43,10 @@ public class EasycardAPI {
 			
 		case "deduct":
 			deduct(Integer.valueOf(args[1]));
+			break;
+			
+		case "readCardBasicData":
+			readCardBasicData();
 			break;
 			
 		default:
@@ -105,6 +112,18 @@ public class EasycardAPI {
 	
 		}catch(Exception e){
 			logger.error(e.getMessage());
+		}
+	}
+
+	public static void readCardBasicData(){
+		
+		Process process;
+		try {
+			process = new Process();
+			process.doReadCardBasicData();
+		} catch (ProcessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

@@ -37,7 +37,9 @@ public class CmasKernel {
 	private final int CMAS_4801_SIZE = 90;
 	private final int CMAS_4828_SIZE = 20;
 	private final int CMAS_4829_SIZE = 32;
-
+	 public final static int[] CMAS_LOCKCARD_ADVICE_FLD = {100, 200, 211, 213, 214, 300, 410, 1100, 1200, 1201, 1300, 1301, 3700, 4100, 4101, 4200, 4210, 4800, 4801, 4802, 4803, 4804, 4805, 4806, 4812, 4814, 4817, 4818, 4826, 4828, 4829, 5501, 5503, 5504, 5510};
+	
+	
 	public CmasKernel(){
 		logger.info("Start");
 		
@@ -523,24 +525,20 @@ public class CmasKernel {
 			byte[] t4829 = new byte[CMAS_4829_SIZE/2];
 			t4829[0] = errorRespFld.getCPUSettingParameter();				
 			lockAdvice.setT4829(Util.bcd2Ascii(t4829));
+			
+			//t4812
+			lockAdvice.setT4812(Util.bcd2Ascii(errorRespFld.getCTC()));
 		}
 		//t4802
 		lockAdvice.setT4802(String.format("%02X", errorRespFld.getIssuerCode()));
 				
-		if(respCode == ReaderRespCode._6103){		
-			//t4812
-			lockAdvice.setT4812(Util.bcd2Ascii(errorRespFld.getCTC()));
-		}		
-		
-		
-						
 		//t5501
 		lockAdvice.setT5501(configManager.getBatchNo());
 					
 		//t5503
 		lockAdvice.setT5503(configManager.getTMLocationID());
 					
-					//t5504
+		//t5504
 		lockAdvice.setT5504(configManager.getTMID());
 					
 		//t5510
