@@ -555,6 +555,7 @@ public class ConfigManager implements IConfigManager{
 	public String getTMLocationID() {
 		// TODO Auto-generated method stub
 		String id = cfgList.get(ConfigOrder.USER_DEF.ordinal()).getProperty("TMLocationID");
+		id = new String(Util.paddingChar(id, false, (byte) '0', 10));
 		logger.info("getter:"+ id);
 		return id;
 	}

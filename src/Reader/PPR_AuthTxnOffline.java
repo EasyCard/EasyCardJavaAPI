@@ -6,6 +6,7 @@ import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 
+
 import Utilities.Util;
 
 public class PPR_AuthTxnOffline extends APDU{
@@ -90,7 +91,8 @@ public class PPR_AuthTxnOffline extends APDU{
 	private ResponseField respFld = null;
 	private class ResponseField extends BaseResponseAutoParser{
 		private int dataBodyLen;
-		private final int NORMAL_LEN = 64;
+		private final int NORMAL_LEN = 64 + 2;
+		private final int ERROR1_LEN = 2;
 		
 		public byte[] TSQN=null;
 		public byte[] purseBalance=null;
@@ -102,6 +104,7 @@ public class PPR_AuthTxnOffline extends APDU{
 		public byte[] txnDateTime=null;
 		public byte[] cardOneDayQuota=null;
 		public byte[] cardOneDayQuotaDate=null;
+		public byte[] statusCode=null;
 		
 		public ResponseField(int len){
 			this.dataBodyLen = len;
@@ -159,6 +162,9 @@ public class PPR_AuthTxnOffline extends APDU{
 				map.put("txnDateTime",4);
 				map.put("cardOneDayQuota",3);
 				map.put("cardOneDayQuotaDate",2);
+				map.put("statusCode",2);
+			} else if(this.dataBodyLen == ERROR1_LEN){
+				map.put("statusCode",2);
 			} else {
 				logger.error("Unknowen dataBody Len:"+dataBodyLen);
 				return null;
@@ -320,39 +326,46 @@ public class PPR_AuthTxnOffline extends APDU{
 	@Override
 	public boolean SetRespond(byte[] bytes) {
 		
-		logger.info("Start");
-		if(bytes==null || bytes.length <=scRespDataOffset){
-			logger.error("setRespond buffer was Null or len<=3");
+		try {
+			logger.info("Start");
+			if(bytes==null || bytes.length <=scRespDataOffset){
+				logger.error("setRespond buffer was Null or len<=3");
+				return false;
+			}
+			
+			//check total Length
+			int dataLength = (bytes[2] & 0x000000FF) + (bytes[1] << 8 & 0x0000FF00) + (bytes[0] << 16 & 0x00FF0000);
+			logger.debug("dataBody Len:"+dataLength);
+			if(bytes.length != dataLength+scRespDataOffset+1){//+1 was checkSum
+				logger.error("responsee totalLen was UnComplete");
+				return false;
+			}
+			Resp_SW1 = bytes[scRespDataOffset + dataLength - 2];
+			Resp_SW2 = bytes[scRespDataOffset + dataLength - 2 +1];
+			
+					
+			//check checkSum
+			byte sum = getEDC(bytes, bytes.length);
+			if (sum != bytes[bytes.length - 1]) {
+				// check sum error...
+				logger.error("CheckSum error");
+				return false;
+			}
+			
+			
+			//copy buffer to mResponse
+			mRespond = Arrays.copyOf(bytes, bytes.length);
+			byte[] b = Arrays.copyOfRange(bytes, scRespDataOffset, scRespDataOffset+dataLength);
+			
+			
+			//Success Response
+			respFld = new ResponseField(dataLength);
+			respFld.parse(b);
+			
+		} catch (Exception e) {
+			logger.error(e.getMessage());
 			return false;
-		}
-		
-		//check total Length
-		int dataLength = (bytes[2] & 0x000000FF) + (bytes[1] << 8 & 0x0000FF00) + (bytes[0] << 16 & 0x00FF0000);
-		logger.debug("dataBody Len:"+dataLength);
-		if(bytes.length != dataLength+scRespDataOffset+1){//+1 was checkSum
-			logger.error("responsee totalLen was UnComplete");
-			return false;
-		}
-		Resp_SW1 = bytes[scRespDataOffset + dataLength - 2];
-		Resp_SW2 = bytes[scRespDataOffset + dataLength - 2 +1];
-		
-		
-		
-		//check checkSum
-		byte sum = getEDC(bytes, bytes.length);
-		if (sum != bytes[scRespLength - 1]) {
-			// check sum error...
-			logger.error("CheckSum error");
-			return false;
-		}
-		
-		//copy buffer to mResponse
-		mRespond = Arrays.copyOf(bytes, bytes.length);
-		byte[] b = Arrays.copyOfRange(bytes, scRespDataOffset, scRespDataOffset+scRespDataLength);
-		respFld = new ResponseField(dataLength-2);// -2 was statusCode
-		respFld.parse(b);
-
-		logger.info("end");			
+		}		
 		return true;
 	}
 

@@ -446,7 +446,7 @@ public class PPR_LockCard extends APDU{
 			logger.debug("Purse Version No.:"+String.format("(%02X)", this.getRespPurseVersionNumber()));
 			
 			logger.debug("PID:"+Util.hex2StringLog(this.getRespPID()));
-			logger.debug("CTC:"+String.format("(%02X)", this.getRespCTC()));
+			logger.debug("CTC:"+Util.hex2StringLog(this.getRespCTC()));
 			
 			
 			logger.debug("Card Type:"+String.format("(%02X)", this.getRespCardType()));

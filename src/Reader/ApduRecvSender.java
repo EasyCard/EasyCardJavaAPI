@@ -38,7 +38,7 @@ public class ApduRecvSender implements IRecvSender{
 
 
 
-private boolean openPort(String portName) {
+	private boolean openPort(String portName) {
 		
 		logger.info("Start, comportname:"+portName+this.portName);
 		String[] portNames = SerialPortList.getPortNames();
@@ -195,16 +195,16 @@ private boolean openPort(String portName) {
 		    	//return RespCode.COMPORT_OPEN_FAIL.getId();
 		    }
     		
-    		logger.debug("pack APDU command:"+Util.hex2StringLog(sendBuffer));
+    		logger.debug("Comport Send >>>:"+Util.hex2StringLog(sendBuffer));
     		boolean ret= write(sendBuffer);//Write data to port
     		if(ret == false){
     			logger.error("portName:"+portName+", Write apdu data fail");
     			return null;
     		}
 	
-    		recvLen = read(3,60000);//60sec to read data len
+    		recvLen = read(3,60000);//60sec to read data len 3bytes
     		
-    		logger.debug("read finish:"+Util.hex2StringLog(recvLen));
+    		logger.debug("read from 1~3 bytes dataLen:"+Util.hex2StringLog(recvLen));
     		if(recvLen==null) {
     			logger.error("null len");
     			return null;
@@ -219,7 +219,7 @@ private boolean openPort(String portName) {
     		recvBuffer = ArrayUtils.addAll(recvLen, recvDataBody);
     		
     	
-    		logger.debug("recv from Comport total Byte: "+recvBuffer.length);
+    		logger.debug("Comport Recv <<<len("+recvBuffer.length+"):"+Util.hex2StringLog(recvBuffer));
 			
 			
 				

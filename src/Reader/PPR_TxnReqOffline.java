@@ -359,7 +359,7 @@ public class PPR_TxnReqOffline extends APDU{
 		private int dataBodyLen;
 		private final int NORMAL_LEN = 250 + 2;//9000, 6403(餘額不足), 6415(需授權交易) 
 		
-		private final int ERROR3_LEN = 2;//
+		private final int ERROR1_LEN = 2;
 		
 		
 		
@@ -755,7 +755,7 @@ public class PPR_TxnReqOffline extends APDU{
 				maps.put("issuerCode",1);
 				maps.put("statusCode",2);
 				
-			}*/else if(dataBodyLen == ERROR3_LEN) {
+			}*/else if(dataBodyLen == ERROR1_LEN) {
 				maps.put("statusCode",2);
 			} else {
 				logger.error("Unknowen dataBody Len:"+dataBodyLen);
@@ -780,7 +780,23 @@ public class PPR_TxnReqOffline extends APDU{
 		logger.info("getter:"+String.format("%02X", respFld.getPurseUsageControl()));	
 		return respFld.getPurseUsageControl();
 	}
-		
+	
+	public boolean getActivedFlag(){
+		byte b = respFld.getPurseUsageControl();		
+		return IsBitSet(b, 0);
+	}
+	
+	public boolean getBlockedFlag(){
+		byte b = respFld.getPurseUsageControl();		
+		return IsBitSet(b, 1);
+	}
+	
+	public boolean getAutoloadFlag(){
+		byte b = respFld.getPurseUsageControl();		
+		return IsBitSet(b, 3);
+	}
+	
+	
 		
 	public byte[] getRespSingleAutoLoadTxnAmt(){
 		if (respFld == null || respFld.getSingleAutoLoadTxnAmt() == null){ 

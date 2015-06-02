@@ -517,8 +517,8 @@ public class Util {
 	}
 	public static String IntelFormat2Decimal(byte[] array, int offset, int digits){
 		
-		arrayReverse(array);
-		long l = bytes2Long(array, offset, digits);
+		//arrayReverse(array);
+		long l = bytes2Long(array, offset, digits, true);
 		return String.valueOf(l);
 	}
 	

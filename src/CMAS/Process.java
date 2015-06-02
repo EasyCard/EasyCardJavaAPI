@@ -22,6 +22,7 @@ import Reader.BigBlackList;
 import Reader.EZReader;
 import Reader.ErrorResponse;
 import Reader.PPR_AuthTxnOffline;
+import Reader.PPR_LockCard;
 import Reader.PPR_ReadCardBasicData;
 import Reader.PPR_Reset;
 import Reader.ApduRecvSender;
@@ -331,19 +332,7 @@ public class Process {
 		return result;
 	}
 	
-	
-	private boolean needed2PackLockCardAdvice(IRespCode respCode){
-		boolean result = false;
-		
-		if(respCode == ReaderRespCode._640E || 
-		   respCode == ReaderRespCode._610F ||			
-		   respCode == ReaderRespCode._6418 || 			
-		   respCode == ReaderRespCode._6103)
-			result = true;
-		
-		return result;
-		
-	}
+
 	
 	//check cardID, if cardID existed in blacklist, reader locked it
 	private boolean checkCardIDInBlackList(byte[] cardID){
@@ -359,95 +348,152 @@ public class Process {
 			
 		return result;
 	}
+	
+	private IRespCode exeLockCard(byte[] cardID, int unixTimeStamp){
+		
+		IRespCode result=null;
+		PPR_LockCard pprLockCard = new PPR_LockCard();
+		pprLockCard.setReqCardPhysicalID(cardID);
+		pprLockCard.setReqTxNDateTime(unixTimeStamp, this.getmTimeZone());
+		pprLockCard.setReqBlockingReason((byte)0x01);
+		result = reader.exeCommand(pprLockCard);
+		
+		return result;
+	}
+	
+	
 	public IRespCode doDeduct(int amt){
 		SSL ssl = null;
 		IRespCode result = null;
 		int tmSerialNo = 0;
 		
-		//ssl connect to send advice or online txn
-		ssl = new SSL(configManager.getHostUrl(), 
-				Integer.valueOf(configManager.getHostPort()), 
-				null,
-				null);
-		ssl.start();
-		
-		//PPR_TxnReq_OFfline
-		PPR_TxnReqOffline pprTxnReqOffline = new PPR_TxnReqOffline();
-		pprTxnReqOffline.setReqMsgType((byte)0x01);
-		pprTxnReqOffline.setReqTMLocationID(configManager.getTMLocationID());		
-		pprTxnReqOffline.setReqTMID(configManager.getTMID());		
-		int unixTimeStamp = (int) (System.currentTimeMillis() / 1000L);
-		pprTxnReqOffline.setReqTMTXNDateTime(unixTimeStamp);
-		
-		tmSerialNo = Integer.valueOf(configManager.getTMSerialNo());
-		pprTxnReqOffline.setReqTMSerialNumber(tmSerialNo);
-		pprTxnReqOffline.setReqTMAgentNumber(configManager.getTMAgentNo());
-		pprTxnReqOffline.setReqTXNDateTime(unixTimeStamp, this.getmTimeZone());
-		pprTxnReqOffline.setReqTxnAmt(amt);
-		
-		result = reader.exeCommand(pprTxnReqOffline);
-		if(result == ReaderRespCode._6415){
-			//需要onLine授權交易
-			//todo...
-			return result;
-		} else if(pprTxnReqOffline.getErrorRespFld() != null){
-			// pack LockCard Advice
-			
-			CmasDataSpec cmaslockAdvice = new CmasDataSpec();
-			CmasKernel kernel = new CmasKernel();
-			kernel.readerErrorCode2CmasLockAdvice(pprTxnReqOffline.getErrorRespFld(), cmaslockAdvice, configManager, result);
-			String lockAdvice = kernel.packRequeset(CmasKernel.CMAS_LOCKCARD_ADVICE_FLD, cmaslockAdvice);
-		} else if(result != ReaderRespCode._9000){
-			logger.error("errID:"+result.getId()+", msg:"+result.getMsg());
-			return result;
-		}
-		//check blackList ID
-		
-		
-		//PPR_TxnReq_OFfline end
-		
-		
-		//PPR_AuthTxn_Offline
-		PPR_AuthTxnOffline pprAuthTxnOffline = new PPR_AuthTxnOffline();
-		result = reader.exeCommand(pprAuthTxnOffline);	
-		if(result != ReaderRespCode._9000){
-			logger.error("errID:"+result.getId()+", msg:"+result.getMsg());
-			return result;
-		}	
-		
-		//pack advice
-		int[] field = {100,200,211,213,214,300,400,408,409,410,1100,1101,1200,1201,1300,1301,1400,3700,4100,4101,4103,4104,4200,4210,4800,4801,4802,4803,4804,4805,4808,4809,4810,4811,4812,4813,4826,5301,5303,5304,5305,5361,5362,5363,5371,5501,5503,5504,5510,6404,6405,6406};
-		CmasKernel kernel = new CmasKernel();
-		CmasDataSpec specAdvice = new CmasDataSpec();
-		kernel.readerField2CmasSpec(pprTxnReqOffline, pprAuthTxnOffline, specAdvice, configManager);
-		String cmasReq = kernel.packRequeset(field, specAdvice);
-		
-		//send advice
 		try {
-			ssl.join();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+			//ssl connect to send advice or online txn
+			ssl = new SSL(configManager.getHostUrl(), 
+					Integer.valueOf(configManager.getHostPort()), 
+					null,
+					null);
+			ssl.start();
+			
+			//PPR_TxnReq_OFfline
+			PPR_TxnReqOffline pprTxnReqOffline = new PPR_TxnReqOffline();
+			pprTxnReqOffline.setReqMsgType((byte)0x01);
+			pprTxnReqOffline.setReqTMLocationID(configManager.getTMLocationID());		
+			pprTxnReqOffline.setReqTMID(configManager.getTMID());		
+			int unixTimeStamp = (int) (System.currentTimeMillis() / 1000L);
+			pprTxnReqOffline.setReqTMTXNDateTime(unixTimeStamp);
+			
+			tmSerialNo = Integer.valueOf(configManager.getTMSerialNo());
+			pprTxnReqOffline.setReqTMSerialNumber(tmSerialNo);
+			pprTxnReqOffline.setReqTMAgentNumber(configManager.getTMAgentNo());
+			pprTxnReqOffline.setReqTXNDateTime(unixTimeStamp, this.getmTimeZone());
+			pprTxnReqOffline.setReqTxnAmt(amt);
+			
+			result = reader.exeCommand(pprTxnReqOffline);
+			if(result == ReaderRespCode._6415){
+				//需要onLine授權交易
+				//todo...
+				return result;
+			} else if(pprTxnReqOffline.getErrorRespFld() != null){
+				// pack LockCard Advice
+				
+				CmasDataSpec cmaslockAdvice = new CmasDataSpec();
+				CmasKernel kernel = new CmasKernel();
+				if(kernel.readerErrorCode2CmasLockAdvice(pprTxnReqOffline.getErrorRespFld(), cmaslockAdvice, configManager, result)==false)
+					return result;
+				String lockAdvice = kernel.packRequeset(CmasKernel.CMAS_LOCKCARD_ADVICE_FLD, cmaslockAdvice);
+				logger.debug("Save Lock Advice:"+lockAdvice);
+				try {
+					ssl.join();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				String resp = ssl.sendRequest(lockAdvice);
+				logger.debug("Save Lock Advice Resp:"+resp);
+				tmSerialNo = tmSerialNo+1;
+				configManager.setTMSerialNo(String.valueOf(tmSerialNo));
+				configManager.finish();
+				return result;
+			} else if(result != ReaderRespCode._9000 && 
+					  result != ReaderRespCode._6403){
+				logger.error("errID:"+result.getId()+", msg:"+result.getMsg());
+				return result;
+			}
+			//PPR_TxnReq_OFfline end
+			
+			//check blackList ID
+			if(checkCardIDInBlackList(pprTxnReqOffline.getRespCardPhysicalID())){
+			//if(true){
+				try {
+					result = ApiRespCode.CARDID_IN_BLACKLIST;
+					this.exeLockCard(pprTxnReqOffline.getRespCardPhysicalID(), unixTimeStamp);
+					CmasKernel kernel = new CmasKernel();
+					CmasDataSpec cmaslockAdvice = new CmasDataSpec();
+					kernel.blackList2CmasLockAdvice(pprTxnReqOffline, cmaslockAdvice, configManager);
+					String blckListAdvice = kernel.packRequeset(CmasKernel.CMAS_LOCKCARD_ADVICE_FLD, cmaslockAdvice);
+					
+				} catch(Exception e) {
+					logger.error(e.getMessage());
+					e.printStackTrace();
+				}
+				return result;
+			}
+			
+			//6403(餘額不足)，check autoload flag
+			if(result == ReaderRespCode._6403 && pprTxnReqOffline.getAutoloadFlag()){
+				logger.info("purseBalance no enough, autload Allowed, exe autoload?");
+				return ApiRespCode.AUTOLOAD_YES_OR_NO;
+			}
+			
+			
+			//PPR_AuthTxn_Offline
+			PPR_AuthTxnOffline pprAuthTxnOffline = new PPR_AuthTxnOffline();
+			result = reader.exeCommand(pprAuthTxnOffline);	
+			if(result != ReaderRespCode._9000){
+				logger.error("errID:"+result.getId()+", msg:"+result.getMsg());
+				return result;
+			}	
+			
+			//pack advice
+			int[] field = {100,200,211,213,214,300,400,408,409,410,1100,1101,1200,1201,1300,1301,1400,3700,4100,4101,4103,4104,4200,4210,4800,4801,4802,4803,4804,4805,4808,4809,4810,4811,4812,4813,4826,5301,5303,5304,5305,5361,5362,5363,5371,5501,5503,5504,5510,6404,6405,6406};
+			CmasKernel kernel = new CmasKernel();
+			CmasDataSpec specAdvice = new CmasDataSpec();
+			kernel.readerField2CmasSpec(pprTxnReqOffline, pprAuthTxnOffline, specAdvice, configManager);
+			String cmasReq = kernel.packRequeset(field, specAdvice);
+			
+			//send advice
+			try {
+				ssl.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				logger.error("ssl join exception:"+e.getMessage());
+			}	
+			if(!ssl.isSocketOK())
+			{
+				logger.error("ssl connect fail");
+				return ApiRespCode.SSL_CONNECT_FAIL;
+			} else logger.info("ssl OK");
+			String cmasResp = ssl.sendRequest(cmasReq);
+			logger.debug("CMAS deduct advice Response:"+cmasResp);
+			// Txn Success, SN++
+			tmSerialNo = tmSerialNo+1;
+			configManager.setTMSerialNo(String.valueOf(tmSerialNo));
+			configManager.finish();
+			//PPR_AuthTxn_Offline end
+		} catch (Exception e) {
+			logger.error(e.getMessage());
 			e.printStackTrace();
-			logger.error("ssl join exception:"+e.getMessage());
-		}	
-		if(!ssl.isSocketOK())
-		{
-			logger.error("ssl connect fail");
-			return ApiRespCode.SSL_CONNECT_FAIL;
-		} else logger.info("ssl OK");
-		String cmasResp = ssl.sendRequest(cmasReq);
-		logger.debug("CMAS deduct advice Response:"+cmasResp);
-		
-		
-		// Txn Success, SN++
-		tmSerialNo = tmSerialNo+1;
-		configManager.setTMSerialNo(String.valueOf(tmSerialNo));
-		//txnInfo.setProperty("TM_Serial_Number", String.valueOf(tmSerialNo));
-		logger.debug("Txn OK, SN++:"+configManager.getTMSerialNo());
-		
-		configManager.finish();
-		//PPR_AuthTxn_Offline end
-		
+			
+		} finally{			
+			try{
+				logger.debug("finally");				
+				ssl.disconnect();								
+			} catch(Exception e) {
+				logger.error(e.getMessage());
+			}			
+		}
 		return result;
 	}
 
