@@ -180,20 +180,16 @@ public class ApduRecvSender implements IRecvSender{
     	
     	
     	try {    		
-    		/*
-    		if(initOk == false)
-    			if(init()!=RespCode.SUCCESS.getId()) 
-    			{
-    				logger.error("init() fail");
-    				return null;
-    			}
-    			*/
-    		if(!openPort(portName))
-		    {
-		    	logger.error("openPort:("+portName+") fail");
-		    	return null;
-		    	//return RespCode.COMPORT_OPEN_FAIL.getId();
-		    }
+    		
+    		
+    		if(!mPort.isOpened()){
+	    		if(!openPort(portName))
+			    {
+			    	logger.error("openPort:("+portName+") fail");
+			    	return null;
+			    	//return RespCode.COMPORT_OPEN_FAIL.getId();
+			    }
+    		}
     		
     		logger.debug("Comport Send >>>:"+Util.hex2StringLog(sendBuffer));
     		boolean ret= write(sendBuffer);//Write data to port
@@ -233,5 +229,12 @@ public class ApduRecvSender implements IRecvSender{
     	logger.info("End");
     	return recvBuffer;
     }
+
+	@Override
+	public boolean finish() {
+		// TODO Auto-generated method stub
+		return closePort();
+		
+	}
 
 }

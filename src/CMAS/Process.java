@@ -29,6 +29,7 @@ import Reader.ApduRecvSender;
 import Reader.PPR_SignOn;
 import Reader.PPR_SignOnQuery;
 import Reader.PPR_TxnReqOffline;
+import Reader.PPR_TxnReqOnline;
 import Utilities.Util;
 
 
@@ -290,9 +291,12 @@ public class Process {
 		finally{			
 			try{
 				logger.debug("finally");
+				
 				ssl.disconnect();
 				cmasFTP.disconnect();
+				
 				configManager.finish();
+				reader.finish();
 			} catch(Exception e) {
 				logger.error(e.getMessage());
 			}			
@@ -361,6 +365,33 @@ public class Process {
 		return result;
 	}
 	
+	public IRespCode doAutoload(int amt){
+		IRespCode result = null;
+		
+		try{
+			int unixTimeStamp = (int) (System.currentTimeMillis() / 1000L);
+			
+			PPR_TxnReqOnline pprTxnReqOnline = new PPR_TxnReqOnline();
+			pprTxnReqOnline.setReqMsgType((byte)0x02);
+			pprTxnReqOnline.setReqSubType((byte)0x40);
+			pprTxnReqOnline.setReqTMLocationID(configManager.getTMLocationID());
+			pprTxnReqOnline.setReqTMID(configManager.getTMID());
+			pprTxnReqOnline.setReqTMTXNDateTime(unixTimeStamp);
+			pprTxnReqOnline.setReqTMSerialNumber(Integer.valueOf(configManager.getTMSerialNo()));
+			pprTxnReqOnline.setReqTMAgentNumber(configManager.getTMAgentNo());
+			pprTxnReqOnline.setReqTXNDateTime(unixTimeStamp, getmTimeZone());
+			pprTxnReqOnline.setReqTxnAmt(amt);
+			
+			result = reader.exeCommand(pprTxnReqOnline);
+		} catch(Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+		} finally {
+			
+			reader.finish();
+		}
+		return result;
+	}
 	
 	public IRespCode doDeduct(int amt){
 		SSL ssl = null;
@@ -489,7 +520,8 @@ public class Process {
 		} finally{			
 			try{
 				logger.debug("finally");				
-				ssl.disconnect();								
+				ssl.disconnect();		
+				reader.finish();
 			} catch(Exception e) {
 				logger.error(e.getMessage());
 			}			

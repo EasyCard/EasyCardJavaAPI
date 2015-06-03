@@ -76,11 +76,11 @@ public class EZReader{
 		return result;    	
     }
     
-    public boolean checkCardIDInBlacklist(String cardId){
-    	boolean result = true;
+    //執行reader finish 一些動作。包括：close Port...等
+    public boolean finish(){
+    	logger.info("start");
+    	return recvSender.finish();
     	
-    	
-    	return result;
     }
 }
 

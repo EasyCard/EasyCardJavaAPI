@@ -48,7 +48,11 @@ public class EasycardAPI {
 		case "readCardBasicData":
 			readCardBasicData();
 			break;
-			
+		
+		case "autoload":
+			autoload(Integer.valueOf(args[1]));
+			break;
+
 		default:
 			System.out.println("Unknoewn command:"+cmd);
 			break;
@@ -121,6 +125,19 @@ public class EasycardAPI {
 		try {
 			process = new Process();
 			process.doReadCardBasicData();
+		} catch (ProcessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void autoload(int amt){
+		Process process;
+		IRespCode result = null;
+		try {
+			process = new Process();
+			result = process.doAutoload(amt);
+			logger.info("autoload() result:"+result.getId()+":"+result.getMsg()); 
 		} catch (ProcessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
