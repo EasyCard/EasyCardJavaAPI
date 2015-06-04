@@ -3,3 +3,4 @@ bin/*
 RecvFile*
 *.Dat
 ezLog/*
+config/*

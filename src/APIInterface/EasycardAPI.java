@@ -42,7 +42,9 @@ public class EasycardAPI {
 			break;
 			
 		case "deduct":
-			deduct(Integer.valueOf(args[1]));
+			int amt = Integer.valueOf(args[1]);
+			boolean autoload = args[2].equalsIgnoreCase("1")?true:false;
+			deduct(amt, autoload);
 			break;
 			
 		case "readCardBasicData":
@@ -103,12 +105,12 @@ public class EasycardAPI {
 		}
 	}
 	
-	public static void deduct(int amt){	
+	public static void deduct(int amt, boolean autoload){	
 		try{
 		
 			logger.info("Start");		
 			Process process = new Process();
-			IRespCode result = process.doDeduct(amt);
+			IRespCode result = process.doDeduct(amt, autoload);
 			logger.info("Txn Result:"+result.getId()+"_"+result.getMsg());
 			
 			logger.info("End");

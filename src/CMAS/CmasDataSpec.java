@@ -22,6 +22,44 @@ public class CmasDataSpec {
 
 	static Logger logger = Logger.getLogger(CmasDataSpec.class);
 	
+	public enum PCode{
+		SIGNON("881999"),
+		CPU_DEDUCT("811599"),
+		CPU_DEDUCT_VOID("823899"),
+		CPU_REFUND("851999"),
+		CPU_ADD_VALUE("811799"),
+		CPU_AUTOLOAD("825799"),
+		CPU_ADDVALUE_VOID("811899"),
+		LOCK_CARD("596100"),
+		CPU_EXTENSION("811399"),
+		SETTLEMENT("900000");
+		
+		
+		private final String value;
+		private PCode(String s){
+			value = s;
+		}
+		
+		public String toString(){
+			return value;
+		}
+	}
+	
+	public enum CmasReqField{
+		_0800(new int[] {100, 300, 1100, 1101, 1200, 1201, 1300, 1301, 3700, 4100, 4101, 4102, 4103, 4104, 4200, 4210, 4802, 4820, 4823, 4824, 5301, 5307, 5308, 5361, 5362, 5363, 5364, 5365, 5366, 5368, 5369, 5370, 5371, 5501, 5503, 5504, 5510, 5588, 5596, 6000, 6002, 6003, 6004, 6400, 6408}),
+		_0820(new int[] {100, 300, 1100, 1101, 1200, 1300, 3700, 4100, 4200, 4210, 4825, 5501, 5503, 5504, 5510, 6406}),
+		_0100_AUTH(new int[] {100, 200, 211, 213, 214, 300, 400, 409, 410, 1100, 1101, 1200, 1201, 1300, 1301, 1400, 1402, 3700, 4100, 4101, 4102, 4103, 4104, 4200, 4210, 4800, 4801, 4802, 4803, 4804, 4805, 4806, 4813, 4826, 5301, 5304, 5361, 5362, 5363, 5371, 5501, 5503, 5504, 5510, 6000, 6001, 6004, 6400}),
+		_0220(new int[] {100,200,211,213,214,300,400,408,409,410,1100,1101,1200,1201,1300,1301,1400,3700,4100,4101,4103,4104,4200,4210,4800,4801,4802,4803,4804,4805,4808,4809,4810,4811,4812,4813,4826,5301,5303,5304,5305,5361,5362,5363,5371,5501,5503,5504,5510,6404,6405,6406});
+		private final int[] field;
+		private CmasReqField(int[] f){
+			field = f;
+		}
+		
+		public int[] getField(){
+			return field;
+		}
+	}
+	
 	public CmasDataSpec(){/*Empty dataSpec*/}
 	public CmasDataSpec(String cmasResp){
 		/*parse hostCMAS Response data to cmasDataSpec*/
@@ -721,6 +759,7 @@ public class CmasDataSpec {
 		this.t4210 = t4210;
 	}
 	public String getT4800() {
+		logger.info("getter:"+t4800);
 		return t4800;
 	}
 	public void setT4800(String t4800) {
@@ -1263,6 +1302,18 @@ public class CmasDataSpec {
 				setT0200(text);
 				break;
 				
+			case 211:
+				setT0211(text);
+				break;	
+			
+			case 213:
+				setT0213(text);
+				break;	
+			
+			case 214:
+				setT0214(text);
+				break;	
+				
 			case 300:
 				setT0300(text);
 				break;
@@ -1310,6 +1361,11 @@ public class CmasDataSpec {
 			case 1301:
 				setT1301(text);
 				break;
+				
+			case 1402:
+				setT1402(text);
+				break;
+				
 			case 3700:
 				setT3700(text);
 				break;	
@@ -1321,6 +1377,10 @@ public class CmasDataSpec {
 				
 			case 3900:
 				setT3900(text);
+				break;	
+				
+			case 3903:
+				setT3903(text);
 				break;		
 		
 			case 4100:
@@ -1348,10 +1408,30 @@ public class CmasDataSpec {
 				setT4210(text);
 				break;
 			
+			case 4800:
+				setT4800(text);
+				break;	
+				
 			case 4802:
 				setT4802(text);
 				break;
 	
+			case 4803:
+				setT4803(text);
+				break;
+				
+			case 4804:
+				setT4804(text);
+				break;	
+				
+			case 4805:
+				setT4805(text);
+				break;
+				
+			case 4806:
+				setT4806(text);
+				break;	
+			
 			case 4813:
 				setT4813(text);				
 				break;
@@ -1388,6 +1468,10 @@ public class CmasDataSpec {
 			case 5303:
 				setT5303(text);
 				break;
+				
+			case 5304:
+				setT5304(text);
+				break;	
 			
 			case 5306:
 				setT5306(text);

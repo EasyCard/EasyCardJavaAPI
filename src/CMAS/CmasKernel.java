@@ -14,6 +14,8 @@ import java.util.Arrays;
 
 
 
+
+
 import org.apache.log4j.Logger;
 
 import CMAS.CmasDataSpec.Issuer;
@@ -24,9 +26,11 @@ import CMAS.IConfigManager;
 import ErrorMessage.IRespCode;
 import Reader.ErrorResponse;
 import Reader.PPR_AuthTxnOffline;
+import Reader.PPR_AuthTxnOnline;
 import Reader.PPR_Reset;
 import Reader.PPR_SignOn;
 import Reader.PPR_TxnReqOffline;
+import Reader.PPR_TxnReqOnline;
 import Reader.ReaderRespCode;
 import Utilities.DataFormat;
 import Utilities.Util;
@@ -218,22 +222,16 @@ public class CmasKernel {
 		
 	}
 
-	//deduct offline advice 0220
+	//PPR_TxnReqOffline advice 0220
 	public void readerField2CmasSpec(PPR_TxnReqOffline pprTxnReqOffline, PPR_AuthTxnOffline pprAuthTxnOffline, CmasDataSpec deductAdvice, IConfigManager configManager){
 		// deduct advice
 		byte[] b = null;
-		//Properties txnInfo = cfgList.get(ConfigManager.ConfigOrder.TXN_INFO.ordinal());
-		//Properties easycardApi = cfgList.get(ConfigManager.ConfigOrder.EASYCARD_API.ordinal());
 		
 		deductAdvice.setT0100("0220");
 		
 		//t0200
 		b = Arrays.copyOfRange(pprTxnReqOffline.getRespCardPhysicalID(), 0, pprTxnReqOffline.getRespCardPhysicalIDLength());
 		String t0200 = Util.IntelFormat2Decimal(b, 0, pprTxnReqOffline.getRespCardPhysicalIDLength());
-		
-//		Util.arrayReverse(cardID);
-//		String t0200 = String.valueOf(Util.bytes2Long(cardID, 0, pprTxnReqOffline.getRespCardPhysicalIDLength()));
-		logger.debug("CardID:"+t0200);
 		deductAdvice.setT0200(t0200);
 		
 		//t0211
@@ -246,23 +244,17 @@ public class CmasKernel {
 		deductAdvice.setT0214(String.format("%02X", pprTxnReqOffline.getRespPersonalProfile()));
 		
 		//t0300
-		deductAdvice.setT0300("811599");
+		deductAdvice.setT0300(CmasDataSpec.PCode.CPU_DEDUCT.toString());
 		
 		//t0400
 		b = pprTxnReqOffline.getRespTxnAmt();
 		String t0400 = Util.IntelFormat2Decimal(b, 0, pprTxnReqOffline.getRespTxnAmt().length);
-		//Util.arrayReverse(amt);
-		//String t0400 = String.valueOf(Util.bytes2Long(amt, 0, pprTxnReqOffline.getRespTxnAmt().length));
-		logger.debug("t0400:"+ t0400);
 		deductAdvice.setT0400(t0400);
 				
 		
 		//t0408 Purse Balance
 		b = pprAuthTxnOffline.getRespPurseBalance();
 		String t0408 = Util.IntelFormat2Decimal(b, 0, pprAuthTxnOffline.getRespPurseBalance().length);
-		//Util.arrayReverse(purseBalance);
-		//String t0408 = String.valueOf(Util.bytes2Long(purseBalance, 0, pprAuthTxnOffline.getRespPurseBalance().length));
-		logger.debug("t0408:"+ t0408);
 		deductAdvice.setT0408(t0408);
 		
 		//t0409
@@ -289,10 +281,8 @@ public class CmasKernel {
 		deductAdvice.setT1300(date);
 		deductAdvice.setT1301(date);
 		
-		//t1400
-		b = pprTxnReqOffline.getRespPurseExpDate();
-		Util.arrayReverse(b);
-		int unixTimeStamp = (int)Util.bytes2Long(b, 0, b.length);		
+		//t1400		
+		int unixTimeStamp = (int)Util.bytes2Long(pprTxnReqOffline.getRespPurseExpDate(), 0, pprTxnReqOffline.getRespPurseExpDate().length, true);		
 		deductAdvice.setT1400(Util.getDateTime(unixTimeStamp, Util._YYMM));
 		
 		
@@ -313,9 +303,7 @@ public class CmasKernel {
 		
 		
 		//t4200
-		b = pprTxnReqOffline.getRespNewServiceProviderID();
-		Util.arrayReverse(b);
-		deductAdvice.setT4200(String.format("%08d", Util.bytes2Long(b, 0, b.length)));
+		deductAdvice.setT4200(String.format("%08d", Util.bytes2Long(pprTxnReqOffline.getRespNewServiceProviderID(), 0, pprTxnReqOffline.getRespNewServiceProviderID().length, true)));
 		
 		//t4210
 		deductAdvice.setT4210(configManager.getNewLocationID());
@@ -341,9 +329,8 @@ public class CmasKernel {
 		//t4805
 		deductAdvice.setT4805(Util.bcd2Ascii(pprTxnReqOffline.getRespSubAreaCode()));
 							
-		//t4808
-		b = pprAuthTxnOffline.getRespTSQN();
-		deductAdvice.setT4808(Util.IntelFormat2Decimal(b, 0, b.length));
+		//t4808		
+		deductAdvice.setT4808(Util.IntelFormat2Decimal(pprAuthTxnOffline.getRespTSQN(), 0, pprAuthTxnOffline.getRespTSQN().length));
 		
 		//t4809
 		deductAdvice.setT4809(String.format("%02X", pprTxnReqOffline.getRespTxnMode()));
@@ -351,18 +338,15 @@ public class CmasKernel {
 		//t4810
 		deductAdvice.setT4810(String.format("%02X", pprTxnReqOffline.getRespTxnQualifier()));
 		
-		//t4811
-		b = pprTxnReqOffline.getRespTxnSNBeforeTxn();
-		Util.arrayReverse(b);
-		deductAdvice.setT4811(String.format("%06d", Util.bytes2Long(b, 0, b.length)));
-		//deductAdvice.setT4811(Util.IntelFormat2Decimal(b, 0, b.length));
+		//t4811		
+		deductAdvice.setT4811(String.format("%06d", Util.bytes2Long(pprTxnReqOffline.getRespTxnSNBeforeTxn(), 0, pprTxnReqOffline.getRespTxnSNBeforeTxn().length, true)));
+		
 				
 		//t4812
 		deductAdvice.setT4812(Util.bcd2Ascii(pprTxnReqOffline.getRespCTC()));
 								
 		//t4813
-		b = Arrays.copyOfRange(pprTxnReqOffline.getRespCPDSAMID(), 0, 2);
-		
+		b = Arrays.copyOfRange(pprTxnReqOffline.getRespCPDSAMID(), 0, 2);		
 		deductAdvice.setT4813(String.format("%06d", Util.bytes2Long(b, 0, b.length)));
 		
 		//t4826
@@ -372,67 +356,410 @@ public class CmasKernel {
 		deductAdvice.setT5301(String.format("%02X", pprTxnReqOffline.getRespCPDKVN_SAMKVN()));
 		
 		
-		//if(pprTxnReqOffline.getRespPurseVersionNumber() != 0x00){
+
+		//t5303
+		deductAdvice.setT5303(String.format("%02X", pprAuthTxnOffline.getRespMAC()[0]));
+
+		//t5304
+		deductAdvice.setT5304(String.format("%02X", pprAuthTxnOffline.getRespMAC()[1]));
+			
+		//t5305
+		deductAdvice.setT5305(String.format("%02X", pprTxnReqOffline.getRespSignKeyKVN()));
+
+			
+		//t5361
+		b = pprTxnReqOffline.getRespCPDSAMID();
+		byte[] c = Arrays.copyOfRange(b, 2, 10);
+		deductAdvice.setT5361(Util.bcd2Ascii(c));
+			
+		//t5362
+		c = Arrays.copyOfRange(b, 10, 14);
+		deductAdvice.setT5362(Util.bcd2Ascii(c));
+			
+		//t5363
+		deductAdvice.setT5363(Util.bcd2Ascii(pprTxnReqOffline.getRespCPDRAN_SAMCRN()));
+			
+		//t5371
+		deductAdvice.setT5371(Util.bcd2Ascii(pprTxnReqOffline.getRespSIDSTAC()));
+			
+		//t5501
+		deductAdvice.setT5501(configManager.getBatchNo());
+			
+		//t5503
+		deductAdvice.setT5503(pprTxnReqOffline.getReqTMLocationID());
+			
+		//t5504
+		deductAdvice.setT5504(pprTxnReqOffline.getReqTMID());
+			
+		//t5510
+		deductAdvice.setT5510(pprTxnReqOffline.getReqTMAgentNumber());
+			
+		//t6404
+		b = Arrays.copyOfRange(pprAuthTxnOffline.getRespMAC(), 2, pprAuthTxnOffline.getRespMAC().length);			
+		deductAdvice.setT6404(Util.bcd2Ascii(b));
+			
+		//t6405
+		b = pprAuthTxnOffline.getRespSIGN();
+		deductAdvice.setT6405(Util.bcd2Ascii(b));
+			
+		//t6406
+		b = pprTxnReqOffline.getRespSVCrypto();
+		deductAdvice.setT6406(Util.bcd2Ascii(b));	
+	}
+	
+	
+	//PPR_TxnReqOnline advice 0220
+	public void readerField2CmasSpec(PPR_TxnReqOnline pprTxnReqOnline, PPR_AuthTxnOnline pprAuthTxnOnine, CmasDataSpec advice, IConfigManager configManager){
+			// deduct advice
+			byte[] b = null;
+			
+			deductAdvice.setT0100("0220");
+			
+			//t0200
+			b = Arrays.copyOfRange(pprTxnReqOffline.getRespCardPhysicalID(), 0, pprTxnReqOffline.getRespCardPhysicalIDLength());
+			String t0200 = Util.IntelFormat2Decimal(b, 0, pprTxnReqOffline.getRespCardPhysicalIDLength());
+			deductAdvice.setT0200(t0200);
+			
+			//t0211
+			deductAdvice.setT0211(Util.bcd2Ascii(pprTxnReqOffline.getRespPID()));
+			
+			//t0213 cardType
+			deductAdvice.setT0213(String.format("%02X", pprTxnReqOffline.getRespCardType()));
+			
+			//t0214 
+			deductAdvice.setT0214(String.format("%02X", pprTxnReqOffline.getRespPersonalProfile()));
+			
+			//t0300
+			deductAdvice.setT0300(CmasDataSpec.PCode.CPU_DEDUCT.toString());
+			
+			//t0400
+			b = pprTxnReqOffline.getRespTxnAmt();
+			String t0400 = Util.IntelFormat2Decimal(b, 0, pprTxnReqOffline.getRespTxnAmt().length);
+			deductAdvice.setT0400(t0400);
+					
+			
+			//t0408 Purse Balance
+			b = pprAuthTxnOffline.getRespPurseBalance();
+			String t0408 = Util.IntelFormat2Decimal(b, 0, pprAuthTxnOffline.getRespPurseBalance().length);
+			deductAdvice.setT0408(t0408);
+			
+			//t0409
+			b = pprTxnReqOffline.getRespSingleAutoLoadTxnAmt();
+			String t0409 = Util.IntelFormat2Decimal(b, 0, b.length);
+			deductAdvice.setT0409(t0409);
+			
+			//t0410 Purse Balance Before TXN
+			b = pprTxnReqOffline.getRespPurseBalanceBeforeTxn();
+			String t0410 = Util.IntelFormat2Decimal(b, 0, b.length);
+			deductAdvice.setT0410(t0410);
+			
+			//t1100,t1101
+			deductAdvice.setT1100(configManager.getTMSerialNo());
+			deductAdvice.setT1101(configManager.getTMSerialNo());
+			
+			//t1200, t1201, t1300, t1301
+			b = pprTxnReqOffline.getReqTMTXNDateTime().getBytes();
+
+			String time = new String(Arrays.copyOfRange(b, 8, 14)); 
+			String date = new String(Arrays.copyOfRange(b, 0, 8));
+			deductAdvice.setT1200(time);
+			deductAdvice.setT1201(time);
+			deductAdvice.setT1300(date);
+			deductAdvice.setT1301(date);
+			
+			//t1400		
+			int unixTimeStamp = (int)Util.bytes2Long(pprTxnReqOffline.getRespPurseExpDate(), 0, pprTxnReqOffline.getRespPurseExpDate().length, true);		
+			deductAdvice.setT1400(Util.getDateTime(unixTimeStamp, Util._YYMM));
+			
+			
+			//t3700
+			deductAdvice.setT3700(deductAdvice.getT1300() + deductAdvice.getT1100());
+			
+			//t4100
+			deductAdvice.setT4100(Util.bcd2Ascii(pprTxnReqOffline.getRespNewDeviceID()));
+			
+			//t4101
+			deductAdvice.setT4101(Util.bcd2Ascii(pprTxnReqOffline.getRespDeviceID()));
+					
+			//t4103
+			deductAdvice.setT4103(Util.getMACAddress());
+			
+			//t4104
+			deductAdvice.setT4104(configManager.getReaderID());
+			
+			
+			//t4200
+			deductAdvice.setT4200(String.format("%08d", Util.bytes2Long(pprTxnReqOffline.getRespNewServiceProviderID(), 0, pprTxnReqOffline.getRespNewServiceProviderID().length, true)));
+			
+			//t4210
+			deductAdvice.setT4210(configManager.getNewLocationID());
+			
+			//t4800
+			deductAdvice.setT4800(String.format("%02X", pprTxnReqOffline.getRespPurseVersionNumber()));
+			
+			//t4801
+			byte[] t4801 = new byte[CMAS_4801_SIZE/2];
+			System.arraycopy(pprTxnReqOffline.getRespLastCreditTxnLog(), 0, t4801, 0, pprTxnReqOffline.getRespLastCreditTxnLog().length);		
+			deductAdvice.setT4801(Util.bcd2Ascii(t4801));
+			
+			//t4802
+			deductAdvice.setT4802(String.format("%02X", pprTxnReqOffline.getRespIssuerCode()));
+			
+			//t4803
+			deductAdvice.setT4803(String.format("%02X", pprTxnReqOffline.getRespBankCode()));
+			
+			
+			//t4804
+			deductAdvice.setT4804(String.format("%02X", pprTxnReqOffline.getRespAreaCode()));
+								
+			//t4805
+			deductAdvice.setT4805(Util.bcd2Ascii(pprTxnReqOffline.getRespSubAreaCode()));
+								
+			//t4808		
+			deductAdvice.setT4808(Util.IntelFormat2Decimal(pprAuthTxnOffline.getRespTSQN(), 0, pprAuthTxnOffline.getRespTSQN().length));
+			
+			//t4809
+			deductAdvice.setT4809(String.format("%02X", pprTxnReqOffline.getRespTxnMode()));
+			
+			//t4810
+			deductAdvice.setT4810(String.format("%02X", pprTxnReqOffline.getRespTxnQualifier()));
+			
+			//t4811		
+			deductAdvice.setT4811(String.format("%06d", Util.bytes2Long(pprTxnReqOffline.getRespTxnSNBeforeTxn(), 0, pprTxnReqOffline.getRespTxnSNBeforeTxn().length, true)));
+			
+					
+			//t4812
+			deductAdvice.setT4812(Util.bcd2Ascii(pprTxnReqOffline.getRespCTC()));
+									
+			//t4813
+			b = Arrays.copyOfRange(pprTxnReqOffline.getRespCPDSAMID(), 0, 2);		
+			deductAdvice.setT4813(String.format("%06d", Util.bytes2Long(b, 0, b.length)));
+			
+			//t4826
+			deductAdvice.setT4826(String.format("%02X", pprTxnReqOffline.getRespCardPhysicalIDLength()));
+			
+			//t5301
+			deductAdvice.setT5301(String.format("%02X", pprTxnReqOffline.getRespCPDKVN_SAMKVN()));
+			
+			
+
 			//t5303
 			deductAdvice.setT5303(String.format("%02X", pprAuthTxnOffline.getRespMAC()[0]));
 
 			//t5304
 			deductAdvice.setT5304(String.format("%02X", pprAuthTxnOffline.getRespMAC()[1]));
-			
+				
 			//t5305
 			deductAdvice.setT5305(String.format("%02X", pprTxnReqOffline.getRespSignKeyKVN()));
 
-			
+				
 			//t5361
 			b = pprTxnReqOffline.getRespCPDSAMID();
 			byte[] c = Arrays.copyOfRange(b, 2, 10);
 			deductAdvice.setT5361(Util.bcd2Ascii(c));
-			
+				
 			//t5362
 			c = Arrays.copyOfRange(b, 10, 14);
 			deductAdvice.setT5362(Util.bcd2Ascii(c));
-			
+				
 			//t5363
 			deductAdvice.setT5363(Util.bcd2Ascii(pprTxnReqOffline.getRespCPDRAN_SAMCRN()));
-			
-			
+				
 			//t5371
 			deductAdvice.setT5371(Util.bcd2Ascii(pprTxnReqOffline.getRespSIDSTAC()));
-			
+				
 			//t5501
-			/*
-			byte[] d = deductAdvice.getT1300().getBytes();
-			byte[] s = deductAdvice.getT1100().getBytes();
-			deductAdvice.setT5501(String.format("%c%c%c%c%c%c%c%c"
-					,d[2],d[3],d[4],d[5],d[6],d[7]
-					,s[4],s[5]
-			));*/
 			deductAdvice.setT5501(configManager.getBatchNo());
-			
+				
 			//t5503
 			deductAdvice.setT5503(pprTxnReqOffline.getReqTMLocationID());
-			
+				
 			//t5504
 			deductAdvice.setT5504(pprTxnReqOffline.getReqTMID());
-			
+				
 			//t5510
 			deductAdvice.setT5510(pprTxnReqOffline.getReqTMAgentNumber());
-			
+				
 			//t6404
 			b = Arrays.copyOfRange(pprAuthTxnOffline.getRespMAC(), 2, pprAuthTxnOffline.getRespMAC().length);			
 			deductAdvice.setT6404(Util.bcd2Ascii(b));
-			
+				
 			//t6405
 			b = pprAuthTxnOffline.getRespSIGN();
 			deductAdvice.setT6405(Util.bcd2Ascii(b));
-			
+				
 			//t6406
 			b = pprTxnReqOffline.getRespSVCrypto();
-			deductAdvice.setT6406(Util.bcd2Ascii(b));
-			
-		//}
-
+			deductAdvice.setT6406(Util.bcd2Ascii(b));	
+		}
+		
+	
+	//3.1帳務授權交易
+	public void readerField2CmasSpec(PPR_TxnReqOnline pprTxnReqOnline, CmasDataSpec spec, IConfigManager configManager){
+		byte[] b = null;
+		spec.setT0100("0100");
+		
+		//t0200
+		b = Arrays.copyOfRange(pprTxnReqOnline.getRespCardPhysicalID(), 0, pprTxnReqOnline.getRespCardPhysicalIDLength());
+		String t0200 = Util.IntelFormat2Decimal(b, 0, pprTxnReqOnline.getRespCardPhysicalIDLength());				
+		spec.setT0200(t0200);
+		
+		//t0211
+		spec.setT0211(Util.bcd2Ascii(pprTxnReqOnline.getRespPID()));
 				
+		//t0213 cardType
+		spec.setT0213(String.format("%02X", pprTxnReqOnline.getRespCardType()));
+				
+		//t0214 
+		spec.setT0214(String.format("%02X", pprTxnReqOnline.getRespPersonalProfile()));
+				
+		//t0300
+		//setttingUp from caller
+				
+		//t0400
+		b = pprTxnReqOnline.getRespTxnAmt();
+		String t0400 = Util.IntelFormat2Decimal(b, 0, pprTxnReqOnline.getRespTxnAmt().length);
+		spec.setT0400(t0400);
+						
+				
+		//t0409
+		b = pprTxnReqOnline.getRespSingleAutoLoadTxnAmt();
+		String t0409 = Util.IntelFormat2Decimal(b, 0, b.length);
+		spec.setT0409(t0409);
+				
+		//t0410 Purse Balance Before TXN
+		b = pprTxnReqOnline.getRespPurseBalanceBeforeTxn();
+		String t0410 = Util.IntelFormat2Decimal(b, 0, b.length);
+		spec.setT0410(t0410);
+				
+		//t1100,t1101
+		spec.setT1100(configManager.getTMSerialNo());
+		spec.setT1101(configManager.getTMSerialNo());
+				
+		//t1200, t1201, t1300, t1301
+		b = pprTxnReqOnline.getReqTMTXNDateTime().getBytes();
+		String time = new String(Arrays.copyOfRange(b, 8, 14)); 
+		String date = new String(Arrays.copyOfRange(b, 0, 8));
+		spec.setT1200(time);
+		spec.setT1201(time);
+		spec.setT1300(date);
+		spec.setT1301(date);
+				
+		//t1400,t1402
+		b = pprTxnReqOnline.getRespPurseExpDate();
+		int unixTimeStamp = (int)Util.bytes2Long(b, 0, b.length, true);		
+		spec.setT1400(Util.getDateTime(unixTimeStamp, Util._YYMM));
+		spec.setT1402(Util.sGetDate(unixTimeStamp));		
+		
+		
+		
+		//t3700
+		spec.setT3700(spec.getT1300() + spec.getT1100());
+				
+		//t4100
+		spec.setT4100(Util.bcd2Ascii(pprTxnReqOnline.getRespNewDeviceID()));
+				
+		//t4101
+		spec.setT4101(Util.bcd2Ascii(pprTxnReqOnline.getRespDeviceID()));
+			
+		//t4102
+		spec.setT4102(Util.sGetLocalIpAddress());
+		
+		//t4103
+		spec.setT4103(Util.getMACAddress());
+				
+		//t4104
+		spec.setT4104(configManager.getReaderID());
+				
+				
+		//t4200
+		b = pprTxnReqOnline.getRespNewServiceProviderID();
+		spec.setT4200(String.format("%08d", Util.bytes2Long(b, 0, b.length,true)));
+				
+		//t4210
+		spec.setT4210(configManager.getNewLocationID());
+				
+		//t4800
+		spec.setT4800(String.format("%02X", pprTxnReqOnline.getRespPurseVersionNumber()));
+				
+		//t4801
+		byte[] t4801 = new byte[CMAS_4801_SIZE/2];
+		System.arraycopy(pprTxnReqOnline.getRespLastCreditTxnLog(), 0, t4801, 0, pprTxnReqOnline.getRespLastCreditTxnLog().length);		
+		spec.setT4801(Util.bcd2Ascii(t4801));
+				
+		//t4802
+		spec.setT4802(String.format("%02X", pprTxnReqOnline.getRespIssuerCode()));
+				
+		//t4803
+		spec.setT4803(String.format("%02X", pprTxnReqOnline.getRespBankCode()));
+				
+				
+		//t4804
+		spec.setT4804(String.format("%02X", pprTxnReqOnline.getRespAreaCode()));
+									
+		//t4805
+		spec.setT4805(Util.bcd2Ascii(pprTxnReqOnline.getRespSubAreaCode()));
+		
+		//t4806
+		spec.setT4806(Util.bcd2Ascii(pprTxnReqOnline.getRespProfileExpDate()));
+				
+								
+		//t4813		
+		spec.setT4813(String.format("%06d", Util.bytes2Long(pprTxnReqOnline.getRespLoyaltyCounter(), 0, pprTxnReqOnline.getRespLoyaltyCounter().length)));
+				
+		//t4826
+		spec.setT4826(String.format("%02X", pprTxnReqOnline.getRespCardPhysicalIDLength()));
+				
+		//t5301
+		spec.setT5301(String.format("%02X", pprTxnReqOnline.getRespSamKVN()));
+				
+			
+
+		//t5304
+		spec.setT5304(String.format("%02X", pprTxnReqOnline.getRespHostAdminKeyKVN()));
+					
+		//t5305
+		//deductAdvice.setT5305(String.format("%02X", pprTxnReqOffline.getRespSignKeyKVN()));
+
+					
+		//t5361		
+		spec.setT5361(Util.bcd2Ascii(pprTxnReqOnline.getRespSamID()));
+					
+		//t5362		
+		spec.setT5362(Util.bcd2Ascii(pprTxnReqOnline.getRespSamSN()));
+					
+		//t5363
+		spec.setT5363(Util.bcd2Ascii(pprTxnReqOnline.getRespSamCRN()));
+					
+					
+		//t5371
+		spec.setT5371(Util.bcd2Ascii(pprTxnReqOnline.getRespSID()));
+					
+		//t5501			
+		spec.setT5501(configManager.getBatchNo());
+					
+		//t5503
+		spec.setT5503(pprTxnReqOnline.getReqTMLocationID());
+					
+		//t5504
+		spec.setT5504(pprTxnReqOnline.getReqTMID());
+					
+		//t5510
+		spec.setT5510(pprTxnReqOnline.getReqTMAgentNumber());
+			
+	
+		//t6000
+		spec.setT6000(Util.bcd2Ascii(pprTxnReqOnline.getRespReaderFWVersion()));
+		
+		//t6001
+		spec.setT6001(Util.bcd2Ascii(pprTxnReqOnline.getRespReaderAVRData()));
+		
+		//t6004
+		spec.setT6004(configManager.getBlackListVersion());
+		
+		//t6400	
+		spec.setT6400(Util.bcd2Ascii(pprTxnReqOnline.getRespSTAC()));
+	
 	}
 	
 	// ********************* LockAdvice ****************************
@@ -766,7 +1093,41 @@ public class CmasKernel {
 		
 	}
 	
-	
+
+	public int cmasSpec2ReaderField(CmasDataSpec spec, PPR_AuthTxnOnline pprAuthTxnOnline, IConfigManager configManager){
+		
+		logger.info("start");
+		int result = 0;
+		try {
+			
+			
+			//for展期交易
+			if(spec.getT0300().equalsIgnoreCase(CmasDataSpec.PCode.CPU_EXTENSION.toString()))
+			{
+				//todo...
+			}
+			
+			logger.debug("T4800:["+spec.getT4800()+"]");
+			if(spec.getT4800().equalsIgnoreCase("00") == false){
+				logger.debug("T4800 != 00");
+				byte[] txnToken = Util.ascii2Bcd(spec.getT6409());
+				pprAuthTxnOnline.setReqTxnToken(txnToken);
+			} else logger.debug("T4800 == 00");
+			
+			
+			if(spec.getT4800().equalsIgnoreCase("02") == false){
+				logger.debug("T4800 != 02");
+				byte[] htac = Util.ascii2Bcd(spec.getT6401());
+				pprAuthTxnOnline.setReqHTAC(htac);
+			} else logger.debug("T4800 == 02");
+		} catch(Exception e) {
+			logger.error("0110 to PPR_AuthTxnOnline Exception:"+e.getMessage());
+			
+		}
+		
+		logger.info("end");
+		return result;
+	}
 	
 	public String packRequeset(int[] field, CmasDataSpec spec)
 	{
@@ -851,6 +1212,10 @@ public class CmasKernel {
 			case 1400:
 				result = start + spec.getT1400() + end ;
 				break;
+				
+			case 1402:
+				result = start + spec.getT1402() + end ;
+				break;	
 				
 			case 1301:
 				result = start + spec.getT1301() + end ;
@@ -1069,6 +1434,10 @@ public class CmasKernel {
 				result += "<T559604>"+t5596.getT559601()+"</T559604>" + end;
 				
 				break;
+				
+			case 6001:
+				result = start + spec.getT6001() + end ;
+				break;				
 				
 			case 6000:
 				result = start + spec.getT6000() + end;

@@ -182,14 +182,14 @@ public class ApduRecvSender implements IRecvSender{
     	try {    		
     		
     		
-    		if(!mPort.isOpened()){
-	    		if(!openPort(portName))
-			    {
-			    	logger.error("openPort:("+portName+") fail");
-			    	return null;
+    		
+	    	if(!openPort(portName))
+			{
+			    logger.error("openPort:("+portName+") fail");
+			    return null;
 			    	//return RespCode.COMPORT_OPEN_FAIL.getId();
-			    }
-    		}
+			}
+    		
     		
     		logger.debug("Comport Send >>>:"+Util.hex2StringLog(sendBuffer));
     		boolean ret= write(sendBuffer);//Write data to port

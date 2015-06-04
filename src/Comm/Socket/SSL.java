@@ -79,7 +79,7 @@ public class SSL extends Thread {
 			sslSocket.close();
 		} catch (IOException e) {
 
-			logger.error(e.getMessage());
+			logger.error("IOException:"+e.getMessage());
 			e.printStackTrace();
 		}
 

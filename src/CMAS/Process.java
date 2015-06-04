@@ -22,6 +22,7 @@ import Reader.BigBlackList;
 import Reader.EZReader;
 import Reader.ErrorResponse;
 import Reader.PPR_AuthTxnOffline;
+import Reader.PPR_AuthTxnOnline;
 import Reader.PPR_LockCard;
 import Reader.PPR_ReadCardBasicData;
 import Reader.PPR_Reset;
@@ -115,8 +116,8 @@ public class Process {
 	public IRespCode doSignon()
 	{
 		logger.info("Start");
-		int []signOn0800 = {100, 300, 1100, 1101, 1200, 1201, 1300, 1301, 3700, 4100, 4101, 4102, 4103, 4104, 4200, 4210, 4802, 4820, 4823, 4824, 5301, 5307, 5308, 5361, 5362, 5363, 5364, 5365, 5366, 5368, 5369, 5370, 5371, 5501, 5503, 5504, 5510, 5588, 5596, 6000, 6002, 6003, 6004, 6400, 6408};
-		int []signOn0820 = {100, 300, 1100, 1101, 1200, 1300, 3700, 4100, 4200, 4210, 4825, 5501, 5503, 5504, 5510, 6406};
+		//int []signOn0800 = {100, 300, 1100, 1101, 1200, 1201, 1300, 1301, 3700, 4100, 4101, 4102, 4103, 4104, 4200, 4210, 4802, 4820, 4823, 4824, 5301, 5307, 5308, 5361, 5362, 5363, 5364, 5365, 5366, 5368, 5369, 5370, 5371, 5501, 5503, 5504, 5510, 5588, 5596, 6000, 6002, 6003, 6004, 6400, 6408};
+		//int []signOn0820 = {100, 300, 1100, 1101, 1200, 1300, 3700, 4100, 4200, 4210, 4825, 5501, 5503, 5504, 5510, 6406};
 		
 		IRespCode result;
 		//Properties easyCardApip = cfgList.get(ConfigManager.ConfigOrder.EASYCARD_API.ordinal());
@@ -191,7 +192,7 @@ public class Process {
 				CmasDataSpec specResetReq = new CmasDataSpec();				
 				kernel = new CmasKernel();
 				kernel.readerField2CmasSpec(pprReset, specResetReq, configManager, t5596);				
-				cmasRquest = kernel.packRequeset(signOn0800,specResetReq);
+				cmasRquest = kernel.packRequeset(CmasDataSpec.CmasReqField._0800.getField(),specResetReq);
 				
 				
 				//waiting connection finish first
@@ -273,7 +274,7 @@ public class Process {
 				//SignOn Advice			
 				CmasDataSpec specSignonAdv = new CmasDataSpec();
 				kernel.readerField2CmasSpec(pprSignon, specSignonAdv, specResetResp, configManager);
-				String cmasAdv = kernel.packRequeset(signOn0820, specSignonAdv);
+				String cmasAdv = kernel.packRequeset(CmasDataSpec.CmasReqField._0820.getField(), specSignonAdv);
 				logger.debug("SignOn Adv:"+cmasAdv);
 				cmasResponse = ssl.sendRequest(cmasAdv);
 				logger.debug("SignOn Adv Response:"+cmasResponse);
@@ -293,12 +294,12 @@ public class Process {
 				logger.debug("finally");
 				
 				ssl.disconnect();
-				cmasFTP.disconnect();
+				if(cmasFTP!=null) cmasFTP.disconnect();
 				
 				configManager.finish();
 				reader.finish();
 			} catch(Exception e) {
-				logger.error(e.getMessage());
+				logger.error("doDeduct finally exception:"+e.getMessage());
 			}			
 		}
 		
@@ -365,13 +366,15 @@ public class Process {
 		return result;
 	}
 	
-	public IRespCode doAutoload(int amt){
-		IRespCode result = null;
+	private PPR_TxnReqOnline packAutoloadTxnReqOnline(int amt){
 		
-		try{
-			int unixTimeStamp = (int) (System.currentTimeMillis() / 1000L);
+		PPR_TxnReqOnline pprTxnReqOnline = null;
+		try {
+			int unixTimeStamp = (int) (System.currentTimeMillis() / 1000L);			
+			pprTxnReqOnline = new PPR_TxnReqOnline();		
+			//CmasDataSpec onlineSpec = new CmasDataSpec();
 			
-			PPR_TxnReqOnline pprTxnReqOnline = new PPR_TxnReqOnline();
+			//onlineSpec.setT0300(CmasDataSpec.PCode.CPU_AUTOLOAD.toString());
 			pprTxnReqOnline.setReqMsgType((byte)0x02);
 			pprTxnReqOnline.setReqSubType((byte)0x40);
 			pprTxnReqOnline.setReqTMLocationID(configManager.getTMLocationID());
@@ -381,19 +384,73 @@ public class Process {
 			pprTxnReqOnline.setReqTMAgentNumber(configManager.getTMAgentNo());
 			pprTxnReqOnline.setReqTXNDateTime(unixTimeStamp, getmTimeZone());
 			pprTxnReqOnline.setReqTxnAmt(amt);
-			
-			result = reader.exeCommand(pprTxnReqOnline);
 		} catch(Exception e) {
 			logger.error(e.getMessage());
 			e.printStackTrace();
-		} finally {
+		}	
+		return pprTxnReqOnline;
+	}
+	
+	public IRespCode doAutoload(int amt){
+		IRespCode result = null;		
+		try{
 			
+			int tmSerialNo=0;
+			//preConnect SSL
+			SSL ssl = new SSL(configManager.getHostUrl(), 
+					Integer.valueOf(configManager.getHostPort()), 
+					null, 
+					null);
+			ssl.start();
+			
+			// exe PPR_TxnReq_Online
+			PPR_TxnReqOnline pprTxnReqOnline = packAutoloadTxnReqOnline(amt);
+			if(pprTxnReqOnline == null) return ApiRespCode.ERROR;
+			
+			CmasKernel kernel = new CmasKernel();
+			CmasDataSpec onlineSpec = new CmasDataSpec();			
+			onlineSpec.setT0300(CmasDataSpec.PCode.CPU_AUTOLOAD.toString());
+			
+			
+			result = reader.exeCommand(pprTxnReqOnline);
+			if(result != ReaderRespCode._6415){
+				return result;
+			}
+			
+			kernel.readerField2CmasSpec(pprTxnReqOnline, onlineSpec, configManager);
+			String cmasReq = kernel.packRequeset(CmasDataSpec.CmasReqField._0100_AUTH.getField(), onlineSpec);
+			
+			// sendRecv from CMAS Host
+			ssl.join();
+			String cmasResp = ssl.sendRequest(cmasReq);
+			logger.debug("autoLoad CMAS Resp:"+cmasResp);
+			
+		
+			//AuthOnline
+			CmasDataSpec respSpec = new CmasDataSpec(cmasResp);	
+			PPR_AuthTxnOnline pprAuthTxnOnline = new PPR_AuthTxnOnline();
+			kernel.cmasSpec2ReaderField(respSpec, pprAuthTxnOnline, configManager);
+			
+			result = reader.exeCommand(pprAuthTxnOnline);
+			
+			//update tmSerialNo
+			tmSerialNo = Integer.valueOf(onlineSpec.getT1100()) + 1;
+			configManager.setTMSerialNo(String.format("%d", tmSerialNo));
+		
+		
+		
+		
+		} catch(Exception e) {
+			logger.error(e.getMessage());
+			e.printStackTrace();
+		} finally {			
+			configManager.finish();
 			reader.finish();
 		}
 		return result;
 	}
 	
-	public IRespCode doDeduct(int amt){
+	public IRespCode doDeduct(int amt, boolean exeAutoload){
 		SSL ssl = null;
 		IRespCode result = null;
 		int tmSerialNo = 0;
@@ -487,11 +544,11 @@ public class Process {
 			}	
 			
 			//pack advice
-			int[] field = {100,200,211,213,214,300,400,408,409,410,1100,1101,1200,1201,1300,1301,1400,3700,4100,4101,4103,4104,4200,4210,4800,4801,4802,4803,4804,4805,4808,4809,4810,4811,4812,4813,4826,5301,5303,5304,5305,5361,5362,5363,5371,5501,5503,5504,5510,6404,6405,6406};
+			//int[] field = {100,200,211,213,214,300,400,408,409,410,1100,1101,1200,1201,1300,1301,1400,3700,4100,4101,4103,4104,4200,4210,4800,4801,4802,4803,4804,4805,4808,4809,4810,4811,4812,4813,4826,5301,5303,5304,5305,5361,5362,5363,5371,5501,5503,5504,5510,6404,6405,6406};
 			CmasKernel kernel = new CmasKernel();
 			CmasDataSpec specAdvice = new CmasDataSpec();
 			kernel.readerField2CmasSpec(pprTxnReqOffline, pprAuthTxnOffline, specAdvice, configManager);
-			String cmasReq = kernel.packRequeset(field, specAdvice);
+			String cmasReq = kernel.packRequeset(CmasDataSpec.CmasReqField._0220.getField(), specAdvice);
 			
 			//send advice
 			try {

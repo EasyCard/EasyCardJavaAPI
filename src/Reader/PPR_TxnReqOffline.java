@@ -19,9 +19,7 @@ public class PPR_TxnReqOffline extends APDU{
 	private static final int scReqDataLength = 0x40;
 	private static final int scReqLength = scReqDataLength + scReqMinLength;
 	private static final int scReqInfoLength = scReqDataLength + scReqInfoMinLength;
-	private static final int scRespDataLength = 0xFA;
-	private static final int scError1RespDataLength = 0x78;//0x640E(餘額異常)、0x610F(二代餘額異常)、0x6148(通路限制)
-	private static final int scError2RespDataLength = 0x28;//0x6103(CPD異常)
+	private static final int scRespDataLength = 0xFA;	
 	private static final int scRespLength = scRespDataLength + scRespMinLength;
 	
 	
