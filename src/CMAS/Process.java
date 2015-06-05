@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
 import CMAS.CmasDataSpec;
-import CMAS.CmasDataSpec.SubTag5596;
+import CMAS.CmasTag.SubTag5596;
 import CMAS.CmasFTPList;
 import CMAS.CmasKernel;
 import Comm.Socket.*;
@@ -137,7 +137,7 @@ public class Process {
 		String t3900 = "19";
 		try{
 			
-			SubTag5596 t5596 = new CmasDataSpec().new SubTag5596();
+			
 			int recvCnt = 0;
 			int totalCnt = 0;
 			ssl = new SSL(configManager.getHostUrl(), 
@@ -189,7 +189,8 @@ public class Process {
 				
 				
 				//prepare CMAS Data
-				CmasDataSpec specResetReq = new CmasDataSpec();				
+				CmasDataSpec specResetReq = new CmasDataSpec();	
+				SubTag5596 t5596 = specResetReq.getCmasTag().new SubTag5596();
 				kernel = new CmasKernel();
 				kernel.readerField2CmasSpec(pprReset, specResetReq, configManager, t5596);				
 				cmasRquest = kernel.packRequeset(CmasDataSpec.CmasReqField._0800.getField(),specResetReq);
@@ -235,7 +236,7 @@ public class Process {
 						//branch_company		
 						//easycardApi.setProperty("Company_Branch", specResetResp.getT4210());
 						//new locatoin id
-						ArrayList<CmasDataSpec.SubTag5595> t5595s = specResetResp.getT5595s();
+						ArrayList<CmasTag.SubTag5595> t5595s = specResetResp.getT5595s();
 						for(int i=0; i<t5595s.size(); i++){
 							logger.debug("5595:"+t5595s.get(i).getT559502());
 							if(t5595s.get(i).getT559502().equalsIgnoreCase("TM03")){ // 分公司代號								
@@ -260,7 +261,7 @@ public class Process {
 			
 			if(t3900.equalsIgnoreCase("00")){		
 				//FTP download Start another thread
-				if(anyFileNeededToDownload(specResetResp.getT5595s())){
+				if(anyFileNeededToDownload(specResetResp.getCmasTag().t5595s)){
 					cmasFTP = new CmasFTPList(configManager.getFtpUrl(), 
 						configManager.getFtpIP(),
 						990,
@@ -306,7 +307,7 @@ public class Process {
 		logger.info("End");
 		return ApiRespCode.SUCCESS;
 	}
-	private boolean anyFileNeededToDownload(ArrayList<CmasDataSpec.SubTag5595> t5595s){
+	private boolean anyFileNeededToDownload(ArrayList<CmasTag.SubTag5595> t5595s){
 		boolean result = false;
 		String tag=null;
 		for(int i=0; i<t5595s.size(); i++){
@@ -432,6 +433,13 @@ public class Process {
 			kernel.cmasSpec2ReaderField(respSpec, pprAuthTxnOnline, configManager);
 			
 			result = reader.exeCommand(pprAuthTxnOnline);
+			
+			kernel.readerField2CmasSpec(pprTxnReqOnline, pprAuthTxnOnline, respSpec, configManager);
+			String advice = kernel.packRequeset(CmasDataSpec.CmasReqField._0220.getField(), respSpec);
+			
+			
+			cmasResp = ssl.sendRequest(advice);
+			logger.debug("autoLoad Advice CMAS Resp:"+cmasResp);
 			
 			//update tmSerialNo
 			tmSerialNo = Integer.valueOf(onlineSpec.getT1100()) + 1;
