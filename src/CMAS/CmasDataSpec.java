@@ -3,7 +3,6 @@ package CMAS;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -101,9 +100,9 @@ public class CmasDataSpec {
 	        
 	}
 	
-	public CmasTag getCmasTag(){
-		return cmasTag;
-	}
+	//public CmasTag getCmasTag(){
+	//	return cmasTag;
+//	}
 	private void getTag(Node node) {
 	    // do something with the current node instead of System.out
 	    System.out.println(node.getNodeName());
@@ -1286,6 +1285,33 @@ public class CmasDataSpec {
 	public void setT6409(String t6409) {
 		cmasTag.t6409 = t6409;
 	}
+	
+	//保護cmasTag的private
+	public SubTag5588 getSubTag5588Instance(){
+		return cmasTag.new SubTag5588(); 
+	}
+	
+	public SubTag5595 getSubTag5595Instance(){
+		return cmasTag.new SubTag5595(); 
+	}
+	
+	public SubTag5596 getSubTag5596Instance(){
+		return cmasTag.new SubTag5596(); 
+	}
+	
+	public SubTag6002 getSubTag6002Instance(){
+		return cmasTag.new SubTag6002(); 
+	}
+	
+	public Object getTagValue(int tag){
+		return cmasTag.getTagValue(tag);
+	}
+	
+	
+	public void setTagValue(int tag, Object value){
+		cmasTag.setTagValue(tag, value);
+	}
+	
 	
 	// auto Setter
 	private void tagParser(Node node){

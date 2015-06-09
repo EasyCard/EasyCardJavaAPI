@@ -2,7 +2,7 @@ package CMAS;
 
 
 
-import java.lang.reflect.Field;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -92,15 +92,7 @@ public class CmasKernel {
 		spec.setT5370(Util.bcd2Ascii(pprReset.GetResp_PreviousNewDeviceID())+Util.bcd2Ascii(pprReset.GetResp_PreviousSTC())+Util.bcd2Ascii(pprReset.GetResp_PreviousTXNDateTime())+String.format("%02X",(pprReset.GetResp_PreviousCreditBalanceChangeFlag())?1:0)+Util.bcd2Ascii(pprReset.GetResp_PreviousConfirmCode())+Util.bcd2Ascii(pprReset.GetResp_PreviousCACrypto()));
 		spec.setT5371(Util.bcd2Ascii(pprReset.GetResp_SAMIDNew()));
 		
-		//spec.setT5501();//批次號碼
-		/*
-		byte[] d = spec.getT1300().getBytes();
-		byte[] s = spec.getT1100().getBytes();
-		spec.setT5501(String.format("%c%c%c%c%c%c%c%c"
-				,d[2],d[3],d[4],d[5],d[6],d[7]
-				,s[4],s[5]
-		));
-		*/
+		
 		spec.setT5501(configManager.getBatchNo());
 		
 		
@@ -112,17 +104,18 @@ public class CmasKernel {
 	
 		 
 		// test ArrayList
-		SubTag5588 tag = spec.getCmasTag().new SubTag5588(); 
+		//SubTag5588 tag = spec.getCmasTag().new SubTag5588();
+		SubTag5588 tag = spec.getSubTag5588Instance();
 		tag.setT558801("01");
 		tag.setT558803("5566");
 		spec.setT5588s(tag);
 		
-		tag = spec.getCmasTag().new SubTag5588(); 
+		tag = spec.getSubTag5588Instance();
 		tag.setT558801("02");
 		tag.setT558803(configManager.getBlackListVersion());
 		spec.setT5588s(tag);
 		
-		tag = spec.getCmasTag().new SubTag5588(); 		
+		tag = spec.getSubTag5588Instance();	
 		tag.setT558801("03");
 		tag.setT558802(configManager.getApiName());
 		tag.setT558803(configManager.getApiVersion());
@@ -411,6 +404,7 @@ public class CmasKernel {
 			// deduct advice
 			byte[] b = null;
 			
+			logger.info("start");
 			advice.setT0100("0220");
 			
 			//t0200
@@ -418,9 +412,11 @@ public class CmasKernel {
 			String t0200 = Util.IntelFormat2Decimal(b, 0, pprTxnReqOnline.getRespCardPhysicalIDLength());
 			advice.setT0200(t0200);
 			
-			//t0211
-			advice.setT0211(Util.bcd2Ascii(pprTxnReqOnline.getRespPID()));
-			
+			if(pprTxnReqOnline.getRespPurseVersionNumber() != 0x00){//CPU card
+				logger.debug("PurseVersionNo. != 0x00");
+				//t0211
+				advice.setT0211(Util.bcd2Ascii(pprTxnReqOnline.getRespPID()));
+			}
 			//t0213 cardType
 			advice.setT0213(String.format("%02X", pprTxnReqOnline.getRespCardType()));
 			
@@ -549,11 +545,12 @@ public class CmasKernel {
 				
 				//t5305
 				advice.setT5305(String.format("%02X", pprTxnReqOnline.getRespSignatureKeyKVN()));
-			} else {
+			} 
+			/*else {
 				advice.setT5303("0000");
 				advice.setT5304("0000");
 				advice.setT5305("0000");
-			}
+			}*/
 				
 			//t5361						
 			advice.setT5361(Util.bcd2Ascii(pprTxnReqOnline.getRespSamID()));
@@ -1495,7 +1492,8 @@ public class CmasKernel {
 				
 			default:
 				//if tagValue was null or "", did not needed to pack the tagname 
-				Object tagValue = spec.getCmasTag().getTagValue(tag);
+				Object tagValue = spec.getTagValue(tag);
+				if(tag == 211) logger.debug("0211 value:"+tagValue);
 				if(tagValue ==null || tagValue=="")
 					return result;
 				

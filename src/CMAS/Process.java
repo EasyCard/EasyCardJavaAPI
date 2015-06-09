@@ -190,10 +190,12 @@ public class Process {
 				
 				//prepare CMAS Data
 				CmasDataSpec specResetReq = new CmasDataSpec();	
-				SubTag5596 t5596 = specResetReq.getCmasTag().new SubTag5596();
+				//SubTag5596 t5596 = specResetReq.getCmasTag().new SubTag5596();
+				SubTag5596 t5596 = specResetReq.getSubTag5596Instance();
 				kernel = new CmasKernel();
 				kernel.readerField2CmasSpec(pprReset, specResetReq, configManager, t5596);				
 				cmasRquest = kernel.packRequeset(CmasDataSpec.CmasReqField._0800.getField(),specResetReq);
+				
 				
 				
 				//waiting connection finish first
@@ -261,7 +263,7 @@ public class Process {
 			
 			if(t3900.equalsIgnoreCase("00")){		
 				//FTP download Start another thread
-				if(anyFileNeededToDownload(specResetResp.getCmasTag().t5595s)){
+				if(anyFileNeededToDownload(specResetResp.getT5595s())){
 					cmasFTP = new CmasFTPList(configManager.getFtpUrl(), 
 						configManager.getFtpIP(),
 						990,
@@ -392,72 +394,99 @@ public class Process {
 		return pprTxnReqOnline;
 	}
 	
-	public IRespCode doAutoload(int amt){
-		IRespCode result = null;		
+	private IRespCode exeAutoloadReaderAndCmasFormat(int amt, SSL ssl){
+		IRespCode result = ApiRespCode.SUCCESS;
+		int tmSerialNo=0;
+		
 		try{
-			
-			int tmSerialNo=0;
-			//preConnect SSL
-			SSL ssl = new SSL(configManager.getHostUrl(), 
-					Integer.valueOf(configManager.getHostPort()), 
-					null, 
-					null);
-			ssl.start();
-			
 			// exe PPR_TxnReq_Online
 			PPR_TxnReqOnline pprTxnReqOnline = packAutoloadTxnReqOnline(amt);
 			if(pprTxnReqOnline == null) return ApiRespCode.ERROR;
-			
+						
 			CmasKernel kernel = new CmasKernel();
 			CmasDataSpec onlineSpec = new CmasDataSpec();			
 			onlineSpec.setT0300(CmasDataSpec.PCode.CPU_AUTOLOAD.toString());
-			
-			
+						
+						
 			result = reader.exeCommand(pprTxnReqOnline);
 			if(result != ReaderRespCode._6415){
 				return result;
 			}
-			
+						
 			kernel.readerField2CmasSpec(pprTxnReqOnline, onlineSpec, configManager);
 			String cmasReq = kernel.packRequeset(CmasDataSpec.CmasReqField._0100_AUTH.getField(), onlineSpec);
-			
+						
 			// sendRecv from CMAS Host
-			ssl.join();
+			try {
+				ssl.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				logger.debug("InterruptedException:"+e.getMessage());
+				e.printStackTrace();
+				return ApiRespCode.SSL_CONNECT_FAIL;
+			}
 			String cmasResp = ssl.sendRequest(cmasReq);
+			if(cmasResp==null) return ApiRespCode.NO_RECV_RESPONSE_FROM_HOST;
 			logger.debug("autoLoad CMAS Resp:"+cmasResp);
-			
-		
+						
+					
 			//AuthOnline
 			CmasDataSpec respSpec = new CmasDataSpec(cmasResp);	
 			PPR_AuthTxnOnline pprAuthTxnOnline = new PPR_AuthTxnOnline();
-			kernel.cmasSpec2ReaderField(respSpec, pprAuthTxnOnline, configManager);
-			
+			kernel.cmasSpec2ReaderField(respSpec, pprAuthTxnOnline, configManager);				
 			result = reader.exeCommand(pprAuthTxnOnline);
+			if(result != ReaderRespCode._9000) return result;
 			
+			//pack AuthOnline Advice
+			respSpec = new CmasDataSpec();
 			kernel.readerField2CmasSpec(pprTxnReqOnline, pprAuthTxnOnline, respSpec, configManager);
 			String advice = kernel.packRequeset(CmasDataSpec.CmasReqField._0220.getField(), respSpec);
-			
-			
 			cmasResp = ssl.sendRequest(advice);
 			logger.debug("autoLoad Advice CMAS Resp:"+cmasResp);
-			
+						
 			//update tmSerialNo
 			tmSerialNo = Integer.valueOf(onlineSpec.getT1100()) + 1;
 			configManager.setTMSerialNo(String.format("%d", tmSerialNo));
-		
-		
-		
+		} catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Exception:"+e.getMessage());
+			
+		}
+			
+		return result;
+	}
+	public IRespCode doAutoload(int amt){
+		IRespCode result = null;		
+		SSL ssl = null;	
+			//preConnect SSL
+			
+		try{
+			ssl = new SSL(configManager.getHostUrl(), 
+					Integer.valueOf(configManager.getHostPort()), 
+					null, 
+					null);
+			
+			ssl.start();
+			if((result = exeAutoloadReaderAndCmasFormat(amt, ssl)) != ApiRespCode.SUCCESS)
+				return result;
 		
 		} catch(Exception e) {
 			logger.error(e.getMessage());
 			e.printStackTrace();
-		} finally {			
+		} finally {
+			ssl.disconnect();
 			configManager.finish();
 			reader.finish();
 		}
 		return result;
 	}
 	
+	/*
+	public IRespCode exeOfflineDeduct(int amt){
+		IRespCode result = null;
+		
+	}
+	*/
 	public IRespCode doDeduct(int amt, boolean exeAutoload){
 		SSL ssl = null;
 		IRespCode result = null;
@@ -537,9 +566,17 @@ public class Process {
 			}
 			
 			//6403(餘額不足)，check autoload flag
-			if(result == ReaderRespCode._6403 && pprTxnReqOffline.getAutoloadFlag()){
-				logger.info("purseBalance no enough, autload Allowed, exe autoload?");
-				return ApiRespCode.AUTOLOAD_YES_OR_NO;
+			if(result == ReaderRespCode._6403 &&  //餘額不足
+			   pprTxnReqOffline.getAutoloadFlag())//autoload on
+			{
+				if(exeAutoload == false){
+					logger.info("purseBalance no enough, autload Allowed, exe autoload?");
+					return ApiRespCode.AUTOLOAD_YES_OR_NO;
+				} else {
+					//exe autoLoad
+					if((result = exeAutoloadReaderAndCmasFormat(amt, ssl)) != ApiRespCode.SUCCESS)
+						return result;
+				}
 			}
 			
 			
