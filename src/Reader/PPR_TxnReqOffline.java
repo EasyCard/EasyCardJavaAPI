@@ -330,7 +330,7 @@ public class PPR_TxnReqOffline extends APDU{
 	}
 	
 	// LCD Control Flag
-	private static final int pReqLCDControlFlag = pReqCustomerFee + pReqCustomerFee;
+	private static final int pReqLCDControlFlag = pReqCustomerFee + lReqCustomerFee;
 	private static final int lReqLCDControlFlag = 1;
 	public boolean setReqLCDControlFlag(byte flag) {		
 		logger.info("setter:"+flag);
@@ -386,7 +386,7 @@ public class PPR_TxnReqOffline extends APDU{
 		public byte[] cardPhysicalID=null;
 		
 		public byte cardPhysicalIDLength;
-		public byte[] TxnAmt=null;
+		public byte[] txnAmt=null;
 		public byte specVersionNumber;
 		public byte[] readerFWVersion=null;
 		public byte[] deviceID=null;
@@ -504,7 +504,7 @@ public class PPR_TxnReqOffline extends APDU{
 			return cardPhysicalIDLength;
 		}
 		public byte[] getTxnAmt() {
-			return TxnAmt;
+			return txnAmt;
 		}
 		public byte getSpecVersionNumber() {
 			return specVersionNumber;
@@ -634,13 +634,13 @@ public class PPR_TxnReqOffline extends APDU{
 				maps.put("signatureKeyKVN",1);
 				maps.put("cpuIssuerKeyKVN",1);
 				maps.put("CTC",3);
-				maps.put("TxnMode",1);
+				maps.put("txnMode",1);
 				
-				maps.put("TxnQualifier",1);
+				maps.put("txnQualifier",1);
 				maps.put("subAreaCode",2);
 				maps.put("purseExpDate",4);
 				maps.put("purseBalanceBeforeTxn",3);
-				maps.put("TxnSNBeforeTxn",3);
+				maps.put("txnSNBeforeTxn",3);
 				
 				maps.put("cardType",1);
 				maps.put("personalProfile",1);
@@ -649,7 +649,7 @@ public class PPR_TxnReqOffline extends APDU{
 				maps.put("cardPhysicalID",7);
 				
 				maps.put("cardPhysicalIDLength",1);
-				maps.put("TxnAmt",3);
+				maps.put("txnAmt",3);
 				maps.put("specVersionNumber",1);
 				maps.put("readerFWVersion",6);
 				maps.put("deviceID",4);
@@ -669,8 +669,8 @@ public class PPR_TxnReqOffline extends APDU{
 				maps.put("CPDRAN_SAMCRN",8);
 				maps.put("CPDKVN_SAMKVN",1);
 				maps.put("SIDSTAC",8);
-				maps.put("TMSerialNumber",6);
-				maps.put("LastCreditTxnLog",33);
+				maps.put("tmSerialNumber",6);
+				maps.put("lastCreditTxnLog",33);
 				
 				maps.put("SVCrypto",16);
 				maps.put("msgType",1);

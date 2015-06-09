@@ -3,7 +3,6 @@ package CMAS;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -37,6 +36,7 @@ public class CmasDataSpec {
 		CPU_ADDVALUE_VOID("811899"),
 		LOCK_CARD("596100"),
 		CPU_EXTENSION("811399"),
+		CPU_TXN_VERIFICATION("816399"),
 		SETTLEMENT("900000");
 		
 		
@@ -54,6 +54,7 @@ public class CmasDataSpec {
 		_0800(new int[] {100, 300, 1100, 1101, 1200, 1201, 1300, 1301, 3700, 4100, 4101, 4102, 4103, 4104, 4200, 4210, 4802, 4820, 4823, 4824, 5301, 5307, 5308, 5361, 5362, 5363, 5364, 5365, 5366, 5368, 5369, 5370, 5371, 5501, 5503, 5504, 5510, 5588, 5596, 6000, 6002, 6003, 6004, 6400, 6408}),
 		_0820(new int[] {100, 300, 1100, 1101, 1200, 1300, 3700, 4100, 4200, 4210, 4825, 5501, 5503, 5504, 5510, 6406}),
 		_0100_AUTH(new int[] {100, 200, 211, 213, 214, 300, 400, 409, 410, 1100, 1101, 1200, 1201, 1300, 1301, 1400, 1402, 3700, 4100, 4101, 4102, 4103, 4104, 4200, 4210, 4800, 4801, 4802, 4803, 4804, 4805, 4806, 4813, 4826, 5301, 5304, 5361, 5362, 5363, 5371, 5501, 5503, 5504, 5510, 6000, 6001, 6004, 6400}),
+		_0100_VERI(new int[] {100, 200, 211, 213, 214, 300, 400, 409, 410, 1100, 1101, 1200, 1201, 1300, 1301, 1400, 1402, 3700, 4100, 4101, 4102, 4103, 4104, 4200, 4210, 4800, 4801, 4802, 4803, 4804, 4805, 4806, 4809, 4810, 4811, 4812, 4813, 4814, 4821, 4826, 5301, 5302, 5303, 5304, 5361, 5362, 5363, 5371, 5501, 5503, 5504, 5510, 6000, 6004, 6400, 6406}),
 		_0220(new int[] {100,200,211,213,214,300,400,408,409,410,1100,1101,1200,1201,1300,1301,1400,3700,4100,4101,4103,4104,4200,4210,4800,4801,4802,4803,4804,4805,4808,4809,4810,4811,4812,4813,4826,5301,5303,5304,5305,5361,5362,5363,5371,5501,5503,5504,5510,6404,6405,6406});
 		private final int[] field;
 		private CmasReqField(int[] f){
@@ -101,9 +102,9 @@ public class CmasDataSpec {
 	        
 	}
 	
-	public CmasTag getCmasTag(){
-		return cmasTag;
-	}
+	//public CmasTag getCmasTag(){
+	//	return cmasTag;
+//	}
 	private void getTag(Node node) {
 	    // do something with the current node instead of System.out
 	    System.out.println(node.getNodeName());
@@ -1286,6 +1287,33 @@ public class CmasDataSpec {
 	public void setT6409(String t6409) {
 		cmasTag.t6409 = t6409;
 	}
+	
+	//保護cmasTag的private
+	public SubTag5588 getSubTag5588Instance(){
+		return cmasTag.new SubTag5588(); 
+	}
+	
+	public SubTag5595 getSubTag5595Instance(){
+		return cmasTag.new SubTag5595(); 
+	}
+	
+	public SubTag5596 getSubTag5596Instance(){
+		return cmasTag.new SubTag5596(); 
+	}
+	
+	public SubTag6002 getSubTag6002Instance(){
+		return cmasTag.new SubTag6002(); 
+	}
+	
+	public Object getTagValue(int tag){
+		return cmasTag.getTagValue(tag);
+	}
+	
+	
+	public void setTagValue(int tag, Object value){
+		cmasTag.setTagValue(tag, value);
+	}
+	
 	
 	// auto Setter
 	private void tagParser(Node node){

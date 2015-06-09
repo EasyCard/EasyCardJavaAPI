@@ -2,7 +2,10 @@ package CMAS;
 
 import java.util.ArrayList;
 
-
+//因為需要使用到reflect的功能，所以所有的成員宣告成public
+//但這樣容易在外面直接更改變數值
+//因此在CmasDataSpec中的CmasTag宣告成private
+//再利用public 的function去存取CmasTag的成員
 public class CmasTag {
 
 	public class SubTag5588{
@@ -384,4 +387,6 @@ public class CmasTag {
 				e.printStackTrace();
 			}
 		}
+		
+		
 }

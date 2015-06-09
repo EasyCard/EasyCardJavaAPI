@@ -59,7 +59,7 @@ public class PPR_AuthTxnOffline extends APDU{
 	//++++++++++++++++++++ Request ++++++++++++++++++++
 	//Msg Type
 	private static final int pReqHVCrypto = scReqDataOffset + 0;
-	private static final int lReqHVCrypto = 16;
+	public static final int lReqHVCrypto = 16;
 	public boolean setReqHVCrypto(byte[] b) {
 		
 		logger.info("setter:bcd2Ascii=>"+Util.bcd2Ascii(b));
