@@ -18,7 +18,6 @@ public enum ApiRespCode  implements IRespCode{
 	HOST_NO_RESPONSE("-7", "Host no response", 1),
 	CARDID_IN_BLACKLIST("-8", "此卡，卡號不合法", 1),
 	AUTOLOAD_YES_OR_NO("-9", "餘額不足，是否允許自動加值？", 1),
-	NO_RECV_RESPONSE_FROM_HOST("-10", "無接收到主機資料", 1),
 	UNKNOWN_ERROR_CODE("XXX","Unknowen ErrCode", 1);
 	
 

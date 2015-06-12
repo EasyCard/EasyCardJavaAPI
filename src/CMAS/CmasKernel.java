@@ -214,6 +214,7 @@ public class CmasKernel {
 		// deduct advice
 		byte[] b = null;
 		
+
 		deductAdvice.setT0100("0220");
 		
 		//t0200
@@ -222,8 +223,10 @@ public class CmasKernel {
 		deductAdvice.setT0200(t0200);
 		
 		//t0211
-		deductAdvice.setT0211(Util.bcd2Ascii(pprTxnReqOffline.getRespPID()));
-		
+		if(pprTxnReqOffline.getRespPurseVersionNumber() != 0x00){
+			
+			deductAdvice.setT0211(Util.bcd2Ascii(pprTxnReqOffline.getRespPID()));
+		}
 		//t0213 cardType
 		deductAdvice.setT0213(String.format("%02X", pprTxnReqOffline.getRespCardType()));
 		
@@ -238,7 +241,7 @@ public class CmasKernel {
 		String t0400 = Util.IntelFormat2Decimal(b, 0, pprTxnReqOffline.getRespTxnAmt().length);
 		deductAdvice.setT0400(t0400);
 				
-		
+			
 		//t0408 Purse Balance
 		b = pprAuthTxnOffline.getRespPurseBalance();
 		String t0408 = Util.IntelFormat2Decimal(b, 0, pprAuthTxnOffline.getRespPurseBalance().length);
@@ -279,6 +282,7 @@ public class CmasKernel {
 		//t4100
 		deductAdvice.setT4100(Util.bcd2Ascii(pprTxnReqOffline.getRespNewDeviceID()));
 		
+
 		//t4101
 		deductAdvice.setT4101(Util.bcd2Ascii(pprTxnReqOffline.getRespDeviceID()));
 				
@@ -309,29 +313,36 @@ public class CmasKernel {
 		//t4803
 		deductAdvice.setT4803(String.format("%02X", pprTxnReqOffline.getRespBankCode()));
 		
-		
+			
 		//t4804
 		deductAdvice.setT4804(String.format("%02X", pprTxnReqOffline.getRespAreaCode()));
-							
+			
 		//t4805
-		deductAdvice.setT4805(Util.bcd2Ascii(pprTxnReqOffline.getRespSubAreaCode()));
-							
+		if(pprTxnReqOffline.getRespPurseVersionNumber() != 0x00){
+			
+			deductAdvice.setT4805(Util.bcd2Ascii(pprTxnReqOffline.getRespSubAreaCode()));
+		}
+		
+		
 		//t4808		
 		deductAdvice.setT4808(Util.IntelFormat2Decimal(pprAuthTxnOffline.getRespTSQN(), 0, pprAuthTxnOffline.getRespTSQN().length));
 		
-		//t4809
-		deductAdvice.setT4809(String.format("%02X", pprTxnReqOffline.getRespTxnMode()));
+		if(pprTxnReqOffline.getRespPurseVersionNumber() != 0x00){
+			//t4809
+			deductAdvice.setT4809(String.format("%02X", pprTxnReqOffline.getRespTxnMode()));
 		
-		//t4810
-		deductAdvice.setT4810(String.format("%02X", pprTxnReqOffline.getRespTxnQualifier()));
+			//t4810
+			deductAdvice.setT4810(String.format("%02X", pprTxnReqOffline.getRespTxnQualifier()));
+		}
+		
 		
 		//t4811		
 		deductAdvice.setT4811(String.format("%06d", Util.bytes2Long(pprTxnReqOffline.getRespTxnSNBeforeTxn(), 0, pprTxnReqOffline.getRespTxnSNBeforeTxn().length, true)));
 		
-				
-		//t4812
-		deductAdvice.setT4812(Util.bcd2Ascii(pprTxnReqOffline.getRespCTC()));
-								
+		if(pprTxnReqOffline.getRespPurseVersionNumber() != 0x00){
+			//t4812
+			deductAdvice.setT4812(Util.bcd2Ascii(pprTxnReqOffline.getRespCTC()));
+		}					
 		//t4813
 		b = Arrays.copyOfRange(pprTxnReqOffline.getRespCPDSAMID(), 0, 2);		
 		deductAdvice.setT4813(String.format("%06d", Util.bytes2Long(b, 0, b.length)));
@@ -352,27 +363,27 @@ public class CmasKernel {
 				
 			//t5305
 			deductAdvice.setT5305(String.format("%02X", pprTxnReqOffline.getRespSignKeyKVN()));
-		} else {
-			deductAdvice.setT5303("0000");
-			deductAdvice.setT5304("0000");
-			deductAdvice.setT5305("0000");
 		}
-			
-		//t5361
-		b = pprTxnReqOffline.getRespCPDSAMID();
-		byte[] c = Arrays.copyOfRange(b, 2, 10);
-		deductAdvice.setT5361(Util.bcd2Ascii(c));
-			
-		//t5362
-		c = Arrays.copyOfRange(b, 10, 14);
-		deductAdvice.setT5362(Util.bcd2Ascii(c));
-			
-		//t5363
-		deductAdvice.setT5363(Util.bcd2Ascii(pprTxnReqOffline.getRespCPDRAN_SAMCRN()));
-			
-		//t5371
-		deductAdvice.setT5371(Util.bcd2Ascii(pprTxnReqOffline.getRespSIDSTAC()));
-			
+		
+	
+		if(pprTxnReqOffline.getRespPurseVersionNumber() == 0x00){
+			//t5361
+			b = pprTxnReqOffline.getRespCPDSAMID();
+			byte[] c = Arrays.copyOfRange(b, 2, 10);
+			deductAdvice.setT5361(Util.bcd2Ascii(c));
+				
+			//t5362
+			c = Arrays.copyOfRange(b, 10, 14);
+			deductAdvice.setT5362(Util.bcd2Ascii(c));
+				
+			//t5363
+			deductAdvice.setT5363(Util.bcd2Ascii(pprTxnReqOffline.getRespCPDRAN_SAMCRN()));
+		}
+		
+		if(pprTxnReqOffline.getRespPurseVersionNumber() != 0x00){
+			//t5371
+			deductAdvice.setT5371(Util.bcd2Ascii(pprTxnReqOffline.getRespSIDSTAC()));
+		}
 		//t5501
 		deductAdvice.setT5501(configManager.getBatchNo());
 			
@@ -385,17 +396,16 @@ public class CmasKernel {
 		//t5510
 		deductAdvice.setT5510(pprTxnReqOffline.getReqTMAgentNumber());
 			
-		//t6404
-		b = Arrays.copyOfRange(pprAuthTxnOffline.getRespMAC(), 2, pprAuthTxnOffline.getRespMAC().length);			
-		deductAdvice.setT6404(Util.bcd2Ascii(b));
-			
-		//t6405
-		b = pprAuthTxnOffline.getRespSIGN();
-		deductAdvice.setT6405(Util.bcd2Ascii(b));
-			
-		//t6406
-		b = pprTxnReqOffline.getRespSVCrypto();
-		deductAdvice.setT6406(Util.bcd2Ascii(b));	
+				
+		if(pprTxnReqOffline.getRespPurseVersionNumber() != 0x00){
+			//t6404
+			b = Arrays.copyOfRange(pprAuthTxnOffline.getRespMAC(), 2, pprAuthTxnOffline.getRespMAC().length);			
+			deductAdvice.setT6404(Util.bcd2Ascii(b));
+				
+			//t6405
+			b = pprAuthTxnOffline.getRespSIGN();
+			deductAdvice.setT6405(Util.bcd2Ascii(b));
+		}	
 	}
 	
 	
@@ -888,7 +898,8 @@ public class CmasKernel {
 		}
 			
 		//t4811
-		spec.setT4811(Util.bcd2Ascii(pprTxnReqOffline.getRespTxnSNBeforeTxn()));
+		long l = Util.bytes2Long(pprTxnReqOffline.getRespTxnSNBeforeTxn(), 0, pprTxnReqOffline.getRespTxnSNBeforeTxn().length, true);
+		spec.setT4811(String.format("%06d", l));
 		
 		//t4812
 		spec.setT4812(Util.bcd2Ascii(pprTxnReqOffline.getRespCTC()));
@@ -941,7 +952,7 @@ public class CmasKernel {
 					
 				
 		//t5371
-		spec.setT5371(Util.bcd2Ascii(pprTxnReqOffline.getRespSID()));
+		spec.setT5371(Util.bcd2Ascii(pprTxnReqOffline.getRespSIDSTAC()));
 					
 		//t5501			
 		spec.setT5501(configManager.getBatchNo());
@@ -1307,14 +1318,23 @@ public class CmasKernel {
 	public void cmasSpec2ReaderField(CmasDataSpec spec, PPR_AuthTxnOffline pprAuthTxnOffline, IConfigManager configManager){
 		
 		try{
-			byte[] b = new byte[PPR_AuthTxnOffline.lReqHVCrypto];	
-			logger.debug("t6401:"+spec.getT6401());
-			byte[] c = Util.ascii2Bcd(spec.getT6401());	
 			
-			System.arraycopy(c, 0, b, 0, c.length);		
 			
-			logger.debug("b[]:"+Util.hex2StringLog(b));
-			pprAuthTxnOffline.setReqHVCrypto(b);
+			if(spec.getT4800().equalsIgnoreCase("00")){
+				byte[] b = new byte[PPR_AuthTxnOffline.lReqHVCrypto];
+				logger.debug("t6401:"+spec.getT6401());
+				byte[] c = Util.ascii2Bcd(spec.getT6401());	
+				
+				System.arraycopy(c, 0, b, 0, c.length);		
+				
+				logger.debug("b[]:"+Util.hex2StringLog(b));
+				pprAuthTxnOffline.setReqHVCrypto(b);
+			} else {
+				logger.debug("t6407:"+spec.getT6407());
+				byte[] c = Util.ascii2Bcd(spec.getT6407());	
+				pprAuthTxnOffline.setReqHVCrypto(c);
+				
+			}
 		} catch(Exception e) {
 			logger.error("Exception:"+e.getMessage());
 			e.printStackTrace();
