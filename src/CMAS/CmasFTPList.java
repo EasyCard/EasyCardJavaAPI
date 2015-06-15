@@ -24,7 +24,7 @@ public class CmasFTPList extends Thread{
 	private Ftp4j ftps = new Ftp4j(null);
 	private boolean isFtpsOK = false;
 	
-	ArrayList<CmasDataSpec.SubTag5595> t5595s = null;
+	ArrayList<CmasTag.SubTag5595> t5595s = null;
 	//ArrayList<Properties> cfgLsit = null;
 	private IConfigManager configManager = null;
 	private String url = null;
@@ -38,7 +38,7 @@ public class CmasFTPList extends Thread{
 			int port, 
 			String id,
 			String pwd, 
-			ArrayList<CmasDataSpec.SubTag5595> t5595s,
+			ArrayList<CmasTag.SubTag5595> t5595s,
 			IConfigManager config){
 		
 		this.url = url;
@@ -72,7 +72,7 @@ public class CmasFTPList extends Thread{
 			
 
 			logger.info("FTP Connect OK");
-			for(CmasDataSpec.SubTag5595 t5595:t5595s)
+			for(CmasTag.SubTag5595 t5595:t5595s)
 			{						
 				String t559501=t5595.getT559502();
 				/*if(t559501.equalsIgnoreCase("TM10")){ //ssl CA Cert

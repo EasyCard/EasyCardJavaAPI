@@ -3,7 +3,10 @@ package APIInterface;
 import org.apache.log4j.Logger;
 
 
+
+
 import CMAS.Process;
+import CMAS.Process.ProcessException;
 import ErrorMessage.IRespCode;
 
 
@@ -39,9 +42,19 @@ public class EasycardAPI {
 			break;
 			
 		case "deduct":
-			deduct(Integer.valueOf(args[1]));
+			int amt = Integer.valueOf(args[1]);
+			boolean autoload = args[2].equalsIgnoreCase("1")?true:false;
+			deduct(amt, autoload);
 			break;
 			
+		case "readCardBasicData":
+			readCardBasicData();
+			break;
+		
+		case "autoload":
+			autoload(Integer.valueOf(args[1]));
+			break;
+
 		default:
 			System.out.println("Unknoewn command:"+cmd);
 			break;
@@ -92,12 +105,12 @@ public class EasycardAPI {
 		}
 	}
 	
-	public static void deduct(int amt){	
+	public static void deduct(int amt, boolean autoload){	
 		try{
 		
 			logger.info("Start");		
 			Process process = new Process();
-			IRespCode result = process.doDeduct(amt);
+			IRespCode result = process.doDeduct(amt, autoload);
 			logger.info("Txn Result:"+result.getId()+"_"+result.getMsg());
 			
 			logger.info("End");
@@ -105,6 +118,31 @@ public class EasycardAPI {
 	
 		}catch(Exception e){
 			logger.error(e.getMessage());
+		}
+	}
+
+	public static void readCardBasicData(){
+		
+		Process process;
+		try {
+			process = new Process();
+			process.doReadCardBasicData();
+		} catch (ProcessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void autoload(int amt){
+		Process process;
+		IRespCode result = null;
+		try {
+			process = new Process();
+			result = process.doAutoload(amt);
+			logger.info("autoload() result:"+result.getId()+":"+result.getMsg()); 
+		} catch (ProcessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

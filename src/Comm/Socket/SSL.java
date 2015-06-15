@@ -79,7 +79,7 @@ public class SSL extends Thread {
 			sslSocket.close();
 		} catch (IOException e) {
 
-			logger.error(e.getMessage());
+			logger.error("IOException:"+e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -187,7 +187,7 @@ public class SSL extends Thread {
 
 			out.write(req.getBytes("UTF-8"));
 			out.flush();
-			logger.info("SSL Send OK!! waittin...recv response");
+			logger.info("SSL Send OK!! waitting...response");
 
 			String resp = null;
 			int len = in.read(mBuffer);
@@ -200,11 +200,11 @@ public class SSL extends Thread {
 
 			return resp;
 		} catch (IOException e) {
-			logger.error(e.getMessage());
+			logger.error("IOException:"+e.getMessage());
 			e.printStackTrace();
 			return null;
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			logger.error("Exception:"+e.getMessage());
 			e.printStackTrace();
 			return null;
 		}

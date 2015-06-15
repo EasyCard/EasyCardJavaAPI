@@ -9,17 +9,17 @@ import org.apache.log4j.Logger;
 
 import Utilities.Util;
 
-public class PPR_TxnReqOffline extends APDU{
+public class PPR_TxnReqOnline extends APDU{
 
-	static Logger logger = Logger.getLogger(PPR_TxnReqOffline.class);
-	public static final String scDescription = "讀取驗證授權交易相關欄位";
+	static Logger logger = Logger.getLogger(PPR_TxnReqOnline.class);
+	public static final String scDescription = "讀取連線帳務交易相關欄位";
 	
-	//private static PPR_SignOn sThis = null;
+	
 	
 	private static final int scReqDataLength = 0x40;
 	private static final int scReqLength = scReqDataLength + scReqMinLength;
 	private static final int scReqInfoLength = scReqDataLength + scReqInfoMinLength;
-	private static final int scRespDataLength = 0xFA;	
+	private static final int scRespDataLength = 0xFD;	
 	private static final int scRespLength = scRespDataLength + scRespMinLength;
 	
 	
@@ -30,14 +30,14 @@ public class PPR_TxnReqOffline extends APDU{
 
 	
 	
-	public PPR_TxnReqOffline(){
+	public PPR_TxnReqOnline(){
 		
 		Req_NAD = 0;
 		Req_PCB = 0; 
 		Req_LEN = (byte) scReqInfoLength;
 		
 		Req_CLA = (byte) 0x80;
-		Req_INS = 0x32;			
+		Req_INS = 0x11;			
 		Req_P1 = 0x01;
 		Req_P2 = 0x00;
 		
@@ -64,9 +64,6 @@ public class PPR_TxnReqOffline extends APDU{
 		logger.info("setter:"+msgType);
 		mRequest[pReqMsgType] = msgType;
 		
-		if(msgType != 0x05){//for !=退卡交易
-			Arrays.fill(mRequest,pReqNewRefundFee,pReqLCDControlFlag,(byte)0x00);
-		}
 		return true;
 	}
 	
@@ -328,23 +325,6 @@ public class PPR_TxnReqOffline extends APDU{
 		logger.info("getter:"+Util.bcd2Ascii(result));
 		return result;
 	}
-	
-	// LCD Control Flag
-	private static final int pReqLCDControlFlag = pReqCustomerFee + lReqCustomerFee;
-	private static final int lReqLCDControlFlag = 1;
-	public boolean setReqLCDControlFlag(byte flag) {		
-		logger.info("setter:"+flag);
-		mRequest[pReqSubType] = flag;				
-		return true;
-	}
-	
-	public byte getReqLCDControlFlag() {		
-		logger.info("getter:"+mRequest[pReqLCDControlFlag]);
-		 				
-		return mRequest[pReqLCDControlFlag];
-	}
-
-	
 	//-------------------- Request --------------------
 	
 	
@@ -355,7 +335,7 @@ public class PPR_TxnReqOffline extends APDU{
 	private ErrorResponse errRespFld = null;
 	private class ResponseField extends BaseResponseAutoParser{
 		private int dataBodyLen;
-		private final int NORMAL_LEN = 250 + 2;//9000, 6403(餘額不足), 6415(需授權交易) 
+		private final int NORMAL_LEN = 0xFD + 2;//9000 
 		
 		private final int ERROR1_LEN = 2;
 		
@@ -400,38 +380,26 @@ public class PPR_TxnReqOffline extends APDU{
 		public byte[] deposit=null;
 		public byte issuerCode;
 		public byte bankCode;
-		public byte CPDReadFlag;
-		public byte[] CPDSAMID=null;
+		public byte[] loyaltyCounter=null;
+		public byte[] samID=null;
 		
-		public byte[] CPDRAN_SAMCRN=null;
-		public byte CPDKVN_SAMKVN;
-		public byte[] SIDSTAC=null;
+		public byte[] samSN=null;
+		public byte[] samCRN=null;
+		public byte samKVN;
+		public byte[] STAC=null;
 		public byte[] tmSerialNumber=null;
-		public byte[] lastCreditTxnLog=null;
 		
-		public byte[] SVCrypto=null;
+		public byte[] lastCreditTxnLog=null;		
+		public byte[] readerAVRData=null;		
 		public byte msgType;
 		public byte subType;
-		public byte[] cardOneDayQuota=null;
-		public byte[] cardOneDayQuotaDate=null;
-		
-		public byte[] TSQN=null;
-		public byte[] purseBalance=null;
-		public byte[] confirmCode=null;
-		public byte[] SIGN=null;
 		public byte[] SID=null;
 		
-		public byte[] MAC=null;
-		public byte[] txnDateTime=null;
+		public byte hostAdminKeyKVN;
+		public byte[] txnCrypto=null;			
 		public byte[] statusCode=null;
 		
-		/*
-		//120bytes additional fields
-		public byte[] loyaltyCounter = null;
-		public byte[] anotherEV = null;
-		public byte mifareSettingParameter;
-		public byte CPUSettingParameter;
-		*/
+		
 		//constructor
 		public ResponseField(int len){
 			dataBodyLen = len;
@@ -440,162 +408,196 @@ public class PPR_TxnReqOffline extends APDU{
 		public int getDataBodyLen() {
 			return dataBodyLen;
 		}
+		
+
 		public byte getPurseVersionNumber() {
 			return purseVersionNumber;
 		}
+
 		public byte getPurseUsageControl() {
 			return purseUsageControl;
 		}
+
 		public byte[] getSingleAutoLoadTxnAmt() {
 			return singleAutoLoadTxnAmt;
 		}
+
 		public byte[] getPID() {
 			return PID;
 		}
+
 		public byte getCpuAdminKeyKVN() {
 			return cpuAdminKeyKVN;
 		}
+
 		public byte getCreditKeyKVN() {
 			return creditKeyKVN;
 		}
-		public byte getSignKeyKVN() {
+
+		public byte getSignatureKeyKVN() {
 			return signatureKeyKVN;
 		}
+
 		public byte getCPUIssuerKeyKVN() {
 			return cpuIssuerKeyKVN;
 		}
+
 		public byte[] getCTC() {
 			return CTC;
 		}
+
 		public byte getTxnMode() {
 			return txnMode;
 		}
+
 		public byte getTxnQualifier() {
 			return txnQualifier;
 		}
+
 		public byte[] getSubAreaCode() {
 			return subAreaCode;
 		}
+
 		public byte[] getPurseExpDate() {
 			return purseExpDate;
 		}
+
 		public byte[] getPurseBalanceBeforeTxn() {
 			return purseBalanceBeforeTxn;
 		}
+
 		public byte[] getTxnSNBeforeTxn() {
 			return txnSNBeforeTxn;
 		}
+
 		public byte getCardType() {
 			return cardType;
 		}
+
 		public byte getPersonalProfile() {
 			return personalProfile;
 		}
+
 		public byte[] getProfileExpDate() {
 			return profileExpDate;
 		}
+
 		public byte getAreaCode() {
 			return areaCode;
 		}
+
 		public byte[] getCardPhysicalID() {
 			return cardPhysicalID;
 		}
+
 		public byte getCardPhysicalIDLength() {
 			return cardPhysicalIDLength;
 		}
+
 		public byte[] getTxnAmt() {
 			return txnAmt;
 		}
+
 		public byte getSpecVersionNumber() {
 			return specVersionNumber;
 		}
+
 		public byte[] getReaderFWVersion() {
 			return readerFWVersion;
 		}
+
 		public byte[] getDeviceID() {
 			return deviceID;
 		}
+
 		public byte[] getNewDeviceID() {
 			return newDeviceID;
 		}
+
 		public byte getServiceProviderID() {
 			return serviceProviderID;
 		}
+
 		public byte[] getNewServiceProviderID() {
 			return newServiceProviderID;
 		}
+
 		public byte getLocationID() {
 			return locationID;
 		}
+
 		public byte[] getNewLocationID() {
 			return newLocationID;
 		}
+
 		public byte[] getDeposit() {
 			return deposit;
 		}
+
 		public byte getIssuerCode() {
 			return issuerCode;
 		}
+
 		public byte getBankCode() {
 			return bankCode;
 		}
-		public byte getCPDReadFlag() {
-			return CPDReadFlag;
+
+		public byte[] getLoyaltyCounter() {
+			return loyaltyCounter;
 		}
-		public byte[] getCPDSAMID() {
-			return CPDSAMID;
+
+		public byte[] getSamID() {
+			return samID;
 		}
-		public byte[] getCPDRAN_SAMCRN() {
-			return CPDRAN_SAMCRN;
+
+		public byte[] getSamSN() {
+			return samSN;
 		}
-		public byte getCPDKVN_SAMKVN() {
-			return CPDKVN_SAMKVN;
+
+		public byte[] getSamCRN() {
+			return samCRN;
 		}
-		public byte[] getSIDSTAC() {
-			return SIDSTAC;
+
+		public byte getSamKVN() {
+			return samKVN;
 		}
-		public byte[] getTMSerialNumber() {
+
+		public byte[] getSTAC() {
+			return STAC;
+		}
+
+		public byte[] getTmSerialNumber() {
 			return tmSerialNumber;
 		}
+
 		public byte[] getLastCreditTxnLog() {
 			return lastCreditTxnLog;
 		}
-		public byte[] getSVCrypto() {
-			return SVCrypto;
+
+		public byte[] getReaderAVRData() {
+			return readerAVRData;
 		}
+
 		public byte getMsgType() {
 			return msgType;
 		}
+
 		public byte getSubType() {
 			return subType;
 		}
-		public byte[] getCardOneDayQuota() {
-			return cardOneDayQuota;
-		}
-		public byte[] getCardOneDayQuotaDate() {
-			return cardOneDayQuotaDate;
-		}
-		public byte[] getTSQN() {
-			return TSQN;
-		}
-		public byte[] getPurseBalance() {
-			return purseBalance;
-		}
-		public byte[] getConfirmCode() {
-			return confirmCode;
-		}
-		public byte[] getSIGN() {
-			return SIGN;
-		}
+
 		public byte[] getSID() {
 			return SID;
 		}
-		public byte[] getMAC() {
-			return MAC;
+
+		public byte getHostAdminKeyKVN() {
+			return hostAdminKeyKVN;
 		}
-		public byte[] getTxnDateTime() {
-			return txnDateTime;
+
+		public byte[] getTxnCrypto() {
+			return txnCrypto;
 		}
+
 		public byte[] getStatusCode() {
 			return statusCode;
 		}
@@ -623,137 +625,66 @@ public class PPR_TxnReqOffline extends APDU{
 			// TODO Auto-generated method stub
 			LinkedHashMap<String, Integer> maps = new LinkedHashMap<String, Integer>();
 			
-			if(dataBodyLen == NORMAL_LEN){//250
-				maps.put("purseVersionNumber",1);
-				maps.put("purseUsageControl",1);
-				maps.put("singleAutoLoadTxnAmt",3);
-				maps.put("PID",8);
-				maps.put("cpuAdminKeyKVN",1);
+			if(dataBodyLen == NORMAL_LEN){//253
+				maps.put("purseVersionNumber", 1);
+				maps.put("purseUsageControl", 1);
+				maps.put("singleAutoLoadTxnAmt", 3);
+				maps.put("PID", 8);
+				maps.put("cpuAdminKeyKVN", 1);
 				
-				maps.put("creditKeyKVN",1);
-				maps.put("signatureKeyKVN",1);
-				maps.put("cpuIssuerKeyKVN",1);
-				maps.put("CTC",3);
-				maps.put("txnMode",1);
+				maps.put("creditKeyKVN", 1);
+				maps.put("signatureKeyKVN", 1);
+				maps.put("cpuIssuerKeyKVN", 1);
+				maps.put("CTC", 3);
+				maps.put("txnMode", 1);
 				
-				maps.put("txnQualifier",1);
-				maps.put("subAreaCode",2);
-				maps.put("purseExpDate",4);
-				maps.put("purseBalanceBeforeTxn",3);
-				maps.put("txnSNBeforeTxn",3);
+				maps.put("txnQualifier", 1);
+				maps.put("subAreaCode", 2);
+				maps.put("purseExpDate", 4);
+				maps.put("purseBalanceBeforeTxn", 3);
+				maps.put("txnSNBeforeTxn", 3);
 				
-				maps.put("cardType",1);
-				maps.put("personalProfile",1);
-				maps.put("profileExpDate",4);
-				maps.put("areaCode",1);
-				maps.put("cardPhysicalID",7);
+				maps.put("cardType", 1);
+				maps.put("personalProfile", 1);
+				maps.put("profileExpDate", 4);
+				maps.put("areaCode", 1);
+				maps.put("cardPhysicalID", 7);
 				
-				maps.put("cardPhysicalIDLength",1);
-				maps.put("txnAmt",3);
-				maps.put("specVersionNumber",1);
-				maps.put("readerFWVersion",6);
-				maps.put("deviceID",4);
+				maps.put("cardPhysicalIDLength", 1);
+				maps.put("txnAmt", 3);
+				maps.put("specVersionNumber", 1);
+				maps.put("readerFWVersion", 6);
+				maps.put("deviceID", 4);
 				
-				maps.put("newDeviceID",6);
+				maps.put("newDeviceID", 6);
 				maps.put("serviceProviderID",1);
-				maps.put("newServiceProviderID",3);
-				maps.put("locationID",1);
-				maps.put("newLocationID",2);
+				maps.put("newServiceProviderID", 3);
+				maps.put("locationID", 1);
+				maps.put("newLocationID", 2);
 				
-				maps.put("deposit",3);
-				maps.put("issuerCode",1);
-				maps.put("bankCode",1);
-				maps.put("CPDReadFlag",1);
-				maps.put("CPDSAMID",16);
+				maps.put("deposit", 3);
+				maps.put("issuerCode", 1);
+				maps.put("bankCode", 1);
+				maps.put("loyaltyCounter", 2);
+				maps.put("samID", 8);
 				
-				maps.put("CPDRAN_SAMCRN",8);
-				maps.put("CPDKVN_SAMKVN",1);
-				maps.put("SIDSTAC",8);
-				maps.put("tmSerialNumber",6);
-				maps.put("lastCreditTxnLog",33);
+				maps.put("samSN", 4);
+				maps.put("samCRN", 8);
+				maps.put("samKVN", 1);
+				maps.put("STAC", 8);
+				maps.put("tmSerialNumber", 6);
 				
-				maps.put("SVCrypto",16);
-				maps.put("msgType",1);
-				maps.put("subType",1);
-				maps.put("cardOneDayQuota",3);
-				maps.put("cardOneDayQuotaDate",2);
+				maps.put("lastCreditTxnLog", 33);		
+				maps.put("readerAVRData", 83);		
+				maps.put("msgType", 1);
+				maps.put("subType", 1);
+				maps.put("SID", 8);
 				
-				maps.put("TSQN",3);
-				maps.put("purseBalance",3);
-				maps.put("confirmCode",2);
-				maps.put("SIGN",16);
-				maps.put("SID",8);
+				maps.put("hostAdminKeyKVN", 1);
+				maps.put("txnCrypto", 8);			
+				maps.put("statusCode", 2);
 				
-				maps.put("MAC",18);
-				maps.put("txnDateTime",4);
-				maps.put("statusCode",2);
-				
-			} /*else if(dataBodyLen == ERROR1_LEN) {
-				
-				maps.put("purseVersionNumber",1);
-				maps.put("purseUsageControl",1);
-				maps.put("singleAutoLoadTxnAmt",3);
-				maps.put("PID",8);
-				maps.put("cpuAdminKeyKVN",1);
-				
-				
-				maps.put("subAreaCode",2);
-				maps.put("purseExpDate",4);
-				maps.put("purseBalanceBeforeTxn",3);
-				maps.put("TxnSNBeforeTxn",3);				
-				maps.put("cardType",1);
-				
-				maps.put("personalProfile",1);
-				maps.put("profileExpDate",4);
-				maps.put("areaCode",1);
-				maps.put("cardPhysicalID",7);
-				maps.put("cardPhysicalIDLength",1);
-				
-				
-				maps.put("deviceID",4);
-				maps.put("newDeviceID",6);
-				maps.put("serviceProviderID",1);
-				maps.put("newServiceProviderID",3);
-				maps.put("locationID",1);
-				
-				maps.put("newLocationID",2);				
-				maps.put("deposit",3);
-				maps.put("issuerCode",1);
-				maps.put("bankCode",1);
-				maps.put("loyaltyCounter",2);
-				
-				
-				maps.put("LastCreditTxnLog",33);
-				maps.put("msgType",1);
-				maps.put("subType",1);
-				maps.put("anotherEV",3);				
-				maps.put("mifareSettingParameter",1);
-				
-				maps.put("CPUSettingParameter",1);
-				maps.put("statusCode",2);
-				
-			} else if(dataBodyLen == ERROR2_LEN) {
-				
-				maps.put("purseVersionNumber",1);				
-				maps.put("PID",8);				
-				maps.put("CTC",3);				
-				maps.put("cardType",1);
-				maps.put("personalProfile",1);
-				
-				
-				maps.put("cardPhysicalID",7);				
-				maps.put("cardPhysicalIDLength",1);
-				maps.put("deviceID",4);				
-				maps.put("newDeviceID",6);
-				maps.put("serviceProviderID",1);
-				
-				maps.put("newServiceProviderID",3);
-				maps.put("locationID",1);
-				maps.put("newLocationID",2);
-				maps.put("issuerCode",1);
-				maps.put("statusCode",2);
-				
-			}*/else if(dataBodyLen == ERROR1_LEN) {
+			} else if(dataBodyLen == ERROR1_LEN) {
 				maps.put("statusCode",2);
 			} else {
 				logger.error("Unknowen dataBody Len:"+dataBodyLen);
@@ -779,18 +710,19 @@ public class PPR_TxnReqOffline extends APDU{
 		return respFld.getPurseUsageControl();
 	}
 	
+	
 	public boolean getActivedFlag(){
-		byte b = getRespPurseUsageControl();	
+		byte b = getRespPurseUsageControl();		
 		return IsBitSet(b, 0);
 	}
 	
 	public boolean getBlockedFlag(){
-		byte b = getRespPurseUsageControl();	
+		byte b = getRespPurseUsageControl();		
 		return IsBitSet(b, 1);
 	}
 	
 	public boolean getAutoloadFlag(){
-		byte b = getRespPurseUsageControl();		
+		byte b = getRespPurseUsageControl();			
 		return IsBitSet(b, 3);
 	}
 	
@@ -842,13 +774,13 @@ public class PPR_TxnReqOffline extends APDU{
 	}
 		
 		
-	public byte getRespSignKeyKVN(){
+	public byte getRespSignatureKeyKVN(){
 		if (respFld == null) {
 			logger.error("respFld was null");
 			return 0x00;
 		}
-		logger.info("getter:"+String.format("%02X", respFld.getSignKeyKVN()));
-		return respFld.getSignKeyKVN();			
+		logger.info("getter:"+String.format("%02X", respFld.getSignatureKeyKVN()));
+		return respFld.getSignatureKeyKVN();			
 		
 	}
 		
@@ -1129,70 +1061,81 @@ public class PPR_TxnReqOffline extends APDU{
 	}
 		//
 		
-	public byte getRespCPDReadFlag(){
+	public byte[] getRespLoyaltyCounter(){
+		if (respFld == null || respFld.getLoyaltyCounter() == null){ 
+			logger.error("respFld or getter was null");
+			return null;
+		}
+		logger.info("getter:"+Util.hex2StringLog(respFld.getLoyaltyCounter()));
+		return Arrays.copyOfRange(respFld.getLoyaltyCounter(), 0, 
+				respFld.getLoyaltyCounter().length);
+	}
+
+
+	public byte[] getRespSamID(){
+		if (respFld == null || respFld.getSamID() == null){ 
+			logger.error("respFld or getter was null");
+			return null;
+		}
+		logger.info("getter:"+Util.hex2StringLog(respFld.getSamID()));
+		return Arrays.copyOfRange(respFld.getSamID(), 0, 
+				respFld.getSamID().length);
+	}
+
+
+	public byte[] getRespSamSN(){
+		if (respFld == null || respFld.getSamSN() == null){ 
+			logger.error("respFld or getter was null");
+			return null;
+		}
+		logger.info("getter:"+Util.hex2StringLog(respFld.getSamSN()));
+		return Arrays.copyOfRange(respFld.getSamSN(), 0, 
+				respFld.getSamSN().length);
+		
+	}
+
+	public byte[] getRespSamCRN(){
+		if (respFld == null || respFld.getSamCRN() == null){ 
+			logger.error("respFld or getter was null");
+			return null;
+		}
+		logger.info("getter:"+Util.hex2StringLog(respFld.getSamCRN()));
+		return Arrays.copyOfRange(respFld.getSamCRN(), 0, 
+				respFld.getSamCRN().length);
+		
+	}
+
+	public byte getRespSamKVN(){
 		if (respFld == null) {
 			logger.error("respFld was null");
 			return 0x00;
 		}
-		logger.info("getter:"+String.format("%02X", respFld.getCPDReadFlag()));
-		return respFld.getCPDReadFlag();
-	}
-
-
-	public byte[] getRespCPDSAMID(){
-		if (respFld == null || respFld.getCPDSAMID() == null){ 
-			logger.error("respFld or getter was null");
-			return null;
-		}
-		logger.info("getter:"+Util.hex2StringLog(respFld.getCPDSAMID()));
-		return Arrays.copyOfRange(respFld.getCPDSAMID(), 0, 
-				respFld.getCPDSAMID().length);
-	}
-
-
-	public byte[] getRespCPDRAN_SAMCRN(){
-		if (respFld == null || respFld.getCPDRAN_SAMCRN() == null){ 
-			logger.error("respFld or getter was null");
-			return null;
-		}
-		logger.info("getter:"+Util.hex2StringLog(respFld.getCPDRAN_SAMCRN()));
-		return Arrays.copyOfRange(respFld.getCPDRAN_SAMCRN(), 0, 
-				respFld.getCPDRAN_SAMCRN().length);
-		
-	}
-
-
-	public byte getRespCPDKVN_SAMKVN(){
-		if (respFld == null) {
-			logger.error("respFld was null");
-			return 0x00;
-		}
-		logger.info("getter:"+String.format("%02X", respFld.getCPDKVN_SAMKVN()));
-		return respFld.getCPDKVN_SAMKVN();
+		logger.info("getter:"+String.format("%02X", respFld.getSamKVN()));
+		return respFld.getSamKVN();
 	}
 		
 
 
-	public byte[] getRespSIDSTAC(){
-		if (respFld == null || respFld.getSIDSTAC() == null){ 
+	public byte[] getRespSTAC(){
+		if (respFld == null || respFld.getSTAC() == null){ 
 			logger.error("respFld or getter was null");
 			return null;
 		}
-		logger.info("getter:"+Util.hex2StringLog(respFld.getSIDSTAC()));
-		return Arrays.copyOfRange(respFld.getSIDSTAC(), 0, 
-				respFld.getSIDSTAC().length);
+		logger.info("getter:"+Util.hex2StringLog(respFld.getSTAC()));
+		return Arrays.copyOfRange(respFld.getSTAC(), 0, 
+				respFld.getSTAC().length);
 	}
 		///
 		
 		
 	public byte[] getRespTMSerialNumber(){
-		if (respFld == null || respFld.getTMSerialNumber() == null){ 
+		if (respFld == null || respFld.getTmSerialNumber() == null){ 
 			logger.error("respFld or getter was null");
 			return null;
 		}
-		logger.info("getter:"+Util.hex2StringLog(respFld.getTMSerialNumber()));
-		return Arrays.copyOfRange(respFld.getTMSerialNumber(), 0, 
-				respFld.getTMSerialNumber().length);
+		logger.info("getter:"+Util.hex2StringLog(respFld.getTmSerialNumber()));
+		return Arrays.copyOfRange(respFld.getTmSerialNumber(), 0, 
+				respFld.getTmSerialNumber().length);
 	
 	}
 	
@@ -1209,14 +1152,14 @@ public class PPR_TxnReqOffline extends APDU{
 	
 
 
-	public byte[] getRespSVCrypto(){
-		if (respFld == null || respFld.getSVCrypto() == null){ 
+	public byte[] getRespReaderAVRData(){
+		if (respFld == null || respFld.getReaderAVRData() == null){ 
 			logger.error("respFld or getter was null");
 			return null;
 		}
-		logger.info("getter:"+Util.hex2StringLog(respFld.getSVCrypto()));
-		return Arrays.copyOfRange(respFld.getSVCrypto(), 0, 
-				respFld.getSVCrypto().length);
+		logger.info("getter:"+Util.hex2StringLog(respFld.getReaderAVRData()));
+		return Arrays.copyOfRange(respFld.getReaderAVRData(), 0, 
+				respFld.getReaderAVRData().length);
 	}
 
 	
@@ -1239,77 +1182,7 @@ public class PPR_TxnReqOffline extends APDU{
 		logger.info("getter:"+String.format("%02X", respFld.getSubType()));
 		return respFld.getSubType();
 	}
-		
-
-
-	public byte[] getRespCardOneDayQuota(){
-		if (respFld == null || respFld.getCardOneDayQuota() == null){ 
-			logger.error("respFld or getter was null");
-			return null;
-		}
-		logger.info("getter:"+Util.hex2StringLog(respFld.getCardOneDayQuota()));
-		return Arrays.copyOfRange(respFld.getCardOneDayQuota(), 0, 
-				respFld.getCardOneDayQuota().length);
-	}
-		
-		
-	public byte[] getRespCardOneDayQuotaDate(){
-		if (respFld == null || respFld.getCardOneDayQuotaDate() == null){ 
-			logger.error("respFld or getter was null");
-			return null;
-		}
-		logger.info("getter:"+Util.hex2StringLog(respFld.getCardOneDayQuotaDate()));
-		return Arrays.copyOfRange(respFld.getCardOneDayQuotaDate(), 0, 
-				respFld.getCardOneDayQuotaDate().length);
-	}
-		
-		
-	public byte[] getRespTSQN(){
-		if (respFld == null || respFld.getTSQN() == null){ 
-			logger.error("respFld or getter was null");
-			return null;
-		}
-		logger.info("getter:"+Util.hex2StringLog(respFld.getTSQN()));
-		return Arrays.copyOfRange(respFld.getTSQN(), 0, 
-				respFld.getTSQN().length);
-	}
-		
-		
-		
-	public byte[] getRespPurseBalance(){
-		if (respFld == null || respFld.getPurseBalance() == null){ 
-			logger.error("respFld or getter was null");
-			return null;
-		}
-		logger.info("getter:"+Util.hex2StringLog(respFld.getPurseBalance()));
-		return Arrays.copyOfRange(respFld.getPurseBalance(), 0, 
-				respFld.getPurseBalance().length);
-	}
-		
-		
-		
-	public byte[] getRespConfirmCode(){
-		if (respFld == null || respFld.getConfirmCode() == null){ 
-			logger.error("respFld or getter was null");
-			return null;
-		}
-		logger.info("getter:"+Util.hex2StringLog(respFld.getConfirmCode()));
-		return Arrays.copyOfRange(respFld.getConfirmCode(), 0, 
-				respFld.getConfirmCode().length);
-	}
-		
-
-
-	public byte[] getRespSIGN(){
-		if (respFld == null || respFld.getSIGN() == null){ 
-			logger.error("respFld or getter was null");
-			return null;
-		}
-		logger.info("getter:"+Util.hex2StringLog(respFld.getSIGN()));
-		return Arrays.copyOfRange(respFld.getSIGN(), 0, 
-				respFld.getSIGN().length);
-	}
-		
+	
 
 
 	public byte[] getRespSID(){
@@ -1323,66 +1196,27 @@ public class PPR_TxnReqOffline extends APDU{
 	}
 		
 		
-	public byte[] getRespMAC(){
-		if (respFld == null || respFld.getMAC() == null){ 
-			logger.error("respFld or getter was null");
-			return null;
-		}
-		logger.info("getter:"+Util.hex2StringLog(respFld.getMAC()));
-		return Arrays.copyOfRange(respFld.getMAC(), 0, 
-				respFld.getMAC().length);
-	}
-		
-		
-	public byte[] getRespTxnDateTime(){
-		if (respFld == null || respFld.getTxnDateTime() == null){ 
-			logger.error("respFld or getter was null");
-			return null;
-		}
-		logger.info("getter:"+Util.hex2StringLog(respFld.getTxnDateTime()));
-		return Arrays.copyOfRange(respFld.getTxnDateTime(), 0, 
-				respFld.getTxnDateTime().length);
-	}	
-	
-	/*
-	//120 bytes, additional fields
-	public byte[] getRespLoyaltyCounter(){
-		if (respFld == null || respFld.getLoyaltyCounter() == null){ 
-			logger.error("respFld or getter was null");
-			return null;
-		}
-		logger.info("getter:"+Util.hex2StringLog(respFld.getLoyaltyCounter()));
-		return Arrays.copyOfRange(respFld.getLoyaltyCounter(), 0, 
-				respFld.getLoyaltyCounter().length);
-	}	
-	
-	public byte[] getRespAnotherEV(){
-		if (respFld == null || respFld.getAnotherEV() == null){ 
-			logger.error("respFld or getter was null");
-			return null;
-		}
-		logger.info("getter:"+Util.hex2StringLog(respFld.getAnotherEV()));
-		return Arrays.copyOfRange(respFld.getAnotherEV(), 0, 
-				respFld.getAnotherEV().length);
-	}	
-	
-	public byte getRespMifareSettingParameter(){
+	public byte getRespHostAdminKeyKVN(){
 		if (respFld == null) {
 			logger.error("respFld was null");
 			return 0x00;
 		}
-		logger.info("getter:"+String.format("%02X", respFld.getMifareSettingParameter()));
-		return respFld.getMifareSettingParameter();
+		logger.info("getter:"+String.format("%02X", respFld.getHostAdminKeyKVN()));
+		return respFld.getHostAdminKeyKVN();
 	}
-	
-	public byte getRespCPUSettingParameter(){
-		if (respFld == null) {
-			logger.error("respFld was null");
-			return 0x00;
+		
+		
+	public byte[] getRespTxnCrypto(){
+		if (respFld == null || respFld.getTxnCrypto() == null){ 
+			logger.error("respFld or getter was null");
+			return null;
 		}
-		logger.info("getter:"+String.format("%02X", respFld.getCPUSettingParameter()));
-		return respFld.getCPUSettingParameter();
-	}*/
+		logger.info("getter:"+Util.hex2StringLog(respFld.getTxnCrypto()));
+		return Arrays.copyOfRange(respFld.getTxnCrypto(), 0, 
+				respFld.getTxnCrypto().length);
+	}	
+	
+	
 	//-------------------- Response --------------------
 	public ErrorResponse getErrorRespFld(){
 		return errRespFld;
@@ -1393,7 +1227,7 @@ public class PPR_TxnReqOffline extends APDU{
 		// TODO Auto-generated method stub
 		
 		mRequest[scReqLength - 1] = Req_EDC = getEDC(mRequest, scReqLength);
-		logger.debug(PPR_TxnReqOffline.class.getName()+" request:" + Util.hex2StringLog(mRequest));
+		logger.debug(PPR_TxnReqOnline.class.getName()+" request:" + Util.hex2StringLog(mRequest));
 		
 		
 		return mRequest;
@@ -1419,7 +1253,7 @@ public class PPR_TxnReqOffline extends APDU{
 	public void debugResponseData() {
 		// TODO Auto-generated method stub
 		if(mRespond != null){
-			logger.debug(PPR_TxnReqOffline.class.getName()+" recv:" + Util.hex2StringLog(mRespond));
+			logger.debug(PPR_TxnReqOnline.class.getName()+" recv:" + Util.hex2StringLog(mRespond));
 	
 			logger.debug("Purse Version No.:"+String.format("(%02X)", this.getRespPurseVersionNumber()));
 			logger.debug("Purse Usgage Control:"+String.format("(%02X)", this.getRespPurseUsageControl()));
@@ -1428,7 +1262,7 @@ public class PPR_TxnReqOffline extends APDU{
 			logger.debug("CPU Admin. Key KVN:"+String.format("(%02X)", this.getRespCPUAdminKeyKVN()));
 			
 			logger.debug("Credit Key KVN:"+String.format("(%02X)", this.getRespCreditKeyKVN()));
-			logger.debug("Sign.key KVN:"+String.format("(%02X)", this.getRespSignKeyKVN()));
+			logger.debug("Sign.key KVN:"+String.format("(%02X)", this.getRespSignatureKeyKVN()));
 			logger.debug("CPU Issuer key KVN:"+String.format("(%02X)", this.getRespCPUIssuerKeyKVN()));
 			logger.debug("CTC:"+Util.hex2StringLog(this.getRespCTC()));
 			logger.debug("TM:"+String.format("(%02X)", this.getRespTxnMode()));
@@ -1460,29 +1294,28 @@ public class PPR_TxnReqOffline extends APDU{
 			logger.debug("Deposit:"+Util.hex2StringLog(this.getRespDeposit()));
 			logger.debug("Issuer Code:"+String.format("(%02X)", this.getRespIssuerCode()));
 			logger.debug("Bank Code:"+String.format("(%02X)", this.getRespBankCode()));
-			logger.debug("CPD Read Flag:"+String.format("(%02X)", this.getRespCPDReadFlag()));
-			logger.debug("CPD SAM ID:"+Util.hex2StringLog(this.getRespCPDSAMID()));
+			logger.debug("Loyalty Counter:"+Util.hex2StringLog(this.getRespLoyaltyCounter()));
 			
-			logger.debug("CPD RAN:"+Util.hex2StringLog(this.getRespCPDRAN_SAMCRN()));
-			logger.debug("CPD KVN:"+String.format("(%02X)", this.getRespCPDKVN_SAMKVN()));
-			logger.debug("SID S-TAC:"+Util.hex2StringLog(this.getRespSIDSTAC()));
+			logger.debug("SAM ID:"+Util.hex2StringLog(this.getRespSamID()));			
+			logger.debug("SAM SN:"+Util.hex2StringLog(this.getRespSamSN()));
+			logger.debug("SAM CRN:"+Util.hex2StringLog(this.getRespSamCRN()));
+			logger.debug("SAM KVN:"+String.format("(%02X)", this.getRespSamKVN()));
+			logger.debug("SID S-TAC:"+Util.hex2StringLog(this.getRespSTAC()));
+			
 			logger.debug("TM Serial Number:"+Util.hex2StringLog(this.getRespTMSerialNumber()));
 			logger.debug("Last Credit Txn Log:"+Util.hex2StringLog(this.getRespLastCreditTxnLog()));
+			logger.debug("Reader AVR Data:"+Util.hex2StringLog(this.getRespReaderAVRData()));
 			
-			logger.debug("SVCrypto:"+Util.hex2StringLog(this.getRespSVCrypto()));
+			
 			logger.debug("Msg Type:"+String.format("(%02X)", this.getRespMsgType()));
 			logger.debug("Sub Type:"+String.format("(%02X)", this.getRespSubType()));
-			logger.debug("Card One Day Quota:"+Util.hex2StringLog(this.getRespCardOneDayQuota()));
-			logger.debug("Card One Day Quota Date:"+Util.hex2StringLog(this.getRespCardOneDayQuotaDate()));
 			
-			logger.debug("TSQN:"+Util.hex2StringLog(this.getRespTSQN()));
-			logger.debug("Purse Balance:"+Util.hex2StringLog(this.getRespPurseBalance()));
-			logger.debug("Confirm Code:"+Util.hex2StringLog(this.getRespConfirmCode()));
-			logger.debug("SIGN:"+Util.hex2StringLog(this.getRespSIGN()));
+			
+			
 			logger.debug("SID:"+Util.hex2StringLog(this.getRespSID()));
+			logger.debug("Host Admin Key KVN:"+String.format("(%02X)", this.getRespHostAdminKeyKVN()));
 			
-			logger.debug("MAC:"+Util.hex2StringLog(this.getRespMAC()));
-			logger.debug("Txn Date Time:"+Util.hex2StringLog(this.getRespTxnDateTime()));			
+			logger.debug("Txn Crypto:"+Util.hex2StringLog(this.getRespTxnCrypto()));			
 		}
 		else
 			logger.error("responseBuffer NULL");

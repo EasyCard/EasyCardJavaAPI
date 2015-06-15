@@ -7,16 +7,17 @@ import java.util.TimeZone;
 import org.apache.log4j.Logger;
 
 
+
 import Utilities.Util;
 
-public class PPR_AuthTxnOffline extends APDU{
+public class PPR_AuthTxnOnline extends APDU{
 
-	static Logger logger = Logger.getLogger(PPR_AuthTxnOffline.class);
-	public static final String scDescription = "將0312驗證授權交易訊息傳入CPU卡/SAM卡中做認證";
+	static Logger logger = Logger.getLogger(PPR_AuthTxnOnline.class);
+	public static final String scDescription = "將0110連線帳務交易訊息傳入CPU卡/SAM卡中做認證";
 	
 	//private static PPR_SignOn sThis = null;
 	
-	private static final int scReqDataLength = 0x16;
+	private static final int scReqDataLength = 0x28;
 	private static final int scReqLength = scReqDataLength + scReqMinLength;
 	private static final int scReqInfoLength = scReqDataLength + scReqInfoMinLength;
 	private static final int scRespDataLength = 0x40;
@@ -30,14 +31,14 @@ public class PPR_AuthTxnOffline extends APDU{
 
 	
 	
-	public PPR_AuthTxnOffline(){
+	public PPR_AuthTxnOnline(){
 		
 		Req_NAD = 0;
 		Req_PCB = 0; 
 		Req_LEN = (byte) scReqInfoLength;
 		
 		Req_CLA = (byte) 0x80;
-		Req_INS = 0x32;			
+		Req_INS = 0x11;			
 		Req_P1 = 0x02;
 		Req_P2 = 0x00;
 		
@@ -57,25 +58,97 @@ public class PPR_AuthTxnOffline extends APDU{
 		mRequest[scReqLength - 1] = 0; // EDC
 	}
 	//++++++++++++++++++++ Request ++++++++++++++++++++
-	//Msg Type
-	private static final int pReqHVCrypto = scReqDataOffset + 0;
-	public static final int lReqHVCrypto = 16;
-	public boolean setReqHVCrypto(byte[] b) {
+	private static final int pReqNewExpiryDate = scReqDataOffset + 0;
+	private static final int lReqNewExpiryDate = 4;
+	public boolean setReqNewExpiryDate(int unixTimeStamp, String timeZone) {
 		
-		logger.info("setter:bcd2Ascii=>"+Util.bcd2Ascii(b));
-		if (b == null || b.length != lReqHVCrypto) {
-			logger.error("HVCrypto null or len wrong");
-			return false;
-		}
+		logger.info("setter: intUnixTime("+unixTimeStamp+"),timeZone:"+timeZone);
+		TimeZone tz = TimeZone.getTimeZone(timeZone);
+		int offset = tz.getOffset(unixTimeStamp * 1000L);
+		unixTimeStamp += offset / 1000;
 		
-				
-		System.arraycopy(b, 0, mRequest, pReqHVCrypto, lReqHVCrypto);
+		mRequest[pReqNewExpiryDate] = (byte) (unixTimeStamp & 0x000000FF);
+		mRequest[pReqNewExpiryDate + 1] = (byte) ((unixTimeStamp & 0x0000FF00) >> 8);
+		mRequest[pReqNewExpiryDate + 2] = (byte) ((unixTimeStamp & 0x00FF0000) >> 16);
+		mRequest[pReqNewExpiryDate + 3] = (byte) ((unixTimeStamp & 0xFF000000) >> 24);
 		
 		return true;
 	}
 	
 	
-	private static final int pReqLCDControl = pReqHVCrypto + lReqHVCrypto;
+	private static final int pReqNewPersonalExpiryDate1 = pReqNewExpiryDate + lReqNewExpiryDate;
+	private static final int lReqNewPersonalExpiryDate1 = 4;
+	public boolean setReqNewPersonalExpiryDate1(int unixTimeStamp, String timeZone) {
+		
+		logger.info("setter: intUnixTime("+unixTimeStamp+"),timeZone:"+timeZone);
+		TimeZone tz = TimeZone.getTimeZone(timeZone);
+		int offset = tz.getOffset(unixTimeStamp * 1000L);
+		unixTimeStamp += offset / 1000;
+		
+		mRequest[pReqNewPersonalExpiryDate1] = (byte) (unixTimeStamp & 0x000000FF);
+		mRequest[pReqNewPersonalExpiryDate1 + 1] = (byte) ((unixTimeStamp & 0x0000FF00) >> 8);
+		mRequest[pReqNewPersonalExpiryDate1 + 2] = (byte) ((unixTimeStamp & 0x00FF0000) >> 16);
+		mRequest[pReqNewPersonalExpiryDate1 + 3] = (byte) ((unixTimeStamp & 0xFF000000) >> 24);
+		
+		return true;
+	}
+	
+	private static final int pReqNewPersonalExpiryDate2 = pReqNewPersonalExpiryDate1 + lReqNewPersonalExpiryDate1;
+	private static final int lReqNewPersonalExpiryDate2 = 2;
+	public boolean setReqNewPersonalExpiryDate2(int unixTimeStamp, String timeZone) {
+		return false;
+		
+		/*
+		logger.info("setter: intUnixTime("+unixTimeStamp+"),timeZone:"+timeZone);
+		TimeZone tz = TimeZone.getTimeZone(timeZone);
+		int offset = tz.getOffset(unixTimeStamp * 1000L);
+		unixTimeStamp += offset / 1000;
+		
+		mRequest[pReqNewPersonalExpiryDate1] = (byte) (unixTimeStamp & 0x000000FF);
+		mRequest[pReqNewPersonalExpiryDate1 + 1] = (byte) ((unixTimeStamp & 0x0000FF00) >> 8);
+		mRequest[pReqNewPersonalExpiryDate1 + 2] = (byte) ((unixTimeStamp & 0x00FF0000) >> 16);
+		mRequest[pReqNewPersonalExpiryDate1 + 3] = (byte) ((unixTimeStamp & 0xFF000000) >> 24);
+		*/
+	}
+	
+	private static final int pReqTxnToken = pReqNewPersonalExpiryDate2 + lReqNewPersonalExpiryDate2;
+	private static final int lReqTxnToken = 16;
+	public boolean setReqTxnToken(byte[] txnToken) {
+		
+		if(txnToken == null){
+			logger.error("txnToken NULL");
+			return false;			
+		}
+		
+		if(txnToken.length != lReqTxnToken){
+			logger.error("txnToken Len not equal 32");
+			return false;			
+		}
+		
+		System.arraycopy(txnToken, 0, mRequest, pReqTxnToken, lReqTxnToken);
+		return true;
+	}
+	
+	private static final int pReqHTAC = pReqTxnToken + lReqTxnToken;
+	private static final int lReqHTAC = 8;
+	public boolean setReqHTAC(byte[] htac) {
+		
+		if(htac == null){
+			logger.error("htac NULL");
+			return false;			
+		}
+		
+		if(htac.length != lReqHTAC){
+			logger.error("htac Len not equal 8");
+			return false;			
+		}
+		
+		System.arraycopy(htac, 0, mRequest, pReqHTAC, lReqHTAC);
+		return true;
+	}
+	
+	
+	private static final int pReqLCDControl = pReqHTAC + lReqHTAC;
 	private static final int lReqLCDControl = 1;
 	public boolean setReqLCDControl(byte flag) {		
 		logger.info("setter:"+flag);
@@ -84,7 +157,6 @@ public class PPR_AuthTxnOffline extends APDU{
 	}
 	
 	private static final int pReqRFU = pReqLCDControl + lReqLCDControl;
-	private static final int lReqRFU = 5;
 	//-------------------- Request --------------------
 	
 	//++++++++++++++++++++ Response ++++++++++++++++++++
@@ -101,9 +173,7 @@ public class PPR_AuthTxnOffline extends APDU{
 		public byte[] SID=null;
 		
 		public byte[] MAC=null;
-		public byte[] txnDateTime=null;
-		public byte[] cardOneDayQuota=null;
-		public byte[] cardOneDayQuotaDate=null;
+		public byte[] txnDateTime=null;		
 		public byte[] statusCode=null;
 		
 		public ResponseField(int len){
@@ -138,14 +208,6 @@ public class PPR_AuthTxnOffline extends APDU{
 			return txnDateTime;
 		}
 
-		public byte[] getCardOneDayQuota() {
-			return cardOneDayQuota;
-		}
-
-		public byte[] getCardOneDayQuotaDate() {
-			return cardOneDayQuotaDate;
-		}
-
 		@Override
 		protected LinkedHashMap<String, Integer> getFields() {
 			// TODO Auto-generated method stub
@@ -160,9 +222,8 @@ public class PPR_AuthTxnOffline extends APDU{
 				
 				map.put("MAC",18);
 				map.put("txnDateTime",4);
-				map.put("cardOneDayQuota",3);
-				map.put("cardOneDayQuotaDate",2);
-				map.put("statusCode",2);
+				//map.put("RFU",10);
+				//map.put("statusCode",2);
 			} else if(this.dataBodyLen == ERROR1_LEN){
 				map.put("statusCode",2);
 			} else {
@@ -247,32 +308,14 @@ public class PPR_AuthTxnOffline extends APDU{
 				respFld.getTxnDateTime().length);		
 	}
 	
-	public byte[] getRespCardOneDayQuota(){
-		if (respFld == null || respFld.getCardOneDayQuota() == null){ 
-			logger.error("respFld or getter was null");
-			return null;
-		}
-		logger.info("getter:"+Util.hex2StringLog(respFld.getCardOneDayQuota()));
-		return Arrays.copyOfRange(respFld.getCardOneDayQuota(), 0, 
-				respFld.getCardOneDayQuota().length);		
-	}
 	
-	public byte[] getRespCardOneDayQuotaDate(){
-		if (respFld == null || respFld.getCardOneDayQuotaDate() == null){ 
-			logger.error("respFld or getter was null");
-			return null;
-		}
-		logger.info("getter:"+Util.hex2StringLog(respFld.getCardOneDayQuotaDate()));
-		return Arrays.copyOfRange(respFld.getCardOneDayQuotaDate(), 0, 
-				respFld.getCardOneDayQuotaDate().length);			
-	}
 	//-------------------- Response --------------------
 	@Override
 	public byte[] GetRequest() {
 		// TODO Auto-generated method stub
 		
 		mRequest[scReqLength - 1] = Req_EDC = getEDC(mRequest, scReqLength);
-		logger.debug(PPR_AuthTxnOffline.class.getName()+" request:" + Util.hex2StringLog(mRequest));
+		logger.debug(PPR_AuthTxnOnline.class.getName()+" request:" + Util.hex2StringLog(mRequest));
 		
 		return mRequest;
 	}
@@ -297,7 +340,7 @@ public class PPR_AuthTxnOffline extends APDU{
 	public void debugResponseData() {
 		// TODO Auto-generated method stub
 		if(mRespond != null){
-			logger.debug(PPR_AuthTxnOffline.class.getName()+" recv:" + Util.hex2StringLog(mRespond));
+			logger.debug(PPR_AuthTxnOnline.class.getName()+" recv:" + Util.hex2StringLog(mRespond));
 	
 			logger.debug("TSQN:"+Util.hex2StringLog(this.getRespTSQN()));
 			logger.debug("Purse Balance:"+Util.hex2StringLog(this.getRespPurseBalance()));
@@ -308,8 +351,7 @@ public class PPR_AuthTxnOffline extends APDU{
 			logger.debug("MAC:"+Util.hex2StringLog(this.getRespMAC()));
 			logger.debug("Txn Date Time:"+Util.hex2StringLog(this.getRespTxnDateTime()));
 			
-			logger.debug("Card One Day Quota:"+Util.hex2StringLog(this.getRespCardOneDayQuota()));
-			logger.debug("Card One Day Quota Date:"+Util.hex2StringLog(this.getRespCardOneDayQuotaDate()));
+			
 			
 		}
 		else
