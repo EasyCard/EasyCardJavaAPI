@@ -780,17 +780,17 @@ public class PPR_TxnReqOffline extends APDU{
 	}
 	
 	public boolean getActivedFlag(){
-		byte b = respFld.getPurseUsageControl();		
+		byte b = getRespPurseUsageControl();	
 		return IsBitSet(b, 0);
 	}
 	
 	public boolean getBlockedFlag(){
-		byte b = respFld.getPurseUsageControl();		
+		byte b = getRespPurseUsageControl();	
 		return IsBitSet(b, 1);
 	}
 	
 	public boolean getAutoloadFlag(){
-		byte b = respFld.getPurseUsageControl();		
+		byte b = getRespPurseUsageControl();		
 		return IsBitSet(b, 3);
 	}
 	

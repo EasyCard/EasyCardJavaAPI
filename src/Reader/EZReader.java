@@ -79,8 +79,19 @@ public class EZReader{
     //執行reader finish 一些動作。包括：close Port...等
     public boolean finish(){
     	logger.info("start");
-    	return recvSender.finish();
+    	return recvSender.finish();    
+    }
+    
+    //確認是否要進入reTry機制
+    static public boolean reTryEnabled(IRespCode code){
     	
+    	if(code == ReaderRespCode._6088 || 
+    		code == ReaderRespCode._9970 || 
+    		code == ReaderRespCode._9969 || 
+    		code == ReaderRespCode._9968){
+    		return true;
+    	}
+    	return false;
     }
 }
 

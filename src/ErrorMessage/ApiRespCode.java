@@ -17,7 +17,8 @@ public enum ApiRespCode  implements IRespCode{
 	READER_NO_RESPONSE("-6", "Reader no response", 1),
 	HOST_NO_RESPONSE("-7", "Host no response", 1),
 	CARDID_IN_BLACKLIST("-8", "此卡，卡號不合法", 1),
-	AUTOLOAD_YES_OR_NO("-9", "餘額不足，是否允許自動加值？", 1),	
+	AUTOLOAD_YES_OR_NO("-9", "餘額不足，是否允許自動加值？", 1),
+	CARD_NO_SUPPORT_AUTOLOAD("-10", "卡片不支援自動加值", 1),
 	UNKNOWN_ERROR_CODE("XXX","Unknowen ErrCode", 1);
 	
 
