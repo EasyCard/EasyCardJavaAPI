@@ -619,8 +619,8 @@ public class Process {
 				result = reader.exeCommand(pprAuthTxnOffline);	
 			} else if (result == ReaderRespCode._6403) {//6403(餘額不足)，check autoload flag
 			
-				//if(pprTxnReqOffline.getAutoloadFlag() == false) 
-				//	return result;//餘額不足, return 6403
+				if(pprTxnReqOffline.getAutoloadFlag() == false) 
+					return result;//餘額不足, return 6403
 				
 				//purseBalance+autoloadAmt
 				long singleAutoloadAmt = Util.bytes2Long(pprTxnReqOffline.getRespSingleAutoLoadTxnAmt(), 0, pprTxnReqOffline.getRespSingleAutoLoadTxnAmt().length, true); 
