@@ -47,8 +47,8 @@ public interface IConfigManager {
 	public String getFtpLoginID();
 	public void setFtpLoginID(String id);
 	
-	public String getFtpLoinPwd();
-	public void setFtpLoinPwd(String pwd);
+	public String getFtpLoginPwd();
+	public void setFtpLoginPwd(String pwd);
 	
 	public String getTMSerialNo();
 	public void setTMSerialNo(String no);
@@ -75,5 +75,8 @@ public interface IConfigManager {
 
 	public String getHostEnvironment();
 	public void setHostEnvironment(String e);
+	
+	public String getNewDeviceID();
+	public void setNewDeviceID(String id);
 	
 }

@@ -40,134 +40,7 @@ public class ConfigManager implements IConfigManager{
 		logger.info("End");
 	}
 	
-	/*
-	public ArrayList<Properties> prepareConfig()
-	{
-		logger.info("Start");
-		cfgList = new ArrayList<Properties>();
-		Properties easyCardApip= new Properties();
-		Properties txnInfo = new Properties();
-		Properties hostInfo = new Properties();
-		Properties userDef = new Properties();
-		
-		String filename=null;
-		try {
-			//txnInfo.load(ConfigManager.class.getResourceAsStream("../../config/TxnInfo.properties"));	
-		
-			int len = ConfigOrder.values().length;
-			for(int i=0; i<len; i++)
-			{
-				ConfigOrder c = ConfigOrder.values()[i];
-				switch(c)
-				{
-					case EASYCARD_API:
-						//easyCardApip.load(ConfigManager.class.getResourceAsStream(ConfigManager.EASYCARD_API_FILE));
-						easyCardApip.load(ConfigManager.class.getClassLoader().getResourceAsStream(ConfigManager.EASYCARD_API_FILE));
-						cfgList.add(easyCardApip);
-						break;
-					case TXN_INFO:
-						txnInfo.load(ConfigManager.class.getClassLoader().getResourceAsStream(ConfigManager.TXN_INFO_FILE));
-						cfgList.add(txnInfo);
-						break;				
-					case HOST_INFO:	
-												
-						if(userDef.getProperty("Environment").equalsIgnoreCase("0")) {
-							logger.info("Develop Environment");
-							filename = ConfigManager.HOST_DEVE_INFO_FILE;
-						}
-						else if(userDef.getProperty("Environment").equalsIgnoreCase("1")) {
-							logger.info("Test Environment");
-							filename = ConfigManager.HOST_TEST_INFO_FILE;
-						}
-						else{
-							logger.info("Production Environment");
-							filename = ConfigManager.HOST_PROD_INFO_FILE;
-						}
-						hostInfo.load(ConfigManager.class.getClassLoader().getResourceAsStream(filename));
-						cfgList.add(hostInfo);
-						break;	
-					
-					case USER_DEF://because UserDefine file would not package in jar file
-						//userDef.load(ConfigManager.class.getClassLoader().getResourceAsStream(ConfigManager.USER_DEFINITION_FILE));
-						userDef.load(ConfigManager.class.getClassLoader().getResourceAsStream(ConfigManager.USER_DEFINITION_FILE));
-						//String filepath = System.getProperty("user.dir")+"\\"+ConfigManager.USER_DEFINITION_FILE;
-						//logger.debug("UserDefine file path:"+filepath);
-						//userDef.load(new FileInputStream(filepath));
-						cfgList.add(userDef);
-						break;
-					default:
-						logger.error("oh! maybe some Properties forgot to add2Arraylist");
-						break;
-				}
-				
-			}
-			
-		} 
-		catch(IllegalArgumentException e)
-		{			
-			logger.error("IllegalArgumentException:"+e.getMessage());
-			e.printStackTrace();
-		}
-		catch (FileNotFoundException e)
-		{
-			logger.error("FileNotFoundException:"+e.getMessage());
-			e.printStackTrace();
-		}
-		catch (IOException e) {
-			// TODO Auto-generated catch block		
-			logger.error("IOException:"+e.getMessage());
-			e.printStackTrace();
-		}
-		catch (NullPointerException e)
-		{	
-			logger.error("NullPointerException:"+e.getMessage());
-			e.printStackTrace();
-		}
-		catch (Exception e)
-		{		
-			logger.error("Exception:"+e.getMessage());
-			e.printStackTrace();			
-		}
-		
-		logger.info("End");
-		return cfgList;
-	}*/
 	
-	/*
-	public void saveConfig(){
-		
-		logger.info("Start");
-		Properties p = cfgList.get(ConfigOrder.TXN_INFO.ordinal());
-		Properties p2 = cfgList.get(ConfigOrder.EASYCARD_API.ordinal());
-		
-		//save TxnInfo pro.
-		try{
-			File f = new File(ConfigManager.TXN_INFO_FILE);
-			FileOutputStream os;			
-			os = new FileOutputStream(f);			 		
-			p.store(os, null);			
-			os.close();
-			
-			f = new File(ConfigManager.EASYCARD_API_FILE);			
-			os = new FileOutputStream(f);			 		
-			p2.store(os, null);			
-			os.close();
-		}
-		catch(NullPointerException ne)
-		{
-			logger.error(ne.getMessage());
-		}
-		catch (FileNotFoundException fe) {
-			// TODO Auto-generated catch block
-			logger.error(fe.getMessage());
-		}
-		catch (IOException ioe )
-		{
-			logger.error(ioe.getMessage());
-		}		
-		logger.info("end");
-	}
-*/
 	@Override
 	public boolean initial() {
 		// TODO Auto-generated method stub
@@ -487,15 +360,15 @@ public class ConfigManager implements IConfigManager{
 	}
 
 	@Override
-	public String getFtpLoinPwd() {
+	public String getFtpLoginPwd() {
 		// TODO Auto-generated method stub
-		String pwd = cfgList.get(ConfigOrder.HOST_INFO.ordinal()).getProperty("FtpLoinPwd");
+		String pwd = cfgList.get(ConfigOrder.HOST_INFO.ordinal()).getProperty("FtpLoginPwd");
 		logger.info("getter:"+pwd);
 		return pwd;
 	}
 
 	@Override
-	public void setFtpLoinPwd(String pwd) {
+	public void setFtpLoginPwd(String pwd) {
 		// TODO Auto-generated method stub
 		cfgList.get(ConfigOrder.HOST_INFO.ordinal()).setProperty("FtpLoginID", pwd);
 		logger.info("setter:"+pwd);
@@ -625,6 +498,20 @@ public class ConfigManager implements IConfigManager{
 		// TODO Auto-generated method stub
 		cfgList.get(ConfigOrder.USER_DEF.ordinal()).setProperty("HostEnvironment", id);
 		logger.info("setter:"+id);
+	}
+
+
+	@Override
+	public String getNewDeviceID() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void setNewDeviceID(String id) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	
