@@ -1,6 +1,11 @@
 package com.easycard.pc.CMAS;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+
+
+
+
 
 
 import org.apache.log4j.Logger;
@@ -10,6 +15,8 @@ import org.apache.log4j.PropertyConfigurator;
 
 import com.easycard.pc.CMAS.CmasTag.SubTag5596;
 import com.easycard.pc.communication.socket.*;
+import com.easycard.pc.database.CmasDB;
+import com.easycard.pc.database.CmasDB.CmasDBException;
 import com.easycard.errormessage.ApiRespCode;
 import com.easycard.errormessage.IRespCode;
 import com.easycard.reader.ApduRecvSender;
@@ -85,6 +92,22 @@ public class Process {
 			logger.error("config initial fail");
 			result = false;
 		}		
+		
+		/*
+		//initial DB test
+		try {
+			CmasDB db = new CmasDB();
+			db.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (CmasDBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//initial DB test end
+		*/
+		
 		logger.info("End");
 		return result;
 	 }
@@ -177,6 +200,8 @@ public class Process {
 					logger.error("exe PPR_Reset error:"+String.format("%s", result.getId()));
 					return result;
 				}
+				
+				
 				//update Reader ID
 				configManager.setReaderID(Util.bcd2Ascii(pprReset.GetResp_ReaderID()));
 				
@@ -262,7 +287,7 @@ public class Process {
 						configManager.getFtpIP(),
 						990,
 						configManager.getFtpLoginID(),
-						configManager.getFtpLoinPwd(),
+						configManager.getFtpLoginPwd(),
 						specResetResp.getT5595s(),
 						configManager);
 					
@@ -778,6 +803,25 @@ public class Process {
 			
 		}
 		
+		return result;
+	}
+	
+	public IRespCode doCmasRequestTest(String request){
+		IRespCode result=ApiRespCode.SUCCESS;
+		
+		SSL ssl = getSSLInstance();
+		String cmasResp = null;
+		try {
+			ssl.join();
+			cmasResp = ssl.sendRequest(request);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			result = ApiRespCode.HOST_NO_RESPONSE;
+			e.printStackTrace();
+		}
+		
+	
+		logger.debug("CMAS Resp:"+cmasResp);
 		return result;
 	}
 }
