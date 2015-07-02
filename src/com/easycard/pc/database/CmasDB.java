@@ -7,17 +7,26 @@ import java.sql.SQLException;
 
 
 
+
+
+import com.easycard.errormessage.ApiRespCode;
+import com.easycard.errormessage.IRespCode;
 import com.easycard.pc.CMAS.ConfigManager;
 
 public class CmasDB extends BaseSQLite{
 
 	public static final String DB_NAME = "config/CMAS.db";
 	public static final int DB_VERSION = 2;
+	
+	
 	private Connection cn= null;
 	private HostInfo hostInfo = null;
 	private DeviceInfo deviceInfo = null;
 	private ApiInfo apiInfo = null;
 	private TxnInfo txnInfo = null;
+	//private UserDefineTable userDefine = null;
+	private boolean init = false;
+	private String deviceNickName=null;
 	
 	@SuppressWarnings("serial")
 	public class CmasDBException extends Exception{
@@ -27,43 +36,88 @@ public class CmasDB extends BaseSQLite{
 		 }		 
 	 }
 	
-	
-	
-	public CmasDB() throws SQLException,CmasDBException{
-		File dbFile = new File(DB_NAME);
-		boolean init = false;
-		if(!dbFile.exists()) init = true;//db not exists
-		else logger.debug("DB already exists");
-		cn = getConnection(DB_NAME);
+	public boolean initial(){
+		boolean result = true;
 		
-		hostInfo = new HostInfo();
+		//userDefine = new UserDefineTable();
 		deviceInfo = new DeviceInfo();
 		apiInfo = new ApiInfo();
+		hostInfo = new HostInfo();		
 		txnInfo = new TxnInfo();
 		
 		
 		if(init){
 			logger.debug("CMAS DB not exists, create & init it");
-			if(initialNeededTable() == false) 
-				throw new CmasDBException("Initial DB needed table fail!!!");
+			if(createNeededTable() == false) return false;
+			
+			return true;
 		}
 		
-		//upgrade
+		
+		//upgrade DB
+		apiInfo.selectTable(cn);
 		onUpgrade(apiInfo.getNowDBVersion(), DB_VERSION);
+		
+		if(deviceInfo.selectTable(cn, this.getDeviceNickName()) == false) return false;
+		hostInfo.selectTable(cn, deviceInfo.getHostType());
+		
+		//debug
+		logger.debug("========== UserDefineInfo ================");
+		logger.debug("HostType:"+deviceInfo.getHostType());
+		logger.debug("NickName:"+deviceInfo.getNickName());
+		logger.debug("ReaderComport:"+deviceInfo.getComport());
+		logger.debug("TmAgentNo:"+deviceInfo.getTmAgentNo());
+		logger.debug("TmID:"+deviceInfo.getTmID());
+		logger.debug("TmLocationID:"+deviceInfo.getTmLocationID());
+		logger.debug("UpdateDateTime:"+deviceInfo.getUpdateDateTime());
+		logger.debug("BatchNo:"+deviceInfo.getBatchNo());
+
+		logger.debug("ID:"+deviceInfo.getNewDeviceID());
+		logger.debug("ID:"+deviceInfo.getNewLocationID());
+		logger.debug("ID:"+deviceInfo.getReaderID());
+
+		
+		
+		logger.debug("========== HostInfo ================");
+		logger.debug("FtpID:"+hostInfo.getFtpID());
+		logger.debug("FtpIP:"+hostInfo.getFtpIP());
+		logger.debug("FtpPort:"+hostInfo.getFtpPort());
+		logger.debug("FtpPwd:"+hostInfo.getFtpPwd());
+		logger.debug("FtpUrl:"+hostInfo.getFtpUrl());
+		logger.debug("HostName:"+hostInfo.getHostName());
+		logger.debug("HostType:"+hostInfo.getHostType());
+		logger.debug("SocketIP:"+hostInfo.getSocketIP());
+		logger.debug("SocketPort:"+hostInfo.getSocketPort());
+		logger.debug("SocketUrl:"+hostInfo.getSocketUrl());
+		
+		
+		
+		
+		return result;
+	}
+	
+	public CmasDB() throws SQLException{
+		File dbFile = new File(DB_NAME);		
+		if(!dbFile.exists()) this.init = true;//db not exists
+		else logger.debug("DB already exists");
+		cn = getConnection(DB_NAME);
 	}
 	
 	public Connection getConnection(){
 		return cn;
 	}
 	
-	public boolean initialNeededTable(){
+	private boolean createNeededTable(){
 		
 		logger.debug("start");
 		
-		if(hostInfo.createTable(cn) == false) return false;
 		if(deviceInfo.createTable(cn) == false) return false;
+		//if(userDefine.createTable(cn) == false) return false;
 		if(apiInfo.createTable(cn) == false) return false;
+		if(hostInfo.createTable(cn) == false) return false;
+				
 		if(txnInfo.createTable(cn) == false) return false;
+		
 		
 		logger.debug("end");
 		return true;
@@ -76,12 +130,11 @@ public class CmasDB extends BaseSQLite{
 		logger.debug("oldVersion:"+oldVersion+",newVersion:"+newVersion);
 		if(newVersion > oldVersion){
 			
-			if(txnInfo.createTable(cn) == false) {
-				logger.error("upgrade fail!");
-				return;
-			}
 			
-			apiInfo.selectTable(cn, "EasyCardApi");
+			deviceInfo.setTmSerialNo(1);
+			deviceInfo.setBatchNo(1);
+			deviceInfo.setNickName("R1");
+			deviceInfo.updateRec(cn);
 			
 			//update dbVersion
 			//apiInfo.setNowDBVersion(DB_VERSION);
@@ -98,6 +151,14 @@ public class CmasDB extends BaseSQLite{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public String getDeviceNickName(){
+		return this.deviceNickName;
+	}
+	
+	public String setDeviceNickName(String name){
+		return this.deviceNickName = name;
 	}
 	
 	

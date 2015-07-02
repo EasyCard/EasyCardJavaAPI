@@ -93,20 +93,24 @@ public class Process {
 			result = false;
 		}		
 		
-		/*
+		
 		//initial DB test
-		try {
-			CmasDB db = new CmasDB();
-			db.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (CmasDBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+			CmasDB db=null;
+			try {
+				db = new CmasDB();
+				db.setDeviceNickName("R1");
+				result = db.initial();
+				db.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				result = false;
+				e.printStackTrace();
+			}
+			
+		 
 		//initial DB test end
-		*/
+		
 		
 		logger.info("End");
 		return result;

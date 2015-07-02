@@ -19,7 +19,7 @@ public class ApiInfo implements ICmasTable{
 	
 	private class DBFields{
 		
-		public String apiName="";//keyIndex
+		public String apiName="";//primary key
 		public String apiVer="";
 		public String blackListVer="";
 		public int nowDBVersion=1;	
@@ -30,29 +30,39 @@ public class ApiInfo implements ICmasTable{
 	private DBFields dbFields = new DBFields();
 	//------------------------------
 
-	public boolean selectTable(Connection con, String keyApiName){
+	public boolean selectTable(Connection con){
 		boolean result = true;
-		 String sql = String.format("SELECT * FROM %s WHERE apiName=?", TABLE_NAME, keyApiName);
+		 String sql = String.format("SELECT * FROM %s", TABLE_NAME);
 	     PreparedStatement pst = null;
 	     
-	     
+	    
 	     ResultSet rs = null;
 	     try {
 			//stat = con.createStatement();
 	    	pst = con.prepareStatement(sql);
-		    pst.setString(1, keyApiName);
+	    	//pst.setString(1, "EasyCardApi");
+		    //pst.setString(1, keyApiName);
 			rs = pst.executeQuery();
+		    //rs.last();//move to last pointer, sqlite not support
 		    
-			logger.debug("ApiTable Cnt:"+rs.getFetchSize());
-			while(rs.next())
-		    {
-		    	
-		    	logger.debug("apiName:"+rs.getString("apiName"));
+		    //int cnt = rs.getRow();
+			//if(cnt == 0) return false;//no any data existed
+			//logger.debug("ApiTable Cnt:"+cnt);
+			
+			if(rs.next()){
+				this.setApiName(rs.getString("apiName"));
+				this.setApiVer(rs.getString("apiVer"));
+				this.setBlackListVer(rs.getString("blackListVer"));
+				this.setNowDBVersion(rs.getInt("nowDBVersion"));
+				
+				logger.debug("apiName:"+rs.getString("apiName"));
 		    	logger.debug("apiVer:"+rs.getString("apiVer"));
 		    	logger.debug("blackListVer:"+rs.getString("blackListVer"));
 		    	logger.debug("nowDBVersion:"+rs.getInt("nowDBVersion"));
-		    	//System.out.println(rs.getInt("id")+"\t"+rs.getString("telPhone"));		       
-		    }
+			} else {
+				logger.error("ApiInfo no data");
+				return false;			
+			}
 	     } catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();		
@@ -75,10 +85,10 @@ public class ApiInfo implements ICmasTable{
     	for(int i=0; i<cnt; i++){
     		logger.debug("name:"+fields[i].getName());
     		if(fields[i].getType().equals(String.class)){
-    			sql+=fields[i].getName()+" text";
+    			sql+=fields[i].getName()+" TEXT";
     		} else if(fields[i].getType().equals(int.class)){
-    			sql+=fields[i].getName()+" integer";
-    			//if(fields[i].getName().equalsIgnoreCase("hostType")) sql+=" primary key";    			
+    			sql+=fields[i].getName()+" INTEGER";
+    			if(fields[i].getName().equalsIgnoreCase("apiName")) sql+=" PRIMARY KEY";    			
     		}    		
     		if(i!=cnt-1) sql+=",";    		
     	}

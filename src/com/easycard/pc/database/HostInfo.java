@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
@@ -18,22 +19,72 @@ public class HostInfo implements ICmasTable{
 	
 	private class DBFields{
 		
-		public int hostType=0; //primary KEY
-		public String hostName="";		
-		public String socketUrl="";
-		public String socketIP="";
-		public int socketPort=0;
-		public String ftpUrl="";
-		public String ftpIP="";
-		public int ftpPort=0;
-		public String ftpID="";
-		public String ftpPwd="";
+		public int hostType=intDefaultValue; //primary KEY
+		public String hostName=strDefaultValue;		
+		public String socketUrl=strDefaultValue;
+		public String socketIP=strDefaultValue;
+		public int socketPort=intDefaultValue;
+		public String ftpUrl=strDefaultValue;
+		public String ftpIP=strDefaultValue;
+		public int ftpPort=intDefaultValue;
+		public String ftpID=strDefaultValue;
+		public String ftpPwd=strDefaultValue;
 		DBFields(){}
 	}
 	public static final String TABLE_NAME = "host_info";
 	private DBFields dbFields = new DBFields();
 	//------------------------------
-
+	public boolean selectTable(Connection con, int hostType){
+		boolean result = false;
+		String sql = String.format("SELECT * FROM %s WHERE hostType=?", TABLE_NAME);
+		ResultSet rs = null;
+		try {
+			PreparedStatement pst = con.prepareStatement(sql);
+			pst.setInt(1, hostType);
+			rs = pst.executeQuery();
+			Field[] fields = dbFields.getClass().getDeclaredFields();
+			int cnt = fields.length - 1;
+			if(rs.next()){
+				for(int i=0; i<cnt; i++){
+					try {
+						if(fields[i].getType().equals(int.class)){
+							
+							fields[i].setInt(dbFields, rs.getInt(fields[i].getName()));
+							
+						} else if(fields[i].getType().equals(String.class)) {
+							fields[i].set(dbFields, rs.getString(fields[i].getName()));
+						}
+					} catch (IllegalArgumentException
+							| IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				
+				}
+			
+			/*
+				this.setHostType(rs.getInt("hostType"));
+				this.setHostName(rs.getString("hostName"));
+				this.setSocketUrl(rs.getString("socketUrl"));
+				this.setSocketIP(rs.getString("socketIP"));
+				
+				this.setSocketPort(rs.getInt("socketPort"));
+				this.setFtpUrl(rs.getString("ftpUrl"));
+				this.setFtpIP(rs.getString("ftpIP"));
+				this.setFtpPort(rs.getInt("ftpPort"));
+				}*/
+			} else {
+				logger.error("HostInfo Table got NULL data:"+hostType);
+				result = false;
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
 	
 	@Override
 	public boolean createTable(Connection con) {

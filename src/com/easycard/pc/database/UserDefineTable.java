@@ -12,39 +12,24 @@ import org.apache.log4j.Logger;
 
 
 
-public class DeviceInfo implements ICmasTable{
+public class UserDefineTable implements ICmasTable{
 
-	static Logger logger = Logger.getLogger(DeviceInfo.class);
-	
+	static Logger logger = Logger.getLogger(UserDefineTable.class);	
 	private class DBFields{
-		
-		//public int id=intDefaultValue;
-		
-		//User Define field
+		//public int id=intDefaultValue;//autoincrement
 		public String nickName=strDefaultValue;//primary KEY		
-		public String updateDateTime=strDefaultValue;//signOn update
-		public String comport=strDefaultValue;
+		public String updateDateTime=strDefaultValue;
+		public String readerComport=strDefaultValue;
 		public int hostType=intDefaultValue;
 		public String tmID=strDefaultValue;
 		public String tmLocationID=strDefaultValue;
 		public String tmAgentNo=strDefaultValue;
 		
-		
-		public String newDeviceID=strDefaultValue;	
-		//public String createDateTime=strDefaultValue;
-		
-		public String readerID=strDefaultValue;//signOn update		
-		public String newLocationID=strDefaultValue;//signOn update
-		
-		public int tmSerialNo=intDefaultValue;
-		public int batchNo=intDefaultValue;
-		
 		DBFields(){}
 	}
-	public static final String TABLE_NAME = "device_info";
+	public static final String TABLE_NAME = "user_define";
 	private DBFields dbFields = new DBFields();
-	//------------------------------------------------------------
-	
+	//------------------------------
 	public boolean selectTable(Connection con, String nickNameKey){
 		boolean result = true;
 		String sql = String.format("SELECT * FROM %s", TABLE_NAME);
@@ -52,31 +37,31 @@ public class DeviceInfo implements ICmasTable{
 		PreparedStatement pst = null; 
 		ResultSet rs = null;
 		try {
-			pst = con.prepareStatement(sql);			
+			pst = con.prepareStatement(sql);
+			//pst.setString(1, "R1");
 			rs = pst.executeQuery();
 			
 					
 			Field[] fields = dbFields.getClass().getDeclaredFields();
 			int cnt = fields.length - 1;
 			if(rs.next()){
-				
+				logger.debug("got data");
 				
 				for(int i=0; i<cnt; i++){
 					try {
 						if(fields[i].getType().equals(int.class)){
-							
-							//logger.debug("name:"+fields[i].getName()+", value:"+rs.getInt(fields[i].getName()));
+							logger.debug("int type");
+							logger.debug("name:"+fields[i].getName()+", value:"+rs.getInt(fields[i].getName()));
 							fields[i].setInt(dbFields, rs.getInt(fields[i].getName()));
 							
 						} else if(fields[i].getType().equals(String.class)) {
-							
-							//logger.debug("name:"+fields[i].getName()+", value:"+rs.getString(fields[i].getName()));
+							logger.debug("string type");
+							logger.debug("name:"+fields[i].getName()+", value:"+rs.getString(fields[i].getName()));
 							fields[i].set(dbFields, rs.getString(fields[i].getName()));
 						}
 					} catch (IllegalArgumentException
 							| IllegalAccessException e) {
 						// TODO Auto-generated catch block
-						logger.error(e.getMessage());
 						e.printStackTrace();
 					}
 				
@@ -95,7 +80,8 @@ public class DeviceInfo implements ICmasTable{
 		}
 		
 		return result;
-	} 
+	}
+	
 	
 	
 	@Override
@@ -104,19 +90,20 @@ public class DeviceInfo implements ICmasTable{
 		boolean result = true;
 		String sql = String.format("CREATE TABLE IF NOT EXISTS %s (", TABLE_NAME);
     	Field[] fields = dbFields.getClass().getDeclaredFields();
-    	
+    	//logger.debug("total fields cnt:"+fields.length);
     	
     	//declared field type
     	int cnt = fields.length-1;
     	for(int i=0; i<cnt; i++){
     		//logger.debug("name:"+fields[i].getName());
     		if(fields[i].getType().equals(String.class)){
-    			sql+=fields[i].getName()+" TEXT";    			
+    			sql+=fields[i].getName()+" TEXT";
+    			
     		} else if(fields[i].getType().equals(int.class)){
-    			sql+=fields[i].getName()+" INTEGER";
-    			    			
+    			sql+=fields[i].getName()+" INTEGER";    			    		
     		}    		
-    		if(fields[i].getName().equalsIgnoreCase("nickName")) sql+=" PRIMARY KEY";
+    		if(fields[i].getName().equalsIgnoreCase("nickName")) sql+=" PRIMARY KEY ";
+    		//if(fields[i].getName().equalsIgnoreCase("id")) sql+=" AUTOINCREMENT ";
     		
     		if(i!=cnt-1) sql+=",";    		
     	}
@@ -139,6 +126,7 @@ public class DeviceInfo implements ICmasTable{
 			setUpdateDateTime("201507020946");
 			insertRec(con);
 			
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -153,33 +141,30 @@ public class DeviceInfo implements ICmasTable{
 		// TODO Auto-generated method stub
 		logger.debug("start");
 		boolean result = true;
-		boolean _1stFieldExisted=false;
 		Field[] fields = dbFields.getClass().getDeclaredFields();
     	String sql = String.format("INSERT INTO %s (", TABLE_NAME);
     	String values=" VALUES(";
     	int cnt = fields.length-1;//last field was not dbField
-    	for(int i=0; i<cnt; i++){    		    	
+    	for(int i=0; i<cnt; i++){
     		try {
 				if((fields[i].getType().equals(int.class) && fields[i].getInt(dbFields)==intDefaultValue) ||
 				   (fields[i].getType().equals(String.class) && fields[i].get(dbFields)==strDefaultValue))
 					continue;//value was defaultValue, not to process it
-				if(_1stFieldExisted==true){
-					values+=",";
-	    			sql+=",";
-				} 
+				//System.out.println("name:"+fields[i].getName());
 				sql+=fields[i].getName();
-				values+="?";
-	    		
-	    		_1stFieldExisted = true;
 			} catch (IllegalArgumentException e) {
 				// TODO Auto-generated catch block
-				logger.error(e.getMessage());
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				logger.error(e.getMessage());
-			}
+			}    		
+    		values+="?";
+    		if(i!=cnt-1) {
+    			values+=",";
+    			sql+=",";
+    		}
+    		
     	}
     	values += ")";
     	sql+=")";
@@ -187,12 +172,15 @@ public class DeviceInfo implements ICmasTable{
     	
     	System.out.println("Insert SQL cmd:"+sql);
     	
+    	//String sql = "insert into test (id,name) values(?,?)";
+    	
+        
     	PreparedStatement pst = null;
         try {
 			pst = con.prepareStatement(sql);
 			int idx = 1 ; 
 	        for(int i=0; i<cnt; i++){
-	        	try {
+				try {
 					if(fields[i].getType().equals(String.class) && fields[i].get(dbFields)!=strDefaultValue){
 						
 						String value = (String) fields[i].get(dbFields);
@@ -211,7 +199,7 @@ public class DeviceInfo implements ICmasTable{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 					result = false;
-				}     		
+				}    		
 	    	}
 	                       
 	        
@@ -230,7 +218,7 @@ public class DeviceInfo implements ICmasTable{
 	public boolean updateRec(Connection con) {
 		// TODO Auto-generated method stub
 		boolean result = true;
-		boolean _1stFieldExisted=false;
+		
 		String sql = String.format("UPDATE %s SET ", TABLE_NAME);
     	Field[] fields = dbFields.getClass().getDeclaredFields();
     	
@@ -240,11 +228,9 @@ public class DeviceInfo implements ICmasTable{
 				if((fields[i].getType().equals(int.class) && fields[i].getInt(dbFields)==intDefaultValue) ||
 				   (fields[i].getType().equals(String.class) && fields[i].get(dbFields)==strDefaultValue))
 						continue;
+				if(i==cnt-1) sql+=fields[i].getName()+"=? ";
+	    		else sql+=fields[i].getName()+"=?,";
 				
-				if(_1stFieldExisted==true) sql+=",";
-				sql+=fields[i].getName()+"=?";
-	    		
-				_1stFieldExisted = true;
 			} catch (IllegalArgumentException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -252,6 +238,7 @@ public class DeviceInfo implements ICmasTable{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}//value was defaultValue, not to process it
+    		
     		
     	}
     	
@@ -265,7 +252,7 @@ public class DeviceInfo implements ICmasTable{
     		int idx = 1 ; 
     		for(int i=0; i<cnt; i++){
 			
-    			if(fields[i].getType().equals(String.class) && fields[i].get(dbFields)!=strDefaultValue){
+				if(fields[i].getType().equals(String.class) && fields[i].get(dbFields)!=strDefaultValue){
 					String value = (String) fields[i].get(dbFields);
 					//System.out.println("value:"+value);
 					pst.setString(idx++, value);
@@ -273,11 +260,11 @@ public class DeviceInfo implements ICmasTable{
 				} else if(fields[i].getType().equals(int.class) && fields[i].getInt(dbFields)!=intDefaultValue){
 					int value = (int) fields[i].get(dbFields);
 					pst.setInt(idx++, value);
-	    		}   
+	    		}    
 			 
     		}
 
-    		pst.setString(idx++, getNickName());//WHERE nickName=?
+    		pst.setString(idx++, getNickName()); //for WHERE nickName=?
   			pst.executeUpdate();
     	} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
@@ -326,11 +313,11 @@ public class DeviceInfo implements ICmasTable{
 	}
 	
 	
-	public String getComport() {
-		return dbFields.comport;
+	public String getReaderComport() {
+		return dbFields.readerComport;
 	}
-	public void setReaderComport(String comport) {
-		this.dbFields.comport = comport;
+	public void setReaderComport(String readerComport) {
+		this.dbFields.readerComport = readerComport;
 	}
 	
 	public String getTmID() {
@@ -368,53 +355,12 @@ public class DeviceInfo implements ICmasTable{
 		this.dbFields.updateDateTime = updateDateTime;
 	}
 	
-	
-	public String getNewDeviceID() {
-		return dbFields.newDeviceID;
-	}
-	public void setNewDeviceID(String newDeviceID) {
-		this.dbFields.newDeviceID = newDeviceID;
-	}
-	
-	
-	public String getReaderID() {
-		return dbFields.readerID;
-	}
-	public void setReaderID(String readerID) {
-		this.dbFields.readerID = readerID;
-	}
-	public String getNewLocationID() {
-		return dbFields.newLocationID;
-	}
-	public void setNewLocationID(String newLocationID) {
-		this.dbFields.newLocationID = newLocationID;
-	}
-	
-	
-
-	
-
-	public int getBatchNo() {
-		return dbFields.batchNo;
-	}
-
-	public void setBatchNo(int batchNo) {
-		this.dbFields.batchNo = batchNo;
-	}
-
-	public int getTmSerialNo() {
-		return dbFields.tmSerialNo;
-	}
-
-	public void setTmSerialNo(int tmSerialNo) {
-		this.dbFields.tmSerialNo = tmSerialNo;
-	}
-
 	/*
 	public int getID() {
 		return dbFields.id;
-	}*/
-	
-	
-
+	}
+*/
+	//public void setHostType(int hostType) {
+	//	this.dbFields.hostType = hostType;
+	//}
 }
