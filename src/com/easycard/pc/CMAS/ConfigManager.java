@@ -484,8 +484,9 @@ public class ConfigManager implements IConfigManager{
 		cfgList.get(ConfigOrder.USER_DEF.ordinal()).setProperty("HostEnvironment", e);
 		logger.info("setter:"+e);
 	}
-
+	/*
 	@Override
+	
 	public String getNewServiceProviderID() {
 		// TODO Auto-generated method stub
 		String id = cfgList.get(ConfigOrder.USER_DEF.ordinal()).getProperty("NewServiceProviderID");
@@ -499,7 +500,7 @@ public class ConfigManager implements IConfigManager{
 		cfgList.get(ConfigOrder.USER_DEF.ordinal()).setProperty("HostEnvironment", id);
 		logger.info("setter:"+id);
 	}
-
+*/
 
 	@Override
 	public String getNewDeviceID() {

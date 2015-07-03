@@ -44,7 +44,7 @@ public class Process {
 	 private String mTimeZone = "Asia/Taipei"; 
 	 
 	 //private ArrayList<Properties> cfgList = null;
-	 private ConfigManager configManager = null;
+	 private IConfigManager configManager = null;
 	 private static final String CONFIG_INIT_FAIL = "CMAS Config Initial Error";
 	 
 	
@@ -62,12 +62,15 @@ public class Process {
 		 if(initConfig() == false) throw new ProcessException(CONFIG_INIT_FAIL);
 		 
 		 //Properties userDef = cfgList.get(ConfigManager.ConfigOrder.USER_DEF.ordinal());
-		 
+		 logger.debug("process init ok");
 		 ApduRecvSender rs = new ApduRecvSender();
+		 logger.debug("process init ok");
+		 logger.debug("getComPort:"+configManager.getReaderPort());
 		 rs.setPortName(configManager.getReaderPort());
 		 reader = new EZReader(rs);
 		 logger.info("End");
 	 }
+	 
 	
 		
 	//RS232 controller was POS
@@ -83,30 +86,25 @@ public class Process {
 		//init log4j configFile
 		//PropertyConfigurator.configure(Process.class.getResourceAsStream("log4j.properties"));//for rootDir
 		boolean result = true;
-		 PropertyConfigurator.configure(Process.class.getClassLoader().getResourceAsStream(ConfigManager.LOG4J_CONFIG_FILE));
+		PropertyConfigurator.configure(Process.class.getClassLoader().getResourceAsStream(ConfigManager.LOG4J_CONFIG_FILE));
 		logger.info("=============== API Start ===============");
 		
+		/*
 		//init api needed configFile
 		configManager = new ConfigManager();
 		if(!configManager.initial()){
 			logger.error("config initial fail");
 			result = false;
 		}		
-		
+		*/
 		
 		//initial DB test
-		
-			CmasDB db=null;
-			try {
-				db = new CmasDB();
-				db.setDeviceNickName("R1");
-				result = db.initial();
-				db.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				result = false;
-				e.printStackTrace();
-			}
+		configManager = new ConfigManagerDB();
+		if(!configManager.initial()){
+			logger.error("config initial fail");
+			result = false;
+		}
+		logger.debug("Comport:"+configManager.getReaderPort());	
 			
 		 
 		//initial DB test end

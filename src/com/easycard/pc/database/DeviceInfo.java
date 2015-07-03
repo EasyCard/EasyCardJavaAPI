@@ -47,7 +47,9 @@ public class DeviceInfo implements ICmasTable{
 	
 	public boolean selectTable(Connection con, String nickNameKey){
 		boolean result = true;
-		String sql = String.format("SELECT * FROM %s", TABLE_NAME);
+		String sql = null;
+		if(nickNameKey!=null) sql = String.format("SELECT * FROM %s", TABLE_NAME);
+		else sql = String.format("SELECT * FROM %s", TABLE_NAME);
 		
 		PreparedStatement pst = null; 
 		ResultSet rs = null;
@@ -132,9 +134,9 @@ public class DeviceInfo implements ICmasTable{
 			
 			setHostType(1);
 			setNickName("R1");
-			setReaderComport("COM6");
+			setComport("COM6");
 			setTmAgentNo("1234");
-			setTmID("12");
+			setTmID("00");
 			setTmLocationID("100001");
 			setUpdateDateTime("201507020946");
 			insertRec(con);
@@ -327,9 +329,11 @@ public class DeviceInfo implements ICmasTable{
 	
 	
 	public String getComport() {
+		logger.debug("start");
+		logger.debug("port:"+dbFields.comport);
 		return dbFields.comport;
 	}
-	public void setReaderComport(String comport) {
+	public void setComport(String comport) {
 		this.dbFields.comport = comport;
 	}
 	

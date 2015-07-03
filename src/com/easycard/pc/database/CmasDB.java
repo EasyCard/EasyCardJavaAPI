@@ -72,9 +72,9 @@ public class CmasDB extends BaseSQLite{
 		logger.debug("UpdateDateTime:"+deviceInfo.getUpdateDateTime());
 		logger.debug("BatchNo:"+deviceInfo.getBatchNo());
 
-		logger.debug("ID:"+deviceInfo.getNewDeviceID());
-		logger.debug("ID:"+deviceInfo.getNewLocationID());
-		logger.debug("ID:"+deviceInfo.getReaderID());
+		logger.debug("NewDeviceID:"+deviceInfo.getNewDeviceID());
+		logger.debug("NewLocationID:"+deviceInfo.getNewLocationID());
+		logger.debug("ReaderID"+deviceInfo.getReaderID());
 
 		
 		
@@ -130,11 +130,14 @@ public class CmasDB extends BaseSQLite{
 		logger.debug("oldVersion:"+oldVersion+",newVersion:"+newVersion);
 		if(newVersion > oldVersion){
 			
-			
+			//update deviceTable
 			deviceInfo.setTmSerialNo(1);
 			deviceInfo.setBatchNo(1);
 			deviceInfo.setNickName("R1");
 			deviceInfo.updateRec(cn);
+			
+			apiInfo.setNowDBVersion(newVersion);
+			apiInfo.updateRec(cn);
 			
 			//update dbVersion
 			//apiInfo.setNowDBVersion(DB_VERSION);
@@ -161,5 +164,20 @@ public class CmasDB extends BaseSQLite{
 		return this.deviceNickName = name;
 	}
 	
+	public ApiInfo getApiInfo(){
+		return this.apiInfo;
+	}
 	
+	public HostInfo getHostInfo(){
+		return this.hostInfo;
+	}
+	
+	public DeviceInfo getDeviceInfo(){
+		
+		return this.deviceInfo;
+	}
+	
+	public TxnInfo getTxnInfo(){
+		return this.txnInfo;
+	}
 }

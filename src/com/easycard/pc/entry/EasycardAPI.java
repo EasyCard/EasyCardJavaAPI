@@ -94,6 +94,8 @@ public class EasycardAPI {
 			
 			IRespCode result;
 			Process process = new Process();
+			
+			logger.debug("new process ok");
 			result = process.doSignon();
 			
 			logger.info("Do_Signon() result:"+result.getId()+":"+result.getMsg()); 

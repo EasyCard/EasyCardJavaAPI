@@ -57,8 +57,8 @@ public interface IConfigManager {
 	public void setBatchNo(String no);
 	
 	
-	public String getNewServiceProviderID();
-	public void setNewServiceProviderID(String id);
+	//public String getNewServiceProviderID();
+	//public void setNewServiceProviderID(String id);
 	
 	
 	public String getReaderPort();
