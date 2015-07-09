@@ -7,63 +7,55 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
 
 
-public class DeviceInfo implements ICmasTable{
+public class BatchDetail implements ICmasTable{
 
-	static Logger logger = Logger.getLogger(DeviceInfo.class);
+	static Logger logger = Logger.getLogger(BatchDetail.class);
 	private boolean tbUpdated = false; //table updated?
 	
-	private class DBFields{
+	public class DBFields{
+	
+		public String newDeviceIDMixBatchNo=strDefaultValue;//primary KEY
+		public String rrn = strDefaultValue;
+		//public String txnDateTime=strDefaultValue;
+		//public int tmSerialNo=intDefaultValue;
+		public int txnAmt=intDefaultValue;
+		//public int txnType=intDefaultValue;
+		public String pCode=strDefaultValue;
+		public String adviceReq=strDefaultValue;
+		public String adviceResp=strDefaultValue;
 		
-		//public int id=intDefaultValue;
 		
-		//User Define field
-		public String nickName=strDefaultValue;//primary KEY		
-		public String updateDateTime=strDefaultValue;//signOn update
-		public String comport=strDefaultValue;
-		public int hostType=intDefaultValue;
-		public String tmID=strDefaultValue;
-		public String tmLocationID=strDefaultValue;
-		public String tmAgentNo=strDefaultValue;
-		
-		
-		public String newDeviceID=strDefaultValue;	
-		//public String createDateTime=strDefaultValue;
-		
-		public String readerID=strDefaultValue;//signOn update		
-		public String newLocationID=strDefaultValue;//signOn update
-		
-		public int tmSerialNo=intDefaultValue;
-		public int batchNo=intDefaultValue;
-		
-		//DBFields(){}
 	}
-	public static final String TABLE_NAME = "device_info";
+	public static final String TABLE_NAME = "batch_detail";
 	private DBFields dbFields = new DBFields();
 	//------------------------------------------------------------
 	
-	public boolean selectTable(Connection con, String nickNameKey){
-		boolean result = true;
+	public ArrayList<DBFields> selectUnUploadAdvice(Connection con, String newDeviceIDMixBatchNo){
+		ArrayList<DBFields> adviceSet = new ArrayList<BatchDetail.DBFields>();
 		String sql = null;
-		if(nickNameKey!=null) sql = String.format("SELECT * FROM %s", TABLE_NAME);
-		else sql = String.format("SELECT * FROM %s", TABLE_NAME);
-		
 		PreparedStatement pst = null; 
 		ResultSet rs = null;
+		
+		if(newDeviceIDMixBatchNo!=null) sql = String.format("SELECT * FROM %s WHERE newDeviceIDMixBatchNo=? and adviceResp IS NULL", TABLE_NAME);
+		else sql = String.format("SELECT * FROM %s WHERE newDeviceIDMixBatchNo=? and adviceResp IS NULL", TABLE_NAME);
+		
+		
+		
 		try {
 			pst = con.prepareStatement(sql);			
+			pst.setString(1, newDeviceIDMixBatchNo);
 			rs = pst.executeQuery();
-			
-					
-			Field[] fields = dbFields.getClass().getDeclaredFields();
-			int cnt = fields.length - 1;
-			if(rs.next()){
-				
-				
+		
+			while(rs.next()){
+				DBFields record = new DBFields();
+				Field[] fields = record.getClass().getDeclaredFields();
+				int cnt = fields.length - 1;
 				for(int i=0; i<cnt; i++){
 					try {
 						if(fields[i].getType().equals(int.class)){
@@ -82,22 +74,17 @@ public class DeviceInfo implements ICmasTable{
 						logger.error(e.getMessage());
 						e.printStackTrace();
 					}
-				
+					
+					adviceSet.add(record);
 				}
-			} else {
-				logger.error("UserDefine Table got NULL data. nickName:"+nickNameKey);
-				result = false;
 			}
-			
-			
-			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			result = false;
+			logger.error("SQLException:"+e.getMessage());
 			e.printStackTrace();
 		}
 		
-		return result;
+		return adviceSet;
 	} 
 	
 	
@@ -119,7 +106,7 @@ public class DeviceInfo implements ICmasTable{
     			sql+=fields[i].getName()+" INTEGER";
     			    			
     		}    		
-    		if(fields[i].getName().equalsIgnoreCase("nickName")) sql+=" PRIMARY KEY";
+    		//if(fields[i].getName().equalsIgnoreCase("nickName")) sql+=" PRIMARY KEY";
     		
     		if(i!=cnt-1) sql+=",";    		
     	}
@@ -132,16 +119,6 @@ public class DeviceInfo implements ICmasTable{
         	//create Table
 			stat = con.createStatement();
 			stat.executeUpdate(sql);
-			
-			setHostType(1);
-			setNickName("R1");
-			setComport("COM6");
-			setTmAgentNo("1234");
-			setTmID("00");
-			setTmLocationID("100001");
-			setUpdateDateTime("201507020946");
-			insertRec(con);
-			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -258,7 +235,7 @@ public class DeviceInfo implements ICmasTable{
     		
     	}
     	
-    	sql += " WHERE nickName=?";
+    	sql += " WHERE newDeviceIDMixBatchNo=? and rrn=?";
     	logger.debug("sql cmd:"+sql);
     	
     	try {
@@ -280,19 +257,23 @@ public class DeviceInfo implements ICmasTable{
 			 
     		}
 
-    		pst.setString(idx++, getNickName());//WHERE nickName=?
+    		pst.setString(idx++, getNewDeviceIDMixBatchNo());//WHERE newDeviceIDMixBatchNo=?
+    		pst.setString(idx++, getRRN());//WHERE rrn=?
   			pst.executeUpdate();
   			this.tbUpdated = false;
     	} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
+    		logger.error("IllegalArgumentException:"+e.getMessage());
 			e.printStackTrace();
 			result = false;
 		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
+			logger.error("IllegalAccessException:"+e.getMessage());
 			e.printStackTrace();
 			result = false;
 		}  catch (SQLException e) {
   			// TODO Auto-generated catch block
+			logger.error("SQLException:"+e.getMessage());
   			e.printStackTrace();
   			result = false;
   		}
@@ -305,17 +286,18 @@ public class DeviceInfo implements ICmasTable{
 	public boolean deleteRec(Connection con) {
 		// TODO Auto-generated method stub
 		boolean result = true;
-		String sql = String.format("DELETE FROM %s WHERE nickName=?", TABLE_NAME);
+		String sql = String.format("DELETE FROM %s WHERE newDeviceIDMixBatchNo=?", TABLE_NAME);
 		
 		
 		//String sql = "DELETE FROM host_info WHERE hostType=?";
 		PreparedStatement pst = null;
 		try {
 			pst = con.prepareStatement(sql);
-			pst.setString(1, getNickName());
+			pst.setString(1, getNewDeviceIDMixBatchNo());
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			logger.error("SQLException:"+e.getMessage());
 			e.printStackTrace();
 			result = false;
 		}
@@ -323,107 +305,58 @@ public class DeviceInfo implements ICmasTable{
 		return result;
 	}
 
-	public String getNickName() {
-		return dbFields.nickName;
+	public String getNewDeviceIDMixBatchNo() {
+		return this.dbFields.newDeviceIDMixBatchNo;
 	}
-	public void setNickName(String nickName) {
+	public void setNewDeviceIDMixBatchNo(String newDeviceIDMixBatchNo) {
 		this.tbUpdated = true;
-		this.dbFields.nickName = nickName;
+		this.dbFields.newDeviceIDMixBatchNo = newDeviceIDMixBatchNo;
 	}
 	
-	
-	public String getComport() {
-		
-		
-		return dbFields.comport;
+	/*
+	public String getTxnDateTime() {
+		return this.dbFields.txnDateTime;
 	}
-	public void setComport(String comport) {
+	public void setTxnDateTime(String txnDateTime) {
 		this.tbUpdated = true;
-		this.dbFields.comport = comport;
+		this.dbFields.txnDateTime = txnDateTime;
+	}*/
+	public int getTxnAmt() {
+		return this.dbFields.txnAmt;
 	}
-	
-	public String getTmID() {
-		return dbFields.tmID;
-	}
-	public void setTmID(String tmID) {
+	public void setTxnAmt(int txnAmt) {
 		this.tbUpdated = true;
-		this.dbFields.tmID = tmID;
+		this.dbFields.txnAmt = txnAmt;
 	}
-	public String getTmLocationID() {
-		return dbFields.tmLocationID;
+	public String getPCode() {
+		return this.dbFields.pCode;
 	}
-	public void setTmLocationID(String tmLocationID) {
+	public void setPCode(String pCode) {
 		this.tbUpdated = true;
-		this.dbFields.tmLocationID = tmLocationID;
+		this.dbFields.pCode = pCode;
 	}
-	public String getTmAgentNo() {
-		return dbFields.tmAgentNo;
+	public String getAdviceReq() {
+		return this.dbFields.adviceReq;
 	}
-	public void setTmAgentNo(String tmAgentNo) {
+	public void setAdviceReq(String adviceReq) {
 		this.tbUpdated = true;
-		this.dbFields.tmAgentNo = tmAgentNo;
+		this.dbFields.adviceReq = adviceReq;
+	}
+	public String getAdviceResp() {
+		return this.dbFields.adviceResp;
+	}
+	public void setAdviceResp(String adviceResp) {
+		this.tbUpdated = true;
+		this.dbFields.adviceResp = adviceResp;
 	}
 
-	public int getHostType() {
-		return dbFields.hostType;
+	public String getRRN() {
+		return dbFields.rrn;
 	}
 
-	public void setHostType(int hostType) {
+	public void setRRN(String rrn) {
 		this.tbUpdated = true;
-		this.dbFields.hostType = hostType;
-	}
-
-	public String getUpdateDateTime() {
-		return dbFields.updateDateTime;
-	}
-
-	public void setUpdateDateTime(String updateDateTime) {
-		this.tbUpdated = true;
-		this.dbFields.updateDateTime = updateDateTime;
-	}
-	
-	
-	public String getNewDeviceID() {
-		//logger.debug("newDeviceID:"+dbFields.newDeviceID);
-		return dbFields.newDeviceID;
-	}
-	public void setNewDeviceID(String newDeviceID) {
-		this.tbUpdated = true;
-		this.dbFields.newDeviceID = newDeviceID;
-	}
-	
-	
-	public String getReaderID() {
-		return dbFields.readerID;
-	}
-	public void setReaderID(String readerID) {
-		this.tbUpdated = true;
-		this.dbFields.readerID = readerID;
-	}
-	public String getNewLocationID() {
-		return dbFields.newLocationID;
-	}
-	public void setNewLocationID(String newLocationID) {
-		this.tbUpdated = true;
-		this.dbFields.newLocationID = newLocationID;
-	}
-	
-	public int getBatchNo() {
-		return dbFields.batchNo;
-	}
-
-	public void setBatchNo(int batchNo) {
-		this.tbUpdated = true;
-		this.dbFields.batchNo = batchNo;
-	}
-
-	public int getTmSerialNo() {
-		return dbFields.tmSerialNo;
-	}
-
-	public void setTmSerialNo(int tmSerialNo) {
-		this.tbUpdated = true;
-		this.dbFields.tmSerialNo = tmSerialNo;
+		this.dbFields.rrn = rrn;
 	}
 	
 	public boolean getTbUpdated(){

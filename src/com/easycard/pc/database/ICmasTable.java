@@ -11,6 +11,6 @@ public interface ICmasTable {
 	public boolean insertRec(Connection con);
 	public boolean updateRec(Connection con);
 	public boolean deleteRec(Connection con);
-	//public void createTable(Connection con);
+	
 	
 }

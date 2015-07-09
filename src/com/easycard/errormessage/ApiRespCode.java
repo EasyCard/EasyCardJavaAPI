@@ -20,6 +20,7 @@ public enum ApiRespCode  implements IRespCode{
 	AUTOLOAD_YES_OR_NO("-9", "餘額不足，是否允許自動加值？", 1),
 	CARD_NO_SUPPORT_AUTOLOAD("-10", "卡片不支援自動加值", 1),
 	DB_INITIAL_FAIL("-11", "資料庫初始化失敗", 1),
+	READER_CHANGED_PLZ_SETTLE_FIRST("-12", "讀卡機變更, 請先結帳！", 1),
 	UNKNOWN_ERROR_CODE("XXX","Unknowen ErrCode", 1);
 	
 

@@ -8,6 +8,9 @@ import java.util.ArrayList;
 
 
 
+
+
+
 import org.apache.log4j.Logger;
 
 
@@ -15,8 +18,10 @@ import org.apache.log4j.PropertyConfigurator;
 
 import com.easycard.pc.CMAS.CmasTag.SubTag5596;
 import com.easycard.pc.communication.socket.*;
+import com.easycard.pc.database.BatchDetail;
 import com.easycard.pc.database.CmasDB;
 import com.easycard.pc.database.CmasDB.CmasDBException;
+import com.easycard.pc.database.TxnBatch;
 import com.easycard.errormessage.ApiRespCode;
 import com.easycard.errormessage.IRespCode;
 import com.easycard.reader.ApduRecvSender;
@@ -44,7 +49,7 @@ public class Process {
 	 private String mTimeZone = "Asia/Taipei"; 
 	 
 	 //private ArrayList<Properties> cfgList = null;
-	 private IConfigManager configManager = null;
+	 private CmasDB configManager = null;
 	 private static final String CONFIG_INIT_FAIL = "CMAS Config Initial Error";
 	 
 	
@@ -99,17 +104,25 @@ public class Process {
 		*/
 		
 		//initial DB test
-		configManager = new ConfigManagerDB();
-		if(!configManager.initial()){
-			logger.error("config initial fail");
-			result = false;
-		}
-		logger.debug("Comport:"+configManager.getReaderPort());	
+		try {
 			
-		 
-		//initial DB test end
-		
-		
+			configManager = new CmasDB();
+			
+			if(!configManager.initial()){
+				logger.error("config initial fail");
+				result = false;
+			}
+			logger.debug("Comport:"+configManager.getReaderPort());	
+		} catch (CmasDBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			result = false;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			logger.debug("Cmas DB Constructer fail");
+			e.printStackTrace();
+			result = false;		
+		}
 		logger.info("End");
 		return result;
 	 }
@@ -206,6 +219,13 @@ public class Process {
 				
 				//update Reader ID
 				configManager.setReaderID(Util.bcd2Ascii(pprReset.GetResp_ReaderID()));
+				//update NewDeviceID
+				String readerNewDeviceID = Util.newDeviceID2Decimal(pprReset.GetResp_NewDeviceID());
+				//logger.debug("readerNewDeviceID:"+readerNewDeviceID);
+				if(configManager.getNewDeviceID()==null)
+					configManager.setNewDeviceID(readerNewDeviceID);
+				else if(configManager.getNewDeviceID().equalsIgnoreCase(readerNewDeviceID) == false)
+					return ApiRespCode.READER_CHANGED_PLZ_SETTLE_FIRST;
 				
 				
 				
@@ -240,6 +260,7 @@ public class Process {
 						logger.info("TM Serial Number:"+specResetReq.getT1100()+", needed to change:"+specResetResp.getT1100());
 						//update SerialNumber
 						configManager.setTMSerialNo(specResetResp.getT1100());
+						
 															
 					} else if(t3900.equalsIgnoreCase("00")){
 						pprSignon= new PPR_SignOn();						
@@ -273,7 +294,10 @@ public class Process {
 					} else {
 						logger.error("CMAS Reject Code:"+t3900);
 						return ApiRespCode.fromCode(t3900, CmasRespCode.values());					
-					}				
+					}
+					
+					//update TMSerialNo. rightNow
+					configManager.getDeviceInfo().updateRec(configManager.getConnection());
 				} else{/*maybe TimeOut*/
 					logger.error("CMAS maybe be timeout, nothing received");
 					return ApiRespCode.HOST_NO_RESPONSE;
@@ -281,6 +305,7 @@ public class Process {
 			}//while
 			
 		
+			
 			
 			if(t3900.equalsIgnoreCase("00")){		
 				//FTP download Start another thread
@@ -295,13 +320,19 @@ public class Process {
 					
 					cmasFTP.start();					
 				}
-				//SignOn Advice			
+				//SignOn Advice
 				CmasDataSpec specSignonAdv = new CmasDataSpec();
 				kernel.readerField2CmasSpec(pprSignon, specSignonAdv, specResetResp, configManager);
 				String cmasAdv = kernel.packRequeset(CmasDataSpec.CmasReqField._0820.getField(), specSignonAdv);
-				logger.debug("SignOn Adv:"+cmasAdv);
-				cmasResponse = ssl.sendRequest(cmasAdv);
-				logger.debug("SignOn Adv Response:"+cmasResponse);
+				logger.debug("save SignOn Adv:"+cmasAdv);
+				this.addRecord2BatchDetail(pprReset.GetResp_NewDeviceID(), 
+						configManager.getBatchNo(), 
+						specSignonAdv.getT0300(), 
+						specSignonAdv.getT3700(), 
+						cmasAdv, 0);
+				
+				//cmasResponse = ssl.sendRequest(cmasAdv);
+				//logger.debug("SignOn Adv Response:"+cmasResponse);
 				
 			
 				if(cmasFTP!=null)cmasFTP.join();
@@ -330,6 +361,25 @@ public class Process {
 		logger.info("End");
 		return ApiRespCode.SUCCESS;
 	}
+	
+	private void addRecord2BatchDetail(byte[] newDeviceID,
+			String batchNo,
+			String pCode,					
+			String rrn,
+			String adviceReq,			
+			int txnAmt){
+		BatchDetail bd = configManager.getBatchDetail();
+		String newDeviceIDMixBatchNo = Util.newDeviceID2Decimal(newDeviceID)+batchNo;
+		
+		bd.setNewDeviceIDMixBatchNo(newDeviceIDMixBatchNo);
+		bd.setPCode(pCode);
+		bd.setRRN(rrn);
+		bd.setAdviceReq(adviceReq);
+		bd.setTxnAmt(txnAmt);
+		
+		bd.insertRec(configManager.getConnection());
+	}
+	
 	private boolean anyFileNeededToDownload(ArrayList<CmasTag.SubTag5595> t5595s){
 		boolean result = false;
 		String tag=null;
@@ -612,6 +662,7 @@ public class Process {
 		int tmSerialNo = Integer.valueOf(configManager.getTMSerialNo());
 		int unixTimeStamp = (int) (System.currentTimeMillis() / 1000L);
 		try {
+		
 			logger.info("=========SSL PreConnect==========");
 			//SSL PreConnect
 			ssl = getSSLInstance();
@@ -622,7 +673,11 @@ public class Process {
 			pprTxnReqOffline = new PPR_TxnReqOffline();		
 			result = exePPRTxnReqOffline((byte)0x01, (byte)0x00, amt, unixTimeStamp, pprTxnReqOffline);
 				
-			//640E,610F...error Cdoe
+			//check newDeviceID in config file
+			logger.debug("check newDeviceID:"+configManager.getNewDeviceID());
+			//if(configManager.getNewDeviceID()==)
+			
+			//640E,610F...error Code
 			if(pprTxnReqOffline.getErrorRespFld() != null){
 				// pack LockCard Advice
 					
@@ -632,6 +687,12 @@ public class Process {
 					return result;
 				String lockAdvice = kernel.packRequeset(CmasKernel.CMAS_LOCKCARD_ADVICE_FLD, cmaslockAdvice);
 				logger.debug("Save Lock Advice:"+lockAdvice);
+				this.addRecord2BatchDetail(pprTxnReqOffline.getErrorRespFld().getNewDeviceID(),
+						configManager.getBatchNo(), 
+						cmaslockAdvice.getT0300(), 
+						cmaslockAdvice.getT3700(), 
+						lockAdvice, 0);
+				/*
 				try {
 					ssl.join();
 				} catch (InterruptedException e) {
@@ -639,9 +700,10 @@ public class Process {
 					e.printStackTrace();
 				}
 				String resp = ssl.sendRequest(lockAdvice);
-				logger.debug("Save Lock Advice Resp:"+resp);				
+				logger.debug("Save Lock Advice Resp:"+resp);*/				
 				configManager.setTMSerialNo(String.valueOf(++tmSerialNo));
-					
+				
+				
 				return result;
 			}
 			//not 9000, 6403, 6415, return	
@@ -749,16 +811,29 @@ public class Process {
 					} else break;//9000
 					
 			}
-
+			//update TxnBatch table
+			TxnBatch tb = configManager.getTxnBatch();
+			tb.setDeductCnt(tb.getDeductCnt()+1);
+			tb.setDeductAmt(tb.getDeductAmt()+amt);
+		
 			logger.info("=========SendRecv Deduct Advice==========");
 			//pack advice	
-			String cmasReq = null;
+			String advice = null;
 			CmasKernel kernel = new CmasKernel();
 			CmasDataSpec specAdvice = new CmasDataSpec();
 			kernel.readerField2CmasSpec(pprTxnReqOffline, pprAuthTxnOffline, specAdvice, configManager);
-			cmasReq = kernel.packRequeset(CmasDataSpec.CmasReqField._0220.getField(), specAdvice);
+			advice = kernel.packRequeset(CmasDataSpec.CmasReqField._0220.getField(), specAdvice);
 			configManager.setTMSerialNo(String.valueOf(++tmSerialNo));
 			
+			//update batch_detail table
+			this.addRecord2BatchDetail(pprTxnReqOffline.getRespNewDeviceID(), 
+					configManager.getBatchNo(),
+					specAdvice.getT0300(), 
+					specAdvice.getT3700(), 
+					advice, amt);
+			
+			
+			/*
 			//send advice
 			try {
 				ssl.join();
@@ -772,7 +847,7 @@ public class Process {
 				e.printStackTrace();
 				logger.error("ssl join exception:"+e.getMessage());
 			}	
-			
+			*/
 			
 			
 			

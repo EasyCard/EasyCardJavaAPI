@@ -16,6 +16,7 @@ import com.easycard.pc.CMAS.ConfigManager;
 public class HostInfo implements ICmasTable{
 
 	static Logger logger = Logger.getLogger(HostInfo.class);
+	private boolean tbUpdated = false; //table updated?
 	
 	private class DBFields{
 		
@@ -332,6 +333,8 @@ public class HostInfo implements ICmasTable{
 
     		pst.setInt(idx++, getHostType());
   			pst.executeUpdate();
+  			
+  			this.tbUpdated = false;
     	} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -345,23 +348,6 @@ public class HostInfo implements ICmasTable{
   			e.printStackTrace();
   			result = false;
   		}
-		
-    	
-    	
-		/*
-		int i=0;
-		Field[] fs = fields.getClass().getDeclaredFields();
-		String sql = "UPDATE FROM host_info SET ";
-		String sql = "update test set name = ? where id = ?";
-		for(Field field:fs){
-			if(field.getType().equals(String.class)){
-				field.get(this);
-			}
-		}
-		
-		String sql = "UPDATE FROM host_info SET (hostType,url,ip,port,ftpUrl,ftpIP,ftpPort,ftpLoginID,ftpLoginPwd) values(?,?,?,?,?,?,?,?,?) WHERE hostType=?";
-		*/
-		
 		return result;
 	}
 
@@ -392,6 +378,7 @@ public class HostInfo implements ICmasTable{
 	}
 
 	public void setHostName(String hostName) {
+		this.tbUpdated = true;
 		this.dbFields.hostName = hostName;
 	}
 
@@ -400,6 +387,7 @@ public class HostInfo implements ICmasTable{
 	}
 
 	public void setHostType(int hostType) {
+		this.tbUpdated = true;
 		this.dbFields.hostType = hostType;
 	}
 
@@ -408,6 +396,7 @@ public class HostInfo implements ICmasTable{
 	}
 
 	public void setSocketUrl(String socketUrl) {
+		this.tbUpdated = true;
 		this.dbFields.socketUrl = socketUrl;
 	}
 
@@ -416,6 +405,7 @@ public class HostInfo implements ICmasTable{
 	}
 
 	public void setSocketIP(String socketIP) {
+		this.tbUpdated = true;
 		this.dbFields.socketIP = socketIP;
 	}
 
@@ -424,6 +414,7 @@ public class HostInfo implements ICmasTable{
 	}
 
 	public void setSocketPort(int port) {
+		this.tbUpdated = true;
 		this.dbFields.socketPort = port;
 	}
 
@@ -432,6 +423,7 @@ public class HostInfo implements ICmasTable{
 	}
 
 	public void setFtpUrl(String ftpUrl) {
+		this.tbUpdated = true;
 		this.dbFields.ftpUrl = ftpUrl;
 	}
 
@@ -440,6 +432,7 @@ public class HostInfo implements ICmasTable{
 	}
 
 	public void setFtpIP(String ftpIp) {
+		this.tbUpdated = true;
 		this.dbFields.ftpIP = ftpIp;
 	}
 
@@ -448,6 +441,7 @@ public class HostInfo implements ICmasTable{
 	}
 
 	public void setFtpPort(int ftpPort) {
+		this.tbUpdated = true;
 		this.dbFields.ftpPort = ftpPort;
 	}
 
@@ -456,6 +450,7 @@ public class HostInfo implements ICmasTable{
 	}
 
 	public void setFtpID(String ftpID) {
+		this.tbUpdated = true;
 		this.dbFields.ftpID = ftpID;
 	}
 
@@ -464,7 +459,11 @@ public class HostInfo implements ICmasTable{
 	}
 
 	public void setFtpPwd(String ftpPwd) {
+		this.tbUpdated = true;
 		this.dbFields.ftpPwd = ftpPwd;
 	}
 
+	public boolean getTbUpdated(){
+		return this.tbUpdated;
+	}
 }

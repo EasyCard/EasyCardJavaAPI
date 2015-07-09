@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 
 
 
+
 import com.easycard.pc.CMAS.Process;
 import com.easycard.pc.CMAS.Process.ProcessException;
 import com.easycard.pc.database.CmasDB;
@@ -195,6 +196,8 @@ public class EasycardAPI {
 				
 				
 			}*/
+		} catch(CmasDBException e){
+			e.printStackTrace();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

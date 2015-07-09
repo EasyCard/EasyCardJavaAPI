@@ -534,4 +534,15 @@ public class Util {
 		return result;
 	}
 	
+	public static String newDeviceID2Decimal(byte[] newDeviceID){
+		//String result=null;
+		if(newDeviceID.length != 6) return null;
+		
+		long zz = bytes2Long(newDeviceID, 0, 2, true);
+		long y = bytes2Long(newDeviceID, 2, 1, true);
+		long xxx = bytes2Long(newDeviceID, 3, 3, true);
+		
+		return String.format("%08d%03d%05d", xxx, y, zz);
+	}
+	
 }

@@ -16,6 +16,7 @@ import com.easycard.pc.CMAS.ConfigManager;
 public class ApiInfo implements ICmasTable{
 
 	static Logger logger = Logger.getLogger(HostInfo.class);
+	private boolean tbUpdated = false;
 	
 	private class DBFields{
 		
@@ -234,6 +235,7 @@ public class ApiInfo implements ICmasTable{
 
     		pst.setString(idx++, getApiName());
   			pst.executeUpdate();
+  			this.tbUpdated = true;
     	} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -277,18 +279,21 @@ public class ApiInfo implements ICmasTable{
 		return dbFields.apiName;
 	}
 	public void setApiName(String apiName) {
+		this.tbUpdated = true;
 		this.dbFields.apiName = apiName;
 	}
 	public String getApiVer() {
 		return dbFields.apiVer;
 	}
 	public void setApiVer(String apiVer) {
+		this.tbUpdated = true;
 		this.dbFields.apiVer = apiVer;
 	}
 	public String getBlackListVer() {
 		return dbFields.blackListVer;
 	}
 	public void setBlackListVer(String blackListVer) {
+		this.tbUpdated = true;
 		this.dbFields.blackListVer = blackListVer;
 	}
 	
@@ -296,6 +301,11 @@ public class ApiInfo implements ICmasTable{
 		return dbFields.nowDBVersion;
 	}
 	public void setNowDBVersion(int nowDBVersion) {
+		this.tbUpdated = true;
 		this.dbFields.nowDBVersion = nowDBVersion;
+	}
+	
+	public boolean getTbUpdated(){
+		return this.tbUpdated;
 	}
 }

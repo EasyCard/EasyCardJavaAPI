@@ -5,7 +5,9 @@ import java.sql.SQLException;
 import org.apache.log4j.Logger;
 
 
+
 import com.easycard.pc.database.CmasDB;
+import com.easycard.pc.database.CmasDB.CmasDBException;
 
 public class ConfigManagerDB implements IConfigManager{
 	static Logger logger = Logger.getLogger(ConfigManagerDB.class);
@@ -27,6 +29,10 @@ public class ConfigManagerDB implements IConfigManager{
 			db = new CmasDB();
 			db.setDeviceNickName(deviceNickName);
 			result = db.initial();
+		} catch (CmasDBException e) {
+			// TODO Auto-generated catch block
+			result = false;
+			e.printStackTrace();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			result = false;

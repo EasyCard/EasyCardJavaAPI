@@ -12,44 +12,46 @@ import org.apache.log4j.Logger;
 
 
 
-public class DeviceInfo implements ICmasTable{
+public class TxnBatch implements ICmasTable{
 
-	static Logger logger = Logger.getLogger(DeviceInfo.class);
+	static Logger logger = Logger.getLogger(TxnBatch.class);
 	private boolean tbUpdated = false; //table updated?
-	
 	private class DBFields{
 		
 		//public int id=intDefaultValue;
 		
 		//User Define field
-		public String nickName=strDefaultValue;//primary KEY		
-		public String updateDateTime=strDefaultValue;//signOn update
-		public String comport=strDefaultValue;
-		public int hostType=intDefaultValue;
-		public String tmID=strDefaultValue;
-		public String tmLocationID=strDefaultValue;
-		public String tmAgentNo=strDefaultValue;
+		public String newDeviceIDMixBatchNo=strDefaultValue;//primary KEY		
+		public int closed=intDefaultValue;
+		public int totalCnt=intDefaultValue;
+		public int totalAmt=intDefaultValue;		
+		public int deductCnt=intDefaultValue;
+		public int deductAmt=intDefaultValue;
+		public int cashAddCnt=intDefaultValue;
+		public int cashAddAmt=intDefaultValue;
+		public int refundCnt=intDefaultValue;
+		public int refundAmt=intDefaultValue;
+		public int voidDeductCnt=intDefaultValue;
+		public int voidDeductAmt=intDefaultValue;
+		public int voidCashAddCnt=intDefaultValue;
+		public int voidCashAddAmt=intDefaultValue;
+		public int autoloadCnt=intDefaultValue;
+		public int autoloadAmt=intDefaultValue;
+	
 		
 		
-		public String newDeviceID=strDefaultValue;	
-		//public String createDateTime=strDefaultValue;
-		
-		public String readerID=strDefaultValue;//signOn update		
-		public String newLocationID=strDefaultValue;//signOn update
-		
-		public int tmSerialNo=intDefaultValue;
-		public int batchNo=intDefaultValue;
-		
-		//DBFields(){}
+
+
+		DBFields(){}
 	}
-	public static final String TABLE_NAME = "device_info";
+	public static final String TABLE_NAME = "txn_batch";
 	private DBFields dbFields = new DBFields();
 	//------------------------------------------------------------
 	
-	public boolean selectTable(Connection con, String nickNameKey){
+	public boolean selectTable(Connection con, String newDeviceIDMixBatchNo){
 		boolean result = true;
 		String sql = null;
-		if(nickNameKey!=null) sql = String.format("SELECT * FROM %s", TABLE_NAME);
+		if(newDeviceIDMixBatchNo!=null) sql = String.format("SELECT * FROM %s", TABLE_NAME);
 		else sql = String.format("SELECT * FROM %s", TABLE_NAME);
 		
 		PreparedStatement pst = null; 
@@ -85,7 +87,7 @@ public class DeviceInfo implements ICmasTable{
 				
 				}
 			} else {
-				logger.error("UserDefine Table got NULL data. nickName:"+nickNameKey);
+				logger.error("UserDefine Table got NULL data. newDeviceIDMixBatchNo:"+newDeviceIDMixBatchNo);
 				result = false;
 			}
 			
@@ -119,7 +121,7 @@ public class DeviceInfo implements ICmasTable{
     			sql+=fields[i].getName()+" INTEGER";
     			    			
     		}    		
-    		if(fields[i].getName().equalsIgnoreCase("nickName")) sql+=" PRIMARY KEY";
+    		if(fields[i].getName().equalsIgnoreCase("newDeviceIDMixBatchNo")) sql+=" PRIMARY KEY";
     		
     		if(i!=cnt-1) sql+=",";    		
     	}
@@ -132,16 +134,6 @@ public class DeviceInfo implements ICmasTable{
         	//create Table
 			stat = con.createStatement();
 			stat.executeUpdate(sql);
-			
-			setHostType(1);
-			setNickName("R1");
-			setComport("COM6");
-			setTmAgentNo("1234");
-			setTmID("00");
-			setTmLocationID("100001");
-			setUpdateDateTime("201507020946");
-			insertRec(con);
-			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -258,7 +250,7 @@ public class DeviceInfo implements ICmasTable{
     		
     	}
     	
-    	sql += " WHERE nickName=?";
+    	sql += " WHERE newDeviceIDMixBatchNo=?";
     	logger.debug("sql cmd:"+sql);
     	
     	try {
@@ -268,21 +260,24 @@ public class DeviceInfo implements ICmasTable{
     		int idx = 1 ; 
     		for(int i=0; i<cnt; i++){
 			
-    			if(fields[i].getType().equals(String.class) && fields[i].get(dbFields)!=strDefaultValue){
+    			if(fields[i].getType().equals(String.class) && 
+    			   fields[i].get(dbFields)!=strDefaultValue){
 					String value = (String) fields[i].get(dbFields);
 					//System.out.println("value:"+value);
 					pst.setString(idx++, value);
 					
-				} else if(fields[i].getType().equals(int.class) && fields[i].getInt(dbFields)!=intDefaultValue){
+				} else if(fields[i].getType().equals(int.class) && 
+						  fields[i].getInt(dbFields)!=intDefaultValue){
 					int value = (int) fields[i].get(dbFields);
 					pst.setInt(idx++, value);
 	    		}   
 			 
     		}
 
-    		pst.setString(idx++, getNickName());//WHERE nickName=?
+    		pst.setString(idx++, getNewDeviceIDMixBatchNo());//WHERE nickName=?
   			pst.executeUpdate();
   			this.tbUpdated = false;
+  			
     	} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -297,7 +292,6 @@ public class DeviceInfo implements ICmasTable{
   			result = false;
   		}
 		
-    	
 		return result;
 	}
 
@@ -312,7 +306,7 @@ public class DeviceInfo implements ICmasTable{
 		PreparedStatement pst = null;
 		try {
 			pst = con.prepareStatement(sql);
-			pst.setString(1, getNickName());
+			pst.setString(1, getNewDeviceIDMixBatchNo());
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -323,110 +317,202 @@ public class DeviceInfo implements ICmasTable{
 		return result;
 	}
 
-	public String getNickName() {
-		return dbFields.nickName;
-	}
-	public void setNickName(String nickName) {
-		this.tbUpdated = true;
-		this.dbFields.nickName = nickName;
-	}
 	
-	
-	public String getComport() {
-		
-		
-		return dbFields.comport;
-	}
-	public void setComport(String comport) {
-		this.tbUpdated = true;
-		this.dbFields.comport = comport;
-	}
-	
-	public String getTmID() {
-		return dbFields.tmID;
-	}
-	public void setTmID(String tmID) {
-		this.tbUpdated = true;
-		this.dbFields.tmID = tmID;
-	}
-	public String getTmLocationID() {
-		return dbFields.tmLocationID;
-	}
-	public void setTmLocationID(String tmLocationID) {
-		this.tbUpdated = true;
-		this.dbFields.tmLocationID = tmLocationID;
-	}
-	public String getTmAgentNo() {
-		return dbFields.tmAgentNo;
-	}
-	public void setTmAgentNo(String tmAgentNo) {
-		this.tbUpdated = true;
-		this.dbFields.tmAgentNo = tmAgentNo;
+
+	public String getNewDeviceIDMixBatchNo() {
+		return this.dbFields.newDeviceIDMixBatchNo;
 	}
 
-	public int getHostType() {
-		return dbFields.hostType;
+
+	public void setNewDeviceIDMixBatchNo(String newDeviceIDMixBatchNo) {
+		this.dbFields.newDeviceIDMixBatchNo = newDeviceIDMixBatchNo;
 	}
 
-	public void setHostType(int hostType) {
+
+	public int getClosed() {
+		return this.dbFields.closed;
+	}
+
+
+	public void setClosed(int closed) {
 		this.tbUpdated = true;
-		this.dbFields.hostType = hostType;
+		this.dbFields.closed = closed;
 	}
 
-	public String getUpdateDateTime() {
-		return dbFields.updateDateTime;
+
+	public int getTotalCnt() {
+		return this.dbFields.totalCnt;
 	}
 
-	public void setUpdateDateTime(String updateDateTime) {
+
+	public void setTotalCnt(int totalCnt) {
 		this.tbUpdated = true;
-		this.dbFields.updateDateTime = updateDateTime;
+		this.dbFields.totalCnt = totalCnt;
+	}
+
+
+	public int getTotalAmt() {
+		return this.dbFields.totalAmt;
+	}
+
+
+	public void setTotalAmt(int totalAmt) {
+		this.tbUpdated = true;
+		this.dbFields.totalAmt = totalAmt;
+	}
+
+
+	public int getDeductCnt() {
+		return this.dbFields.deductCnt;
+	}
+
+
+	public void setDeductCnt(int deductCnt) {
+		this.tbUpdated = true;
+		this.dbFields.deductCnt = deductCnt;
+	}
+
+
+	public int getDeductAmt() {
+		return this.dbFields.deductAmt;
+	}
+
+
+	public void setDeductAmt(int deductAmt) {
+		this.tbUpdated = true;
+		this.dbFields.deductAmt = deductAmt;
+	}
+
+
+	public int getCashAddCnt() {
+		return this.dbFields.cashAddCnt;
+	}
+
+
+	public void setCashAddCnt(int cashAddCnt) {
+		this.tbUpdated = true;
+		this.dbFields.cashAddCnt = cashAddCnt;
+	}
+
+
+	public int getCashAddAmt() {
+		return this.dbFields.cashAddAmt;
+	}
+
+
+	public void setCashAddAmt(int cashAddAmt) {
+		this.tbUpdated = true;
+		this.dbFields.cashAddAmt = cashAddAmt;
+	}
+
+
+	public int getRefundCnt() {
+		return this.dbFields.refundCnt;
+	}
+
+
+	public void setRefundCnt(int refundCnt) {
+		this.tbUpdated = true;
+		this.dbFields.refundCnt = refundCnt;
+	}
+
+
+	public int getRefundAmt() {
+		return this.dbFields.refundAmt;
+	}
+
+
+	public void setRefundAmt(int refundAmt) {
+		this.tbUpdated = true;
+		this.dbFields.refundAmt = refundAmt;
+	}
+
+
+	public int getVoidDeductCnt() {
+		return this.dbFields.voidDeductCnt;
+	}
+
+
+	public void setVoidDeductCnt(int voidDeductCnt) {
+		this.tbUpdated = true;
+		this.dbFields.voidDeductCnt = voidDeductCnt;
+	}
+
+
+	public int getVoidDeductAmt() {
+		return this.dbFields.voidDeductAmt;
+	}
+
+
+	public void setVoidDeductAmt(int voidDeductAmt) {
+		this.tbUpdated = true;
+		this.dbFields.voidDeductAmt = voidDeductAmt;
+	}
+
+
+	public int getVoidCashAddCnt() {
+		return this.dbFields.voidCashAddCnt;
+	}
+
+
+	public void setVoidCashAddCnt(int voidCashAddCnt) {
+		this.tbUpdated = true;
+		this.dbFields.voidCashAddCnt = voidCashAddCnt;
+	}
+
+
+	public int getVoidCashAddAmt() {
+		return this.dbFields.voidCashAddAmt;
+	}
+
+
+	public void setVoidCashAddAmt(int voidCashAddAmt) {
+		this.tbUpdated = true;
+		this.dbFields.voidCashAddAmt = voidCashAddAmt;
+	}
+
+
+	public int getAutoloadCnt() {
+		return this.dbFields.autoloadCnt;
+	}
+
+
+	public void setAutoloadCnt(int autoloadCnt) {
+		this.tbUpdated = true;
+		this.dbFields.autoloadCnt = autoloadCnt;
+	}
+
+
+	public int getAutoloadAmt() {
+		return this.dbFields.autoloadAmt;
+	}
+
+
+	public void setAutoloadAmt(int autoloadAmt) {
+		this.tbUpdated = true;
+		this.dbFields.autoloadAmt = autoloadAmt;
 	}
 	
-	
-	public String getNewDeviceID() {
-		//logger.debug("newDeviceID:"+dbFields.newDeviceID);
-		return dbFields.newDeviceID;
-	}
-	public void setNewDeviceID(String newDeviceID) {
-		this.tbUpdated = true;
-		this.dbFields.newDeviceID = newDeviceID;
-	}
-	
-	
-	public String getReaderID() {
-		return dbFields.readerID;
-	}
-	public void setReaderID(String readerID) {
-		this.tbUpdated = true;
-		this.dbFields.readerID = readerID;
-	}
-	public String getNewLocationID() {
-		return dbFields.newLocationID;
-	}
-	public void setNewLocationID(String newLocationID) {
-		this.tbUpdated = true;
-		this.dbFields.newLocationID = newLocationID;
-	}
-	
-	public int getBatchNo() {
-		return dbFields.batchNo;
-	}
-
-	public void setBatchNo(int batchNo) {
-		this.tbUpdated = true;
-		this.dbFields.batchNo = batchNo;
-	}
-
-	public int getTmSerialNo() {
-		return dbFields.tmSerialNo;
-	}
-
-	public void setTmSerialNo(int tmSerialNo) {
-		this.tbUpdated = true;
-		this.dbFields.tmSerialNo = tmSerialNo;
+	public void initDefault(){
+		setTotalCnt(0);
+		setTotalAmt(0);
+		setDeductCnt(0);
+		setDeductAmt(0);
+		setCashAddAmt(0);
+		setCashAddCnt(0);
+		setRefundCnt(0);
+		setRefundAmt(0);
+		setVoidDeductAmt(0);
+		setVoidDeductCnt(0);
+		setVoidCashAddCnt(0);
+		setVoidCashAddAmt(0);
+		setAutoloadCnt(0);
+		setAutoloadAmt(0);
+		setClosed(0);
 	}
 	
 	public boolean getTbUpdated(){
 		return this.tbUpdated;
 	}
+
 }
