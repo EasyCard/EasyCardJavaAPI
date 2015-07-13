@@ -21,6 +21,7 @@ public class BatchDetail implements ICmasTable{
 	public class DBFields{
 	
 		public String newDeviceIDMixBatchNo=strDefaultValue;//primary KEY
+		public String msgType = strDefaultValue;
 		public String rrn = strDefaultValue;
 		//public String txnDateTime=strDefaultValue;
 		//public int tmSerialNo=intDefaultValue;
@@ -286,15 +287,18 @@ public class BatchDetail implements ICmasTable{
 	public boolean deleteRec(Connection con) {
 		// TODO Auto-generated method stub
 		boolean result = true;
-		String sql = String.format("DELETE FROM %s WHERE newDeviceIDMixBatchNo=?", TABLE_NAME);
+		String sql = String.format("DELETE FROM %s WHERE newDeviceIDMixBatchNo=? AND rrn=? AND msgType=?", TABLE_NAME);
 		
 		
 		//String sql = "DELETE FROM host_info WHERE hostType=?";
 		PreparedStatement pst = null;
 		try {
 			pst = con.prepareStatement(sql);
+			logger.debug("delete Record from batch_detail table, sqlCommand:"+sql+", NewDeviceIDMixBatchNo:"+getNewDeviceIDMixBatchNo()+",getRRN():"+getRRN()+",getMsgType:"+getMsgType());
 			pst.setString(1, getNewDeviceIDMixBatchNo());
-			
+			pst.setString(2, getRRN());
+			pst.setString(3, getMsgType());
+			pst.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			logger.error("SQLException:"+e.getMessage());
@@ -361,5 +365,14 @@ public class BatchDetail implements ICmasTable{
 	
 	public boolean getTbUpdated(){
 		return this.tbUpdated;
+	}
+	
+	public String getMsgType() {
+		return dbFields.msgType;
+	}
+
+	public void setMsgType(String msgType) {
+		this.tbUpdated = true;
+		this.dbFields.msgType = msgType;
 	}
 }

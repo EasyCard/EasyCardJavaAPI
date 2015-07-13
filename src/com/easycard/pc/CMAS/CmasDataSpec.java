@@ -50,6 +50,24 @@ public class CmasDataSpec {
 		}
 	}
 	
+	public enum MsgType{
+		AUTH_REQ("0100"),
+		AUTH_RESP("0100"),
+		ADVICE_REQ("0220"),
+		ADVICE_RESP("0230"),
+		REVERSAL_REQ("0400"),
+		REVERSAL_RESP("0410");
+				
+		private final String value;
+		private MsgType(String s){
+			value = s;
+		}
+		
+		public String toString(){
+			return value;
+		}
+	}
+	
 	public enum CmasReqField{
 		_0800(new int[] {100, 300, 1100, 1101, 1200, 1201, 1300, 1301, 3700, 4100, 4101, 4102, 4103, 4104, 4200, 4210, 4802, 4820, 4823, 4824, 5301, 5307, 5308, 5361, 5362, 5363, 5364, 5365, 5366, 5368, 5369, 5370, 5371, 5501, 5503, 5504, 5510, 5588, 5596, 6000, 6002, 6003, 6004, 6400, 6408}),
 		_0820(new int[] {100, 300, 1100, 1101, 1200, 1300, 3700, 4100, 4200, 4210, 4825, 5501, 5503, 5504, 5510, 6406}),

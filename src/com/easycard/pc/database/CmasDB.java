@@ -13,6 +13,8 @@ import java.sql.SQLException;
 
 
 
+import java.sql.Statement;
+
 import com.easycard.errormessage.ApiRespCode;
 import com.easycard.errormessage.IRespCode;
 import com.easycard.pc.CMAS.ConfigManager;
@@ -22,16 +24,15 @@ import com.easycard.utilities.Util;
 public class CmasDB extends BaseSQLite implements IConfigManager{
 
 	public static final String DB_NAME = "config/CMAS.db";
-	public static final int DB_VERSION = 5;
+	public static final int DB_VERSION = 6;
 	
-	private boolean init = false;
+	//private boolean init = false;
 	private String deviceNickName=null;
 	private Connection cn= null;
 	
 	private HostInfo hostInfo = null;
 	private DeviceInfo deviceInfo = null;
 	private ApiInfo apiInfo = null;
-	//private TxnInfo txnInfo = null;
 	private TxnBatch txnBatch = null;
 	private BatchDetail batchDetail = null;
 	
@@ -78,13 +79,7 @@ public class CmasDB extends BaseSQLite implements IConfigManager{
 		txnBatch = new TxnBatch();
 		batchDetail = new BatchDetail();
 		
-		/*
-		if(this.init == false){
-			logger.debug("CMAS DB not exists, create & init it");
-			if(createNeededTable() == false) return false;
-			this.init = true;
-			return true;
-		}*/
+		
 		
 		
 		//select api_info table
@@ -92,17 +87,22 @@ public class CmasDB extends BaseSQLite implements IConfigManager{
 		//upgrade DB
 		onUpgrade(apiInfo.getNowDBVersion(), DB_VERSION);
 		
-		if(deviceInfo.selectTable(cn, this.getDeviceNickName()) == false) return false;
+		if(deviceInfo.selectTable(cn, this.getDeviceNickName()) == false) {
+			logger.debug("DB device_info table selected fail by nickName:"+this.getDeviceNickName());
+			return false;
+		}
+		//select host_info table
 		hostInfo.selectTable(cn, deviceInfo.getHostType());
 		
-		if(deviceInfo.getNewDeviceID()!=null){
-			String txnBatchKey = deviceInfo.getNewDeviceID()+deviceInfo.getBatchNo();
+		if(deviceInfo.getNewDeviceID() != null){
+			this.selectTxnBatchRec();
+			/*String txnBatchKey = deviceInfo.getNewDeviceID()+deviceInfo.getBatchNo();
 			logger.debug("txnBatchKey:"+txnBatchKey);
 			if(txnBatch.selectTable(cn, txnBatchKey)==false){
 				txnBatch.initDefault();
 				txnBatch.setNewDeviceIDMixBatchNo(txnBatchKey);
 				txnBatch.insertRec(cn);
-			}
+			}*/
 		} else logger.debug("newDeviceID is NULL, not to select txn_batch table");
 		
 		//debug
@@ -133,44 +133,49 @@ public class CmasDB extends BaseSQLite implements IConfigManager{
 		logger.debug("SocketIP:"+hostInfo.getSocketIP());
 		logger.debug("SocketPort:"+hostInfo.getSocketPort());
 		logger.debug("SocketUrl:"+hostInfo.getSocketUrl());
-		
-		
-		
-		
+				
 		return result;
 	}
 	
+	public void selectTxnBatchRec(){
+		
+		String txnBatchKey = deviceInfo.getNewDeviceID()+deviceInfo.getBatchNo();
+		logger.debug("select txn_batch by txnBatchKey:"+txnBatchKey);
+		if(txnBatch.selectTable(cn, txnBatchKey)==false){
+			logger.debug("txnb_batch record not existed, insert one new record by key:"+txnBatchKey);
+			txnBatch.initDefault();
+			txnBatch.setNewDeviceIDMixBatchNo(txnBatchKey);
+			txnBatch.insertRec(cn);
+		}
+	}
 	
 	
 	public Connection getConnection(){
 		return cn;
 	}
 	
-	private boolean createNeededTable(){
+	
+	private void exeSQLCommand(String sql){
 		
-		logger.debug("start");
-		
-		if(deviceInfo.createTable(cn) == false) return false;
-		//if(userDefine.createTable(cn) == false) return false;
-		if(apiInfo.createTable(cn) == false) return false;
-		if(hostInfo.createTable(cn) == false) return false;
-		if(txnBatch.createTable(cn) == false) return false;
-				
-		
-		
-		
-		logger.debug("end");
-		return true;
-		
+	    Statement stat = null;
+	    try {
+			stat = cn.createStatement();
+			stat.executeUpdate(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			logger.error("SQLException:"+e.getMessage());
+		}
+	     
 	}
 	
 	private void onUpgrade(int oldVersion, int newVersion){
 	
-		logger.debug("Upgrade DB");
+		
 		logger.debug("oldVersion:"+oldVersion+",newVersion:"+newVersion);
 		if(newVersion > oldVersion){
-			
-			
+			logger.debug("Upgrade DB now");
+			this.exeSQLCommand("ALTER TABLE batch_detail ADD COLUMN msgType TEXT;");
 			
 			//update dbVersion
 			apiInfo.setNowDBVersion(newVersion);

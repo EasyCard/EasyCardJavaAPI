@@ -11,11 +11,13 @@ import java.util.ArrayList;
 
 
 
+
 import org.apache.log4j.Logger;
 
 
 import org.apache.log4j.PropertyConfigurator;
 
+import com.easycard.pc.CMAS.CmasDataSpec.MsgType;
 import com.easycard.pc.CMAS.CmasTag.SubTag5596;
 import com.easycard.pc.communication.socket.*;
 import com.easycard.pc.database.BatchDetail;
@@ -220,10 +222,11 @@ public class Process {
 				//update Reader ID
 				configManager.setReaderID(Util.bcd2Ascii(pprReset.GetResp_ReaderID()));
 				//update NewDeviceID
-				String readerNewDeviceID = Util.newDeviceID2Decimal(pprReset.GetResp_NewDeviceID());
-				//logger.debug("readerNewDeviceID:"+readerNewDeviceID);
-				if(configManager.getNewDeviceID()==null)
+				String readerNewDeviceID = Util.newDeviceID2Decimal(pprReset.GetResp_NewDeviceID());				
+				if(configManager.getNewDeviceID()==null){
 					configManager.setNewDeviceID(readerNewDeviceID);
+					configManager.selectTxnBatchRec();
+				}
 				else if(configManager.getNewDeviceID().equalsIgnoreCase(readerNewDeviceID) == false)
 					return ApiRespCode.READER_CHANGED_PLZ_SETTLE_FIRST;
 				
@@ -308,7 +311,7 @@ public class Process {
 			
 			
 			if(t3900.equalsIgnoreCase("00")){		
-				//FTP download Start another thread
+				//FTPS download file, Start another thread
 				if(anyFileNeededToDownload(specResetResp.getT5595s())){
 					cmasFTP = new CmasFTPList(configManager.getFtpUrl(), 
 						configManager.getFtpIP(),
@@ -325,7 +328,8 @@ public class Process {
 				kernel.readerField2CmasSpec(pprSignon, specSignonAdv, specResetResp, configManager);
 				String cmasAdv = kernel.packRequeset(CmasDataSpec.CmasReqField._0820.getField(), specSignonAdv);
 				logger.debug("save SignOn Adv:"+cmasAdv);
-				this.addRecord2BatchDetail(pprReset.GetResp_NewDeviceID(), 
+				this.addRecord2BatchDetail(pprReset.GetResp_NewDeviceID(),
+						specSignonAdv.getT0100(),
 						configManager.getBatchNo(), 
 						specSignonAdv.getT0300(), 
 						specSignonAdv.getT3700(), 
@@ -364,6 +368,7 @@ public class Process {
 	
 	private void addRecord2BatchDetail(byte[] newDeviceID,
 			String batchNo,
+			String msgType,
 			String pCode,					
 			String rrn,
 			String adviceReq,			
@@ -372,12 +377,18 @@ public class Process {
 		String newDeviceIDMixBatchNo = Util.newDeviceID2Decimal(newDeviceID)+batchNo;
 		
 		bd.setNewDeviceIDMixBatchNo(newDeviceIDMixBatchNo);
+		bd.setMsgType(msgType);
 		bd.setPCode(pCode);
 		bd.setRRN(rrn);
 		bd.setAdviceReq(adviceReq);
 		bd.setTxnAmt(txnAmt);
 		
 		bd.insertRec(configManager.getConnection());
+	}
+	
+	private void deleteRecord4BatchDetail(){
+		BatchDetail bd = configManager.getBatchDetail();			
+		bd.deleteRec(configManager.getConnection());
 	}
 	
 	private boolean anyFileNeededToDownload(ArrayList<CmasTag.SubTag5595> t5595s){
@@ -546,7 +557,7 @@ public class Process {
 					String cmasReq = kernel.packRequeset(CmasDataSpec.CmasReqField._0100_AUTH.getField(), reqSpec);
 					
 					//reversal
-					reqSpec.setT0100("0400");
+					reqSpec.setT0100(MsgType.REVERSAL_REQ.toString());
 					String reversalReq = kernel.packRequeset(CmasDataSpec.CmasReqField._0100_AUTH.getField(), reqSpec);			
 					// reversal todo...
 					
@@ -559,10 +570,21 @@ public class Process {
 						e.printStackTrace();
 						return ApiRespCode.SSL_CONNECT_FAIL;
 					}
+					//save Reversal first
+					this.addRecord2BatchDetail(pprTxnReqOnline.getRespNewDeviceID(), 
+							reqSpec.getT0100(),
+							configManager.getBatchNo(), 
+							reqSpec.getT0300(), 
+							reqSpec.getT3700(), 
+							reversalReq, amt);
+					
 					String cmasResp = ssl.sendRequest(cmasReq);
 					if(cmasResp==null) {
 						configManager.setTMSerialNo(String.valueOf(++tmSerialNo));
 						return ApiRespCode.HOST_NO_RESPONSE;
+					} else {
+						//delete Reversal request
+						this.deleteRecord4BatchDetail();
 					}
 					logger.debug("autoLoad CMAS Resp:"+cmasResp);
 					
@@ -613,11 +635,21 @@ public class Process {
 			//pack AuthOnline Advice
 			respSpec = new CmasDataSpec();
 			kernel.readerField2CmasSpec(pprTxnReqOnline, pprAuthTxnOnline, respSpec, configManager);
-			String advice = kernel.packRequeset(CmasDataSpec.CmasReqField._0220.getField(), respSpec);
-			String cmasResp = ssl.sendRequest(advice);
+			String autoloadAdvice = kernel.packRequeset(CmasDataSpec.CmasReqField._0220.getField(), respSpec);
+			logger.debug("save autoload advice");
+			this.addRecord2BatchDetail(pprTxnReqOnline.getRespNewDeviceID(), 
+					configManager.getBatchNo(), 
+					respSpec.getT0100(), 
+					respSpec.getT0300(), 
+					respSpec.getT3700(), 
+					autoloadAdvice, amt);
+			
+			//String cmasResp = ssl.sendRequest(advice);
+			//logger.debug("autoLoad Advice CMAS Resp:"+cmasResp);
+			
 			//update tmSerialNo
 			configManager.setTMSerialNo(String.valueOf(++tmSerialNo));
-			logger.debug("autoLoad Advice CMAS Resp:"+cmasResp);
+			
 			result = ApiRespCode.SUCCESS;	
 			
 		} catch(Exception e) {
@@ -688,6 +720,7 @@ public class Process {
 				String lockAdvice = kernel.packRequeset(CmasKernel.CMAS_LOCKCARD_ADVICE_FLD, cmaslockAdvice);
 				logger.debug("Save Lock Advice:"+lockAdvice);
 				this.addRecord2BatchDetail(pprTxnReqOffline.getErrorRespFld().getNewDeviceID(),
+						cmaslockAdvice.getT0100(),
 						configManager.getBatchNo(), 
 						cmaslockAdvice.getT0300(), 
 						cmaslockAdvice.getT3700(), 
@@ -721,7 +754,14 @@ public class Process {
 					CmasDataSpec cmaslockAdvice = new CmasDataSpec();
 					kernel.blackList2CmasLockAdvice(pprTxnReqOffline, cmaslockAdvice, configManager);
 					String blckListAdvice = kernel.packRequeset(CmasKernel.CMAS_LOCKCARD_ADVICE_FLD, cmaslockAdvice);
-					logger.debug("LockCard Advice:"+blckListAdvice);
+					logger.debug("save LockCard Advice:"+blckListAdvice);					
+					this.addRecord2BatchDetail(pprTxnReqOffline.getRespNewDeviceID(), 
+							cmaslockAdvice.getT0100(),
+							configManager.getBatchNo(), 
+							cmaslockAdvice.getT0300(), 
+							cmaslockAdvice.getT3700(), 
+							blckListAdvice, 0);
+					
 					configManager.setTMSerialNo(String.valueOf(++tmSerialNo));
 				} catch(Exception e) {
 					logger.error(e.getMessage());
@@ -779,6 +819,16 @@ public class Process {
 						String cmasReq = kernel.packRequeset(CmasDataSpec.CmasReqField._0100_VERI.getField(), spec);
 						logger.debug("_6415 CMAS goOnline Request:"+cmasReq);
 						
+						//Reversal
+						spec.setT0100(MsgType.REVERSAL_REQ.toString());
+						String reversalReq = kernel.packRequeset(CmasDataSpec.CmasReqField._0100_VERI.getField(), spec);
+						this.addRecord2BatchDetail(pprTxnReqOffline.getRespNewDeviceID(), 
+								configManager.getBatchNo(), 
+								spec.getT0100(), 
+								spec.getT0300(), 
+								spec.getT3700(), 
+								reversalReq, amt);
+						
 						ssl.join();
 						String cmasResp = ssl.sendRequest(cmasReq);
 						logger.debug("_6415 CMAS goOnline Response:"+cmasResp);
@@ -786,12 +836,15 @@ public class Process {
 							configManager.setTMSerialNo(String.valueOf(++tmSerialNo));
 							return ApiRespCode.HOST_NO_RESPONSE;
 						}
+						//delete Reversal Req
+						this.deleteRecord4BatchDetail();
 						
 						
 						
 						CmasDataSpec specResp = new CmasDataSpec(cmasResp);
 						if(specResp.getT3900().equalsIgnoreCase(CmasRespCode._00.getId()) == false){ 
 							configManager.setTMSerialNo(String.valueOf(++tmSerialNo));
+							logger.error("goOnline Result T3900 was:"+specResp.getT3900());
 							return ApiRespCode.fromCode(specResp.getT3900(), CmasRespCode.values());
 						}
 						
@@ -811,27 +864,29 @@ public class Process {
 					} else break;//9000
 					
 			}
-			//update TxnBatch table
-			TxnBatch tb = configManager.getTxnBatch();
-			tb.setDeductCnt(tb.getDeductCnt()+1);
-			tb.setDeductAmt(tb.getDeductAmt()+amt);
+			
 		
 			logger.info("=========SendRecv Deduct Advice==========");
 			//pack advice	
 			String advice = null;
 			CmasKernel kernel = new CmasKernel();
-			CmasDataSpec specAdvice = new CmasDataSpec();
-			kernel.readerField2CmasSpec(pprTxnReqOffline, pprAuthTxnOffline, specAdvice, configManager);
-			advice = kernel.packRequeset(CmasDataSpec.CmasReqField._0220.getField(), specAdvice);
-			configManager.setTMSerialNo(String.valueOf(++tmSerialNo));
+			CmasDataSpec deductAdvice = new CmasDataSpec();
+			kernel.readerField2CmasSpec(pprTxnReqOffline, pprAuthTxnOffline, deductAdvice, configManager);
+			advice = kernel.packRequeset(CmasDataSpec.CmasReqField._0220.getField(), deductAdvice);
 			
+			//update TxnBatch table
+			TxnBatch tb = configManager.getTxnBatch();
+			tb.setDeductCnt(tb.getDeductCnt()+1);
+			tb.setDeductAmt(tb.getDeductAmt()+amt);			
 			//update batch_detail table
-			this.addRecord2BatchDetail(pprTxnReqOffline.getRespNewDeviceID(), 
+			this.addRecord2BatchDetail(pprTxnReqOffline.getRespNewDeviceID(), 					
 					configManager.getBatchNo(),
-					specAdvice.getT0300(), 
-					specAdvice.getT3700(), 
-					advice, amt);
-			
+					deductAdvice.getT0100(),
+					deductAdvice.getT0300(), 
+					deductAdvice.getT3700(), 
+					advice, amt);			
+			//update TMSerialNo
+			configManager.setTMSerialNo(String.valueOf(++tmSerialNo));
 			
 			/*
 			//send advice

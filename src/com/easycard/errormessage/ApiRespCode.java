@@ -57,12 +57,12 @@ public enum ApiRespCode  implements IRespCode{
 	  
 	  public static IRespCode fromCode(String code, IRespCode[] rc) {
             // Keep a hashmap of mapping between code and corresponding enum as a cache.  We need to initialize it only once
-            if (codeToEnumMap == null) {
+            //if (codeToEnumMap == null) {
                 codeToEnumMap = new HashMap<String, IRespCode>();
                 for (IRespCode aEnum : rc) {
                     codeToEnumMap.put(aEnum.getId(), aEnum);
                 }
-            }
+            //}
 
             IRespCode enumForGivenCode = codeToEnumMap.get(code);
             if (enumForGivenCode == null) {

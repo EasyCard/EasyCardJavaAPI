@@ -9,9 +9,11 @@ import java.util.Arrays;
 
 
 
+
 import org.apache.log4j.Logger;
 
 import com.easycard.pc.CMAS.CmasDataSpec.Issuer;
+import com.easycard.pc.CMAS.CmasDataSpec.MsgType;
 import com.easycard.pc.CMAS.CmasTag.SubTag5588;
 import com.easycard.pc.CMAS.CmasTag.SubTag5596;
 import com.easycard.pc.CMAS.CmasTag.SubTag6002;
@@ -777,7 +779,8 @@ public class CmasKernel {
 	public void readerField2CmasSpec(PPR_TxnReqOffline pprTxnReqOffline, CmasDataSpec spec, IConfigManager configManager){
 		//Reader Response 6415, goOnline
 		byte[] b = null;
-		spec.setT0100("0100");
+		spec.setT0100(MsgType.AUTH_REQ.toString());
+		//spec.setT0100(MsgType.REVERSAL_REQ.toString());
 
 		//t0200
 		b = Arrays.copyOfRange(pprTxnReqOffline.getRespCardPhysicalID(), 0, pprTxnReqOffline.getRespCardPhysicalIDLength());
