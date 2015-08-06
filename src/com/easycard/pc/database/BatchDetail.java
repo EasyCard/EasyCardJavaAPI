@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -30,6 +31,7 @@ public class BatchDetail implements ICmasTable{
 		public String pCode=strDefaultValue;
 		public String adviceReq=strDefaultValue;
 		public String adviceResp=strDefaultValue;
+		public String t3900 = strDefaultValue;
 		
 		
 	}
@@ -37,12 +39,13 @@ public class BatchDetail implements ICmasTable{
 	private DBFields dbFields = new DBFields();
 	//------------------------------------------------------------
 	
-	public ArrayList<DBFields> selectUnUploadAdvice(Connection con, String newDeviceIDMixBatchNo){
-		ArrayList<DBFields> adviceSet = new ArrayList<BatchDetail.DBFields>();
+	public List<BatchDetail.DBFields> selectUnUploadAdvice(Connection con, String newDeviceIDMixBatchNo){
+		List<BatchDetail.DBFields> adviceSet = new ArrayList<BatchDetail.DBFields>();
 		String sql = null;
 		PreparedStatement pst = null; 
 		ResultSet rs = null;
 		
+		logger.debug("select batch_detail key was:"+newDeviceIDMixBatchNo);
 		if(newDeviceIDMixBatchNo!=null) sql = String.format("SELECT * FROM %s WHERE newDeviceIDMixBatchNo=? and adviceResp IS NULL", TABLE_NAME);
 		else sql = String.format("SELECT * FROM %s WHERE newDeviceIDMixBatchNo=? and adviceResp IS NULL", TABLE_NAME);
 		
@@ -53,6 +56,7 @@ public class BatchDetail implements ICmasTable{
 			pst.setString(1, newDeviceIDMixBatchNo);
 			rs = pst.executeQuery();
 		
+			//logger.debug("advices count was:"+rs.);
 			while(rs.next()){
 				DBFields record = new DBFields();
 				Field[] fields = record.getClass().getDeclaredFields();
@@ -62,12 +66,12 @@ public class BatchDetail implements ICmasTable{
 						if(fields[i].getType().equals(int.class)){
 							
 							//logger.debug("name:"+fields[i].getName()+", value:"+rs.getInt(fields[i].getName()));
-							fields[i].setInt(dbFields, rs.getInt(fields[i].getName()));
+							fields[i].setInt(record, rs.getInt(fields[i].getName()));
 							
 						} else if(fields[i].getType().equals(String.class)) {
 							
 							//logger.debug("name:"+fields[i].getName()+", value:"+rs.getString(fields[i].getName()));
-							fields[i].set(dbFields, rs.getString(fields[i].getName()));
+							fields[i].set(record, rs.getString(fields[i].getName()));
 						}
 					} catch (IllegalArgumentException
 							| IllegalAccessException e) {
@@ -75,15 +79,15 @@ public class BatchDetail implements ICmasTable{
 						logger.error(e.getMessage());
 						e.printStackTrace();
 					}
-					
-					adviceSet.add(record);
 				}
+				adviceSet.add(record);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			logger.error("SQLException:"+e.getMessage());
 			e.printStackTrace();
 		}
+		
 		
 		return adviceSet;
 	} 
@@ -375,4 +379,14 @@ public class BatchDetail implements ICmasTable{
 		this.tbUpdated = true;
 		this.dbFields.msgType = msgType;
 	}
+	
+	public String getT3900() {
+		return dbFields.t3900;
+	}
+
+	public void setT3900(String t3900) {
+		this.tbUpdated = true;
+		this.dbFields.t3900 = t3900;
+	}
+	
 }

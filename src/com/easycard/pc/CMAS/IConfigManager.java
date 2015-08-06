@@ -22,6 +22,8 @@ public interface IConfigManager {
 	public String getBlackListVersion();
 	public void setBlackListVersion(String verName);
 	
+	public String getBlackListType();
+	public void setBlackListType(String type);
 	
 	public String getNewLocationID();
 	public void setNewLocationID(String id);
@@ -44,6 +46,9 @@ public interface IConfigManager {
 	public String getFtpIP();
 	public void setFtpIP(String ip);
 	
+	public int getFtpPort();
+	public void setFtpPort(int port);
+	
 	public String getFtpLoginID();
 	public void setFtpLoginID(String id);
 	
@@ -55,10 +60,6 @@ public interface IConfigManager {
 			
 	public String getBatchNo();
 	public void setBatchNo(String no);
-	
-	
-	//public String getNewServiceProviderID();
-	//public void setNewServiceProviderID(String id);
 	
 	
 	public String getReaderPort();
@@ -79,4 +80,24 @@ public interface IConfigManager {
 	public String getNewDeviceID();
 	public void setNewDeviceID(String id);
 	
+	public String getApiParaVer();
+	public void setApiParaVer(String ver);
+	
+
+	
+	
+	public int getAdviceLimit();
+	public void setAdviceLimit(int limit);
+	
+	public int getAdviceLimitLock();
+	public void setAdviceLimitLock(int limit);
+
+	public String getTxnSwitch();
+	public void setTxnSwitch(String s);
+
+	public int getCashAddUnit();
+	public void setCashAddUnit(int unit);
+	
+	public int getAutoloadAmtLimit();
+	public void setAutoloadAmtLimit(int limit);
 }

@@ -20,10 +20,11 @@ public class ApiInfo implements ICmasTable{
 	
 	private class DBFields{
 		
-		public String apiName="";//primary key
-		public String apiVer="";
-		public String blackListVer="";
-		public int nowDBVersion=1;	
+		public String apiName=strDefaultValue;//primary key
+		public String apiVer=strDefaultValue;
+		public String blackListVer=strDefaultValue;
+		public String blackListType=strDefaultValue;
+		public int nowDBVersion=intDefaultValue;	
 		
 		DBFields(){}
 	}
@@ -34,41 +35,51 @@ public class ApiInfo implements ICmasTable{
 	public boolean selectTable(Connection con){
 		boolean result = true;
 		 String sql = String.format("SELECT * FROM %s", TABLE_NAME);
-	     PreparedStatement pst = null;
 	     
-	    
-	     ResultSet rs = null;
-	     try {
-			//stat = con.createStatement();
-	    	pst = con.prepareStatement(sql);
-	    	//pst.setString(1, "EasyCardApi");
-		    //pst.setString(1, keyApiName);
-			rs = pst.executeQuery();
-		    //rs.last();//move to last pointer, sqlite not support
-		    
-		    //int cnt = rs.getRow();
-			//if(cnt == 0) return false;//no any data existed
-			//logger.debug("ApiTable Cnt:"+cnt);
-			
-			if(rs.next()){
-				this.setApiName(rs.getString("apiName"));
-				this.setApiVer(rs.getString("apiVer"));
-				this.setBlackListVer(rs.getString("blackListVer"));
-				this.setNowDBVersion(rs.getInt("nowDBVersion"));
+		 PreparedStatement pst = null; 
+			ResultSet rs = null;
+			try {
+				pst = con.prepareStatement(sql);			
+				rs = pst.executeQuery();
 				
-				logger.debug("apiName:"+rs.getString("apiName"));
-		    	logger.debug("apiVer:"+rs.getString("apiVer"));
-		    	logger.debug("blackListVer:"+rs.getString("blackListVer"));
-		    	logger.debug("nowDBVersion:"+rs.getInt("nowDBVersion"));
-			} else {
-				logger.error("ApiInfo no data");
-				return false;			
+						
+				Field[] fields = dbFields.getClass().getDeclaredFields();
+				int cnt = fields.length - 1;
+				if(rs.next()){
+					
+					
+					for(int i=0; i<cnt; i++){
+						try {
+							if(fields[i].getType().equals(int.class)){
+								
+								//logger.debug("name:"+fields[i].getName()+", value:"+rs.getInt(fields[i].getName()));
+								fields[i].setInt(dbFields, rs.getInt(fields[i].getName()));
+								
+							} else if(fields[i].getType().equals(String.class)) {
+								
+								//logger.debug("name:"+fields[i].getName()+", value:"+rs.getString(fields[i].getName()));
+								fields[i].set(dbFields, rs.getString(fields[i].getName()));
+							}
+						} catch (IllegalArgumentException
+								| IllegalAccessException e) {
+							// TODO Auto-generated catch block
+							logger.error(e.getMessage());
+							e.printStackTrace();
+						}
+					
+					}
+				} else {
+					logger.error("api_info Table got NULL data.");
+					result = false;
+				}
+				
+				
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				result = false;
+				e.printStackTrace();
 			}
-	     } catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();		
-	     }
-	        
 		
 		return result;
 	}
@@ -295,6 +306,14 @@ public class ApiInfo implements ICmasTable{
 	public void setBlackListVer(String blackListVer) {
 		this.tbUpdated = true;
 		this.dbFields.blackListVer = blackListVer;
+	}
+	
+	public String getBlackListType() {
+		return dbFields.blackListType;
+	}
+	public void setBlackListType(String type) {
+		this.tbUpdated = true;
+		this.dbFields.blackListType = type;
 	}
 	
 	public int getNowDBVersion() {

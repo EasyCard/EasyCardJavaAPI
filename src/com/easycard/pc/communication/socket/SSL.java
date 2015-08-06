@@ -170,13 +170,14 @@ public class SSL extends Thread {
 				// throw new IOException("SSL Socket NoConnection");
 			}
 
+			/*
 			logger.debug("isBound:" + sslSocket.isBound());
 			logger.debug("isClosed:" + sslSocket.isClosed());
 			logger.debug("isConnected:" + sslSocket.isConnected());
 			logger.debug("isInputShutdown:" + sslSocket.isInputShutdown());
 			logger.debug("isOutputShutdown:" + sslSocket.isOutputShutdown());
 
-			logger.debug("setting Timeout:" + recvTo + "(sec)");
+			logger.debug("setting Timeout:" + recvTo + "(sec)");*/
 			sslSocket.setSoTimeout(this.recvTo * 1000);
 
 			// OutputStream out;
@@ -193,7 +194,8 @@ public class SSL extends Thread {
 			int len = in.read(mBuffer);
 			if (len > 0) {
 				resp = new String(Arrays.copyOf(mBuffer, len), "UTF-8");
-			}
+				logger.debug("sslSocket Receive:"+resp);
+			} else logger.error("SSL Socket Received msg maybe timeout");
 
 			// out.close(); //!!Note: close() means closeSocket
 			// in.close(); //!!Note: close() means closeSocket

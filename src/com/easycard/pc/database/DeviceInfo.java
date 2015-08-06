@@ -32,7 +32,7 @@ public class DeviceInfo implements ICmasTable{
 		
 		
 		public String newDeviceID=strDefaultValue;	
-		//public String createDateTime=strDefaultValue;
+		
 		
 		public String readerID=strDefaultValue;//signOn update		
 		public String newLocationID=strDefaultValue;//signOn update
@@ -40,7 +40,16 @@ public class DeviceInfo implements ICmasTable{
 		public int tmSerialNo=intDefaultValue;
 		public int batchNo=intDefaultValue;
 		
-		//DBFields(){}
+		public String apiParaVer=strDefaultValue;
+		
+		public int adviceLimit=intDefaultValue;//TM26
+		public int adviceLimitLock=intDefaultValue;//TM27
+		public String txnSwitch=strDefaultValue;//TM30
+		
+		public int cashAddUnit = intDefaultValue;//TM31
+		public int autoloadAmtLimit = intDefaultValue;//TM77
+		
+		
 	}
 	public static final String TABLE_NAME = "device_info";
 	private DBFields dbFields = new DBFields();
@@ -85,7 +94,7 @@ public class DeviceInfo implements ICmasTable{
 				
 				}
 			} else {
-				logger.error("UserDefine Table got NULL data. nickName:"+nickNameKey);
+				logger.error("device_info Table got NULL data. nickName:"+nickNameKey);
 				result = false;
 			}
 			
@@ -418,12 +427,71 @@ public class DeviceInfo implements ICmasTable{
 	}
 
 	public int getTmSerialNo() {
+		logger.debug("getter:"+dbFields.tmSerialNo);
 		return dbFields.tmSerialNo;
 	}
 
 	public void setTmSerialNo(int tmSerialNo) {
+		logger.debug("setter:"+tmSerialNo);
 		this.tbUpdated = true;
 		this.dbFields.tmSerialNo = tmSerialNo;
+	}
+	
+	public String getApiParaVer() {
+		return dbFields.apiParaVer;
+	}
+
+	public void setApiParaVer(String apiParaVer) {
+		logger.debug("setter:"+apiParaVer);
+		this.tbUpdated = true;
+		this.dbFields.apiParaVer = apiParaVer;
+	}
+	
+	public int getAdviceLimit() {
+		return dbFields.adviceLimit;
+	}
+
+	public void setAdviceLimit(int limit) {
+		this.tbUpdated = true;
+		this.dbFields.adviceLimit = limit;
+	}
+	
+	public int getAdviceLimitLock() {
+		return dbFields.adviceLimitLock;
+	}
+
+	public void setAdviceLimitLock(int limit) {
+		this.tbUpdated = true;
+		this.dbFields.adviceLimitLock = limit;
+	}
+	
+	public String getTxnSwitch() {
+		return dbFields.txnSwitch;
+	}
+
+	public void setTxnSwitch(String txnSwitch) {
+		logger.debug("setter:"+txnSwitch);
+		this.tbUpdated = true;
+		this.dbFields.txnSwitch = txnSwitch;
+	}
+	
+	
+	public int getCashAddUnit() {
+		return dbFields.cashAddUnit;
+	}
+
+	public void setCashAddUnit(int unit) {
+		this.tbUpdated = true;
+		this.dbFields.cashAddUnit = unit;
+	}
+	
+	public int getAutoloadAmtLimit() {
+		return dbFields.autoloadAmtLimit;
+	}
+
+	public void setAutoloadAmtLimit(int limit) {
+		this.tbUpdated = true;
+		this.dbFields.autoloadAmtLimit = limit;
 	}
 	
 	public boolean getTbUpdated(){

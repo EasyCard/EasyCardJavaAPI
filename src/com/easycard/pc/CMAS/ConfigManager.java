@@ -514,6 +514,118 @@ public class ConfigManager implements IConfigManager{
 		// TODO Auto-generated method stub
 		
 	}
+
+
+	@Override
+	public String getApiParaVer() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void setApiParaVer(String ver) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public int getAdviceLimit() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public void setAdviceLimit(int limit) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public int getAdviceLimitLock() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public void setAdviceLimitLock(int limit) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public String getTxnSwitch() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void setTxnSwitch(String s) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public int getFtpPort() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public void setFtpPort(int port) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public int getCashAddUnit() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public void setCashAddUnit(int unit) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public int getAutoloadAmtLimit() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public void setAutoloadAmtLimit(int limit) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public String getBlackListType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void setBlackListType(String type) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 }

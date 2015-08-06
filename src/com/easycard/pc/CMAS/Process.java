@@ -1,5 +1,6 @@
 package com.easycard.pc.CMAS;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -11,6 +12,9 @@ import java.util.ArrayList;
 
 
 
+
+
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -147,70 +151,135 @@ public class Process {
 	}
 
 
+	private SendAdvice bgUploadAdvice(){
+		SSL ssl = null;
+		Connection con = null;		
+		con = configManager.getConnection();
+		String key = configManager.getTxnBatch().getNewDeviceIDMixBatchNo();		
+		List<BatchDetail.DBFields> data = configManager.getBatchDetail().selectUnUploadAdvice(con, key);
+		if(data.size() == 0) {
+			logger.debug("no advice needed to send, so, return null");
+			return null;
+		}
+		
+		//SSL preConnect
+		ssl = this.getSSLInstance();
+		
+		//create another thread to process advice
+		SendAdvice advice = new SendAdvice(data, ssl, con);
+		advice.start();
+		
+		return advice;
+	}
+	
+	private void updateTMS5595(ArrayList<CmasTag.SubTag5595> t5595s){
+		try{
+			String tag = null;
+			String value = null;
+			int nDate = Integer.valueOf(Util.sGetDate());//now date
+			int gDate = 0;//CMAS gived date
+			
+			for(int i=0; i<t5595s.size(); i++){
+				try{
+					tag = t5595s.get(i).getT559502();
+					value = t5595s.get(i).getT559503();
+					gDate = Integer.valueOf(t5595s.get(i).getT559504());
+					logger.debug("nowDate:"+nDate+",tag:"+tag+"startDate:"+gDate);
+					if(gDate > nDate) continue;
+					//logger.debug("5595:"+t5595s.get(i).getT559502());
+					if(tag.equalsIgnoreCase("TM03")){ // 分公司代號								
+						configManager.setNewLocationID(value);					
+					} else if(tag.equalsIgnoreCase("TM05")){						
+						configManager.setFtpIP(value);					
+					} else if(tag.equalsIgnoreCase("TM06")){						
+						configManager.setFtpPort(Integer.valueOf(value));					
+					} else if(tag.equalsIgnoreCase("TM07")){						
+						configManager.setFtpLoginID(value);					
+					} else if(tag.equalsIgnoreCase("TM08")){							
+						configManager.setFtpLoginPwd(value);					
+					} else if(tag.equalsIgnoreCase("TM26")){
+						configManager.setAdviceLimit(Integer.valueOf(value));
+					} else if(tag.equalsIgnoreCase("TM27")){
+						configManager.setAdviceLimitLock(Integer.valueOf(value));
+					} else if(tag.equalsIgnoreCase("TM30")){
+						configManager.setTxnSwitch(value);
+					} else if(tag.equalsIgnoreCase("TM31")){
+						configManager.setCashAddUnit(Integer.valueOf(value));;
+					} else if(tag.equalsIgnoreCase("TM77")){
+						configManager.setAutoloadAmtLimit(Integer.valueOf(value));;
+					} else{}
+				}catch(Exception e){
+					e.printStackTrace();
+					logger.error("Exception:"+e.getMessage());
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			logger.error("Exception:"+e.getMessage());
+		}
+			
+	}
+	
+	private void updateTMS5588(ArrayList<CmasTag.SubTag5588> t5588s){
+		for(int i=0; i<t5588s.size(); i++){
+			//logger.debug("5595:"+t5595s.get(i).getT559502());
+			if(t5588s.get(i).getT558801().equalsIgnoreCase("04")){ // 參數版號
+				logger.debug("update ApiParameter Ver to:"+t5588s.get(i).getT558803());
+				configManager.setApiParaVer(t5588s.get(i).getT558803());												
+			} else if(t5588s.get(i).getT558801().equalsIgnoreCase("02")) {
+				configManager.setBlackListType(t5588s.get(i).getT558802());
+			}
+		}
+	}
+	
 	public IRespCode doSignon()
 	{
 		logger.info("Start");
-		//int []signOn0800 = {100, 300, 1100, 1101, 1200, 1201, 1300, 1301, 3700, 4100, 4101, 4102, 4103, 4104, 4200, 4210, 4802, 4820, 4823, 4824, 5301, 5307, 5308, 5361, 5362, 5363, 5364, 5365, 5366, 5368, 5369, 5370, 5371, 5501, 5503, 5504, 5510, 5588, 5596, 6000, 6002, 6003, 6004, 6400, 6408};
-		//int []signOn0820 = {100, 300, 1100, 1101, 1200, 1300, 3700, 4100, 4200, 4210, 4825, 5501, 5503, 5504, 5510, 6406};
 		
-		IRespCode result;
-		//Properties easyCardApip = cfgList.get(ConfigManager.ConfigOrder.EASYCARD_API.ordinal());
-		//Properties txnInfo = cfgList.get(ConfigManager.ConfigOrder.TXN_INFO.ordinal());
-		//Properties uderDef = cfgList.get(ConfigManager.ConfigOrder.USER_DEF.ordinal());
-		//Properties hostInfo = cfgList.get(ConfigManager.ConfigOrder.HOST_INFO.ordinal());
-		//Properties easycardApi = cfgList.get(ConfigManager.ConfigOrder.EASYCARD_API.ordinal());
-		
+		IRespCode result;		
 		String cmasRquest=null;
 		String cmasResponse=null;
 		PPR_Reset pprReset = null;
 		PPR_SignOn pprSignon = null;
 		CmasDataSpec specResetResp = null;
 		CmasKernel kernel = null;
-		SSL ssl = null;
+		SSL ssl = null;		
 		CmasFTPList cmasFTP = null;
+		SendAdvice advices = null;
+		
 		String t3900 = "19";
 		try{
 			
 			
 			int recvCnt = 0;
 			int totalCnt = 0;
-			ssl = new SSL(configManager.getHostUrl(), 
-					Integer.valueOf(configManager.getHostPort()), 
-					null,
-					null);
 			
-			//preConnect
-			//ssl.setPriority(Thread.MAX_PRIORITY);
-			ssl.start();
+			//ssl preConnect
+			ssl = this.getSSLInstance();
 			
-			/*
-			if(ssl.connect()) logger.debug("SSL OK");
-			else logger.debug("SSL FAIL");
-			*/
+			//process advice
+			advices = this.bgUploadAdvice();
+			
+			
 			while(t3900.equalsIgnoreCase("19") || (recvCnt < totalCnt))
 			{
 			
 				//PPR_Reset
+				logger.debug("===== exe PPR_Reset =====");
 				pprReset = new PPR_Reset();		
 				pprReset.SetOffline(false);
 				pprReset.SetReq_TMLocationID(configManager.getTMLocationID());		
 				pprReset.SetReq_TMID(configManager.getTMID());		
 				int unixTimeStamp = (int) (System.currentTimeMillis() / 1000L);
-				pprReset.SetReq_TMTXNDateTime(unixTimeStamp);
-				
+				pprReset.SetReq_TMTXNDateTime(unixTimeStamp);				
 				pprReset.SetReq_TMSerialNumber(Integer.valueOf(configManager.getTMSerialNo()));
 				pprReset.SetReq_TMAgentNumber(configManager.getTMAgentNo());
-				pprReset.SetReq_TXNDateTime(unixTimeStamp, this.getmTimeZone());
-				
-				
+				pprReset.SetReq_TXNDateTime(unixTimeStamp, this.getmTimeZone());							
 				byte[] b = Util.ascii2Bcd(configManager.getNewLocationID());
-				pprReset.SetReq_LocationID(b[0]);
-				
-				pprReset.SetReq_NewLocationID(Short.valueOf(configManager.getNewLocationID()));
-				
+				pprReset.SetReq_LocationID(b[0]);				
+				pprReset.SetReq_NewLocationID(Short.valueOf(configManager.getNewLocationID()));				
 				pprReset.SetReq_SAMSlotControlFlag(true, 1);
-				
-				logger.debug("ready to call reader");
+								
 				result = reader.exeCommand(pprReset);
 				if(result != ReaderRespCode._9000)
 				{
@@ -231,7 +300,7 @@ public class Process {
 					return ApiRespCode.READER_CHANGED_PLZ_SETTLE_FIRST;
 				
 				
-				
+				logger.info("===== exe CMAS 0800 =====");
 				//prepare CMAS Data
 				CmasDataSpec specResetReq = new CmasDataSpec();	
 				//SubTag5596 t5596 = specResetReq.getCmasTag().new SubTag5596();
@@ -266,6 +335,9 @@ public class Process {
 						
 															
 					} else if(t3900.equalsIgnoreCase("00")){
+						//update SerialNo++
+						configManager.setTMSerialNo(String.format("%d", Integer.valueOf(specResetResp.getT1100())+1));
+						
 						pprSignon= new PPR_SignOn();						
 						kernel.cmasSpec2ReaderField(specResetResp, pprSignon, configManager);						
 						totalCnt = Integer.valueOf(specResetResp.getT5596().getT559601());
@@ -275,23 +347,24 @@ public class Process {
 						t5596.setT559603(String.format("%08d", recvCnt+1));// recvCnt ++
 						t5596.setT559604(specResetResp.getT5596().getT559604());
 						
-						reader.exeCommand(pprSignon);
+						result = reader.exeCommand(pprSignon);
+						if(result != ReaderRespCode._9000){
+							logger.error("pprSignOn fail");
+							//saved TMSerialNo. rightNow
+							configManager.getDeviceInfo().updateRec(configManager.getConnection());
+							return result;
+						}
 						
-						//SerialNumber
-						configManager.setTMSerialNo(specResetResp.getT1100());
 						
 						//branch_company		
 						//easycardApi.setProperty("Company_Branch", specResetResp.getT4210());
 						//new locatoin id
 						ArrayList<CmasTag.SubTag5595> t5595s = specResetResp.getT5595s();
-						for(int i=0; i<t5595s.size(); i++){
-							logger.debug("5595:"+t5595s.get(i).getT559502());
-							if(t5595s.get(i).getT559502().equalsIgnoreCase("TM03")){ // 分公司代號								
-								configManager.setNewLocationID(t5595s.get(i).getT559503());
-								//easycardApi.setProperty("New_Location_ID", t5595s.get(i).getT559503());
-								break;
-							}
-						}
+						this.updateTMS5595(t5595s);
+						
+						//5588
+						ArrayList<CmasTag.SubTag5588> t5588s = specResetResp.getT5588s();
+						this.updateTMS5588(t5588s);
 						
 						
 					} else {
@@ -299,7 +372,7 @@ public class Process {
 						return ApiRespCode.fromCode(t3900, CmasRespCode.values());					
 					}
 					
-					//update TMSerialNo. rightNow
+					//saved TMSerialNo. rightNow
 					configManager.getDeviceInfo().updateRec(configManager.getConnection());
 				} else{/*maybe TimeOut*/
 					logger.error("CMAS maybe be timeout, nothing received");
@@ -310,15 +383,11 @@ public class Process {
 		
 			
 			
-			if(t3900.equalsIgnoreCase("00")){		
+			if(t3900.equalsIgnoreCase("00")){							
+				
 				//FTPS download file, Start another thread
 				if(anyFileNeededToDownload(specResetResp.getT5595s())){
-					cmasFTP = new CmasFTPList(configManager.getFtpUrl(), 
-						configManager.getFtpIP(),
-						990,
-						configManager.getFtpLoginID(),
-						configManager.getFtpLoginPwd(),
-						specResetResp.getT5595s(),
+					cmasFTP = new CmasFTPList(specResetResp.getT5595s(),
 						configManager);
 					
 					cmasFTP.start();					
@@ -328,18 +397,21 @@ public class Process {
 				kernel.readerField2CmasSpec(pprSignon, specSignonAdv, specResetResp, configManager);
 				String cmasAdv = kernel.packRequeset(CmasDataSpec.CmasReqField._0820.getField(), specSignonAdv);
 				logger.debug("save SignOn Adv:"+cmasAdv);
-				this.addRecord2BatchDetail(pprReset.GetResp_NewDeviceID(),
-						specSignonAdv.getT0100(),
+				this.addRecord2BatchDetail(pprReset.GetResp_NewDeviceID(),						
 						configManager.getBatchNo(), 
+						specSignonAdv.getT0100(),
 						specSignonAdv.getT0300(), 
 						specSignonAdv.getT3700(), 
 						cmasAdv, 0);
 				
-				//cmasResponse = ssl.sendRequest(cmasAdv);
+				//send advice immediately
+				if(configManager.getAdviceLimit() == 1){
+					SendAdvice.immediatelySend(ssl, configManager.getBatchDetail(), configManager.getConnection(), cmasAdv);					
+				}
 				//logger.debug("SignOn Adv Response:"+cmasResponse);
 				
-			
-				if(cmasFTP!=null)cmasFTP.join();
+				//main process waited that FTPS thread finished
+				if(cmasFTP!=null) cmasFTP.join();
 						
 			}
 		} catch(Exception e) {			
@@ -351,12 +423,14 @@ public class Process {
 		finally{			
 			try{
 				logger.debug("finally");
-				
+				if(advices != null) advices.stopSendAdvice();
 				ssl.disconnect();
-				if(cmasFTP!=null) cmasFTP.disconnect();
-				
-				configManager.finish();
+				if(cmasFTP != null) cmasFTP.disconnect();
 				reader.finish();
+				//config finish @ last step
+				configManager.finish();
+				
+				
 			} catch(Exception e) {
 				logger.error("doSignon finally exception:"+e.getMessage());
 			}			
@@ -527,6 +601,22 @@ public class Process {
 		return result;
 	}
 	
+	private void checkSendAdviceNow(SSL ssl, String advice){
+		
+		if(configManager.getAdviceLimit()>1) return;
+		
+		String cmasResponse = null;
+		if((cmasResponse = ssl.sendRequest(advice)) != null){
+			CmasDataSpec spec = new CmasDataSpec(cmasResponse);
+			if(spec.getT3900().equalsIgnoreCase("00") == false){
+				logger.error("WTF... why advice response t3900("+spec.getT3900()+") was not 00");
+			}
+			BatchDetail bd = configManager.getBatchDetail();
+			bd.setAdviceResp(cmasResponse);
+			bd.updateRec(configManager.getConnection());
+		} else logger.error("send advice no response!!!");
+	}
+	
 	private IRespCode exeAutoloadReaderAndCmasFormat(int amt, SSL ssl){
 		IRespCode result = ApiRespCode.ERROR ;//= ApiRespCode.SUCCESS;
 		int tmSerialNo=Integer.valueOf(configManager.getTMSerialNo());
@@ -537,7 +627,7 @@ public class Process {
 		PPR_TxnReqOnline pprTxnReqOnline = null;
 		int testCnt = 1;
 		int unixTimeStamp = (int) (System.currentTimeMillis() / 1000L);	
-		
+		String reversalReq=null;
 		try{
 			while(true){//loop for reTry
 				// exe PPR_TxnReq_Online
@@ -558,7 +648,7 @@ public class Process {
 					
 					//reversal
 					reqSpec.setT0100(MsgType.REVERSAL_REQ.toString());
-					String reversalReq = kernel.packRequeset(CmasDataSpec.CmasReqField._0100_AUTH.getField(), reqSpec);			
+					reversalReq = kernel.packRequeset(CmasDataSpec.CmasReqField._0100_AUTH.getField(), reqSpec);			
 					// reversal todo...
 					
 					// sendRecv from CMAS Host
@@ -582,10 +672,7 @@ public class Process {
 					if(cmasResp==null) {
 						configManager.setTMSerialNo(String.valueOf(++tmSerialNo));
 						return ApiRespCode.HOST_NO_RESPONSE;
-					} else {
-						//delete Reversal request
-						this.deleteRecord4BatchDetail();
-					}
+					} 
 					logger.debug("autoLoad CMAS Resp:"+cmasResp);
 					
 					//testReversal
@@ -599,7 +686,10 @@ public class Process {
 					
 					respSpec = new CmasDataSpec(cmasResp);	
 					if(respSpec.getT3900().equalsIgnoreCase(CmasRespCode._00.getId()) == false)
-					{
+					{						
+						//delete Reversal request
+						this.deleteRecord4BatchDetail();
+						
 						logger.error("T3900:"+respSpec.getT3900());
 						configManager.setTMSerialNo(String.valueOf(++tmSerialNo));
 						return ApiRespCode.fromCode(respSpec.getT3900(), CmasRespCode.values());
@@ -626,11 +716,19 @@ public class Process {
 					continue;
 				} else if(result == ReaderRespCode._9000) break;
 				else {
+					//AuthOnline fail, send Reversal first
+					String reversalResp = ssl.sendRequest(reversalReq);
+					if( reversalResp !=null) this.deleteRecord4BatchDetail();
+				
+					//update serialNo
 					configManager.setTMSerialNo(String.valueOf(++tmSerialNo));
 					return result;
 				}
 			
 			}
+			
+			//autoload OK, delete Reversal request
+			this.deleteRecord4BatchDetail();
 			
 			//pack AuthOnline Advice
 			respSpec = new CmasDataSpec();
@@ -644,6 +742,8 @@ public class Process {
 					respSpec.getT3700(), 
 					autoloadAdvice, amt);
 			
+			//check advice send immediately or not
+			this.checkSendAdviceNow(ssl, autoloadAdvice);
 			//String cmasResp = ssl.sendRequest(advice);
 			//logger.debug("autoLoad Advice CMAS Resp:"+cmasResp);
 			
@@ -688,16 +788,20 @@ public class Process {
 		IRespCode result = null;
 		PPR_AuthTxnOffline pprAuthTxnOffline = null;
 		PPR_TxnReqOffline pprTxnReqOffline = null;
-		long autoloadAmtLimit = 1000;
-		//boolean checkBlackList = true;//是否檢查黑名單卡號
+		SendAdvice advices = null;
 		
+		long autoloadAmtLimit = configManager.getAutoloadAmtLimit();		
 		int tmSerialNo = Integer.valueOf(configManager.getTMSerialNo());
 		int unixTimeStamp = (int) (System.currentTimeMillis() / 1000L);
+		
 		try {
 		
 			logger.info("=========SSL PreConnect==========");
 			//SSL PreConnect
 			ssl = getSSLInstance();
+			
+			//process advice
+			advices = this.bgUploadAdvice();
 			
 			
 			logger.info("=========PPR_TxnReq_Offline==========");
@@ -725,18 +829,20 @@ public class Process {
 						cmaslockAdvice.getT0300(), 
 						cmaslockAdvice.getT3700(), 
 						lockAdvice, 0);
-				/*
+				
 				try {
-					ssl.join();
+					if(configManager.getAdviceLimit() == 1){
+						ssl.join();
+						String resp = ssl.sendRequest(lockAdvice);
+						logger.debug("Save Lock Advice Resp:"+resp);			
+					}
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					logger.error("InterruptedException:"+e.getMessage());
+					//result = ApiRespCode.SSL_CONNECT_FAIL;
 				}
-				String resp = ssl.sendRequest(lockAdvice);
-				logger.debug("Save Lock Advice Resp:"+resp);*/				
 				configManager.setTMSerialNo(String.valueOf(++tmSerialNo));
-				
-				
 				return result;
 			}
 			//not 9000, 6403, 6415, return	
@@ -762,11 +868,19 @@ public class Process {
 							cmaslockAdvice.getT3700(), 
 							blckListAdvice, 0);
 					
-					configManager.setTMSerialNo(String.valueOf(++tmSerialNo));
+					
+					ssl.join();
+					//check send blackAdvice immediately or not
+					this.checkSendAdviceNow(ssl, blckListAdvice);
+				} catch(InterruptedException e){ 
+					logger.error(e.getMessage());
+					e.printStackTrace();
+					
 				} catch(Exception e) {
 					logger.error(e.getMessage());
 					e.printStackTrace();
 				}
+				configManager.setTMSerialNo(String.valueOf(++tmSerialNo));
 				return result;
 			}
 				
@@ -797,7 +911,7 @@ public class Process {
 					if((r = exeAutoloadReaderAndCmasFormat((int)totalAutoloadAmt, ssl)) != ApiRespCode.SUCCESS)
 						return r;
 					unixTimeStamp = (int) (System.currentTimeMillis() / 1000L);
-					result = ReaderRespCode._6088;//進入底下retry
+					result = ReaderRespCode._6088;//important!!!, 只是為了流程順一點, 進入底下retry重跑一次deduct流程
 				}
 					
 			}// autoLoad end
@@ -818,8 +932,16 @@ public class Process {
 						kernel.readerField2CmasSpec(pprTxnReqOffline, spec, configManager);
 						String cmasReq = kernel.packRequeset(CmasDataSpec.CmasReqField._0100_VERI.getField(), spec);
 						logger.debug("_6415 CMAS goOnline Request:"+cmasReq);
+												
+						try{
+							ssl.join();
+						} catch(InterruptedException e){
+							e.printStackTrace();
+							logger.error("InterruptedException:"+e.getMessage());
+							return ApiRespCode.SSL_CONNECT_FAIL;
+						}
 						
-						//Reversal
+						//prePare & save Reversal
 						spec.setT0100(MsgType.REVERSAL_REQ.toString());
 						String reversalReq = kernel.packRequeset(CmasDataSpec.CmasReqField._0100_VERI.getField(), spec);
 						this.addRecord2BatchDetail(pprTxnReqOffline.getRespNewDeviceID(), 
@@ -828,19 +950,20 @@ public class Process {
 								spec.getT0300(), 
 								spec.getT3700(), 
 								reversalReq, amt);
-						
-						ssl.join();
+						//send onLine Auth Request
 						String cmasResp = ssl.sendRequest(cmasReq);
 						logger.debug("_6415 CMAS goOnline Response:"+cmasResp);
 						if(cmasResp == null) {
 							configManager.setTMSerialNo(String.valueOf(++tmSerialNo));
+							String reversalResp = ssl.sendRequest(reversalReq);
+							if(reversalResp!=null) this.deleteRecord4BatchDetail();
 							return ApiRespCode.HOST_NO_RESPONSE;
 						}
 						//delete Reversal Req
 						this.deleteRecord4BatchDetail();
 						
 						
-						
+						//check online request CMAS tag3900
 						CmasDataSpec specResp = new CmasDataSpec(cmasResp);
 						if(specResp.getT3900().equalsIgnoreCase(CmasRespCode._00.getId()) == false){ 
 							configManager.setTMSerialNo(String.valueOf(++tmSerialNo));
@@ -848,7 +971,7 @@ public class Process {
 							return ApiRespCode.fromCode(specResp.getT3900(), CmasRespCode.values());
 						}
 						
-						//prpare PPR_AuthTxnOffline()
+						//prePare PPR_AuthTxnOffline()
 						kernel.cmasSpec2ReaderField(specResp, pprAuthTxnOffline, configManager);
 					}
 					
@@ -861,12 +984,11 @@ public class Process {
 					if(result != ReaderRespCode._9000) {
 						configManager.setTMSerialNo(String.valueOf(++tmSerialNo));
 						return result;
-					} else break;//9000
-					
+					} else break;//9000					
 			}
 			
 		
-			logger.info("=========SendRecv Deduct Advice==========");
+			
 			//pack advice	
 			String advice = null;
 			CmasKernel kernel = new CmasKernel();
@@ -878,7 +1000,7 @@ public class Process {
 			TxnBatch tb = configManager.getTxnBatch();
 			tb.setDeductCnt(tb.getDeductCnt()+1);
 			tb.setDeductAmt(tb.getDeductAmt()+amt);			
-			//update batch_detail table
+			//update Advice request into batch_detail table
 			this.addRecord2BatchDetail(pprTxnReqOffline.getRespNewDeviceID(), 					
 					configManager.getBatchNo(),
 					deductAdvice.getT0100(),
@@ -887,6 +1009,9 @@ public class Process {
 					advice, amt);			
 			//update TMSerialNo
 			configManager.setTMSerialNo(String.valueOf(++tmSerialNo));
+			
+			//check send advice request immediately or not
+			this.checkSendAdviceNow(ssl, advice);
 			
 			/*
 			//send advice
@@ -912,7 +1037,8 @@ public class Process {
 			
 		} finally{			
 			try{
-				logger.debug("finally");				
+				logger.debug("finally");
+				if(advices!=null) advices.stopSendAdvice();
 				ssl.disconnect();		
 				reader.finish();
 				configManager.finish();

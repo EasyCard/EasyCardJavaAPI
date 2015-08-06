@@ -24,7 +24,7 @@ import com.easycard.utilities.Util;
 public class CmasDB extends BaseSQLite implements IConfigManager{
 
 	public static final String DB_NAME = "config/CMAS.db";
-	public static final int DB_VERSION = 6;
+	public static final int DB_VERSION = 15;
 	
 	//private boolean init = false;
 	private String deviceNickName=null;
@@ -175,7 +175,15 @@ public class CmasDB extends BaseSQLite implements IConfigManager{
 		logger.debug("oldVersion:"+oldVersion+",newVersion:"+newVersion);
 		if(newVersion > oldVersion){
 			logger.debug("Upgrade DB now");
-			this.exeSQLCommand("ALTER TABLE batch_detail ADD COLUMN msgType TEXT;");
+			
+			
+			//this.exeSQLCommand(String.format("UPDATE api_info set blackListType='BIG';"));
+			//this.exeSQLCommand(String.format("ALTER TABLE batch_detail ADD COLUMN t3900 TEXT DEFAULT null;"));
+			
+			this.exeSQLCommand(String.format("UPDATE batch_detail SET t3900='00' WHERE adviceResp != 'NULL'"));
+			
+			//this.exeSQLCommand(String.format("ALTER TABLE device_info ADD COLUMN apiParaVer TEXT DEFAULT %s;","0000"));
+			//this.exeSQLCommand(String.format("ALTER TABLE device_info ADD COLUMN txnSwitch TEXT DEFAULT %s;","000000000"));
 			
 			//update dbVersion
 			apiInfo.setNowDBVersion(newVersion);
@@ -359,6 +367,18 @@ public class CmasDB extends BaseSQLite implements IConfigManager{
 		// TODO Auto-generated method stub
 		this.hostInfo.setFtpIP(ip);
 	}
+	
+	@Override
+	public int getFtpPort() {
+		// TODO Auto-generated method stub
+		return this.hostInfo.getFtpPort();
+	}
+
+	@Override
+	public void setFtpPort(int port) {
+		// TODO Auto-generated method stub
+		this.hostInfo.setFtpPort(port);
+	}
 
 	@Override
 	public String getFtpLoginID() {
@@ -392,6 +412,11 @@ public class CmasDB extends BaseSQLite implements IConfigManager{
 
 	@Override
 	public void setTMSerialNo(String no) {
+		//api send SN = 100
+		//host response SN=101
+		//api update SN=101, sned again
+		//host response SN=101
+		//txn finish, SN++, so SN=102
 		// TODO Auto-generated method stub
 		this.deviceInfo.setTmSerialNo(Integer.valueOf(no));
 	}
@@ -488,8 +513,196 @@ public class CmasDB extends BaseSQLite implements IConfigManager{
 		// TODO Auto-generated method stub		
 		this.deviceInfo.setNewDeviceID(id);
 	}
+
+	@Override
+	public String getApiParaVer() {
+		// TODO Auto-generated method stub
+		return this.deviceInfo.getApiParaVer();
+	}
+
+	@Override
+	public void setApiParaVer(String ver) {
+		// TODO Auto-generated method stub
+		this.deviceInfo.setApiParaVer(ver);
+	}
+
+	@Override
+	public int getAdviceLimit() {
+		// TODO Auto-generated method stub
+		return this.deviceInfo.getAdviceLimit();
+	}
+
+	@Override
+	public void setAdviceLimit(int limit) {
+		// TODO Auto-generated method stub
+		this.deviceInfo.setAdviceLimit(limit);
+	}
+
+	@Override
+	public int getAdviceLimitLock() {
+		// TODO Auto-generated method stub
+		return this.deviceInfo.getAdviceLimitLock();
+	}
+
+	@Override
+	public void setAdviceLimitLock(int limit) {
+		// TODO Auto-generated method stub
+		this.deviceInfo.setAdviceLimitLock(limit);
+	}
+
+	
+	public boolean getCashAddON() {
+		// TODO Auto-generated method stub
+		byte []b = this.deviceInfo.getTxnSwitch().getBytes();
+		if(b.length < 1) {
+			logger.error("getCashAddON len <1");
+			return false;
+		}
+		return (b[0]=='1')?true:false;
+	}
+	
+	public boolean getAutoloadON() {
+		byte []b = this.deviceInfo.getTxnSwitch().getBytes();
+		if(b.length < 2) {
+			logger.error("getAutoloadON len <2");
+			return false;
+		}
+		return (b[1]=='1')?true:false;
+	}
+
+	
+	public boolean getBalanceTransformON() {
+		// TODO Auto-generated method stub
+		byte []b = this.deviceInfo.getTxnSwitch().getBytes();
+		if(b.length < 3) {
+			logger.error("getBalanceTransformON len <3");
+			return false;
+		}
+		return (b[2]=='1')?true:false;
+	}
+
+	
+
+	
+	public boolean getDeductON() {
+		// TODO Auto-generated method stub
+		byte []b = this.deviceInfo.getTxnSwitch().getBytes();
+		if(b.length < 4) {
+			logger.error("getDeductON len <4");
+			return false;
+		}
+		return (b[3]=='1')?true:false;
+	}
+
+	public boolean getBalanceTransformDeductON() {
+		// TODO Auto-generated method stub
+		byte []b = this.deviceInfo.getTxnSwitch().getBytes();
+		if(b.length < 5) {
+			logger.error("getDeductON len <5");
+			return false;
+		}
+		return (b[4]=='1')?true:false;
+	}
+
+	
+
+	
+	public boolean getVoidON() {
+		// TODO Auto-generated method stub
+		byte []b = this.deviceInfo.getTxnSwitch().getBytes();
+		if(b.length < 6) {
+			logger.error("getDeductON len <6");
+			return false;
+		}
+		return (b[5]=='1')?true:false;
+	}
+
+	
+	
+	public boolean getRefundON() {
+		// TODO Auto-generated method stub
+		byte []b = this.deviceInfo.getTxnSwitch().getBytes();
+		if(b.length < 7) {
+			logger.error("getDeductON len <7");
+			return false;
+		}
+		return (b[6]=='1')?true:false;
+	}
+
+	
+
+	
+	public boolean getExtensionON() {
+		// TODO Auto-generated method stub
+		byte []b = this.deviceInfo.getTxnSwitch().getBytes();
+		if(b.length < 8) {
+			logger.error("getDeductON len <8");
+			return false;
+		}
+		return (b[7]=='1')?true:false;
+	}
+
 	
 	
 
 	
+	public boolean getAutoloadenableON() {
+		// TODO Auto-generated method stub
+		byte []b = this.deviceInfo.getTxnSwitch().getBytes();
+		if(b.length < 9) {
+			logger.error("getDeductON len <9");
+			return false;
+		}
+		return (b[8]=='1')?true:false;
+	}
+
+	
+
+	@Override
+	public String getTxnSwitch() {
+		// TODO Auto-generated method stub
+		return this.deviceInfo.getTxnSwitch();
+	}
+
+	@Override
+	public void setTxnSwitch(String s) {
+		// TODO Auto-generated method stub
+		this.deviceInfo.setTxnSwitch(s);
+	}
+
+	@Override
+	public int getCashAddUnit() {
+		// TODO Auto-generated method stub
+		return this.deviceInfo.getCashAddUnit();
+	}
+
+	@Override
+	public void setCashAddUnit(int unit) {
+		// TODO Auto-generated method stub
+		this.deviceInfo.setCashAddUnit(unit);
+	}
+
+	@Override
+	public int getAutoloadAmtLimit() {
+		// TODO Auto-generated method stub
+		return this.deviceInfo.getAutoloadAmtLimit();
+	}
+
+	@Override
+	public void setAutoloadAmtLimit(int limit) {
+		// TODO Auto-generated method stub
+		this.deviceInfo.setAutoloadAmtLimit(limit);
+	}
+
+	@Override
+	public String getBlackListType() {
+		// TODO Auto-generated method stub
+		return this.apiInfo.getBlackListType();
+	}
+
+	@Override
+	public void setBlackListType(String type) {
+		// TODO Auto-generated method stub
+		this.apiInfo.setBlackListType(type);
+	}	
 }

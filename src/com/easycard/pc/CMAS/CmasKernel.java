@@ -54,7 +54,7 @@ public class CmasKernel {
 		
 		spec.setT0100("0800");
 		spec.setT0300("881999");
-		spec.setT1100(new String(pprReset.GetReq_TMSerialNumber()));
+		spec.setT1100(new String(pprReset.GetReq_TMSerialNumber()));		
 		spec.setT1101(new String(pprReset.GetReq_TMSerialNumber()));
 		spec.setT1200(pprReset.GetReq_TMTXNTime());
 		spec.setT1201(pprReset.GetReq_TMTXNTime());
@@ -109,11 +109,12 @@ public class CmasKernel {
 		//SubTag5588 tag = spec.getCmasTag().new SubTag5588();
 		SubTag5588 tag = spec.getSubTag5588Instance();
 		tag.setT558801("01");
-		tag.setT558803("5566");
+		tag.setT558803("0001");//default value
 		spec.setT5588s(tag);
 		
 		tag = spec.getSubTag5588Instance();
 		tag.setT558801("02");
+		tag.setT558802(configManager.getBlackListType());
 		tag.setT558803(configManager.getBlackListVersion());
 		spec.setT5588s(tag);
 		
@@ -121,6 +122,11 @@ public class CmasKernel {
 		tag.setT558801("03");
 		tag.setT558802(configManager.getApiName());
 		tag.setT558803(configManager.getApiVersion());
+		spec.setT5588s(tag);
+		
+		tag = spec.getSubTag5588Instance();	
+		tag.setT558801("04");		
+		tag.setT558803(configManager.getApiParaVer());
 		spec.setT5588s(tag);
 		
 		
@@ -175,9 +181,9 @@ public class CmasKernel {
 		specAdv.setT0100("0820");
 		specAdv.setT0300("881999");
 		
-		logger.debug("getTM_Serial_Number:"+configManager.getTMSerialNo());
-		specAdv.setT1100(configManager.getTMSerialNo());
-		specAdv.setT1101(configManager.getTMSerialNo());
+		//logger.debug("getTM_Serial_Number:"+configManager.getTMSerialNo());
+		specAdv.setT1100(specResetResp.getT1100());
+		specAdv.setT1101(specResetResp.getT1100());
 		
 		
 		int unixTimeStamp = (int) (System.currentTimeMillis() / 1000L);
@@ -422,7 +428,7 @@ public class CmasKernel {
 			//t0200
 			b = Arrays.copyOfRange(pprTxnReqOnline.getRespCardPhysicalID(), 0, pprTxnReqOnline.getRespCardPhysicalIDLength());
 			String t0200 = Util.IntelFormat2Decimal(b, 0, pprTxnReqOnline.getRespCardPhysicalIDLength());
-			advice.setT0200(t0200);
+			advice.setT0200(t0200); 
 			
 			if(pprTxnReqOnline.getRespPurseVersionNumber() != 0x00){//CPU card
 				logger.debug("PurseVersionNo. != 0x00");
@@ -436,7 +442,17 @@ public class CmasKernel {
 			advice.setT0214(String.format("%02X", pprTxnReqOnline.getRespPersonalProfile()));
 			
 			//t0300
-			advice.setT0300(CmasDataSpec.PCode.CPU_DEDUCT.toString());
+			String pCode = null;
+			switch(pprTxnReqOnline.getReqSubType()){			
+				case 0x40://autoload
+					pCode=CmasDataSpec.PCode.CPU_AUTOLOAD.toString();
+					break;
+					
+				default:
+						logger.error("UnKnowen pCode:"+String.format("%02X", pprTxnReqOnline.getReqSubType()));
+					break;
+			}			
+			advice.setT0300(pCode);
 			
 			//t0400
 			b = pprTxnReqOnline.getRespTxnAmt();

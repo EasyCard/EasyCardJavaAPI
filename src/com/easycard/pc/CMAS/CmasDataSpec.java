@@ -51,6 +51,10 @@ public class CmasDataSpec {
 	}
 	
 	public enum MsgType{
+		SIGNON_REQ("0800"),
+		SIGNON_RESP("0810"),
+		SIGNON_ADVICE_REQ("0820"),
+		SIGNON_ADVICE_RESP("0830"),
 		AUTH_REQ("0100"),
 		AUTH_RESP("0100"),
 		ADVICE_REQ("0220"),
@@ -132,7 +136,7 @@ public class CmasDataSpec {
 	        Node currentNode = nodeList.item(i);
 	        if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
 	            //calls this method for all the children which is Element
-	        	logger.debug("tag:"+Integer.valueOf(currentNode.getNodeName().replaceAll("T", "0")));
+	        	//logger.debug("tag:"+Integer.valueOf(currentNode.getNodeName().replaceAll("T", "0")));
 	        	//getTag(currentNode);
 	        	//tagParser(Integer.valueOf(currentNode.getNodeName().replaceAll("T", "0")), currentNode.getTextContent());
 	        	tagParser(currentNode);
